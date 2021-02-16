@@ -9,7 +9,7 @@ class UserService {
     }
 
     createUser(user){
-        return axios.post(USER_API_BASE_URL + '/' + "createUser" + '/', user);
+        return axios.post(USER_API_BASE_URL + '/' + "createUser", user);
     }
 
     getUserByUsername(username){

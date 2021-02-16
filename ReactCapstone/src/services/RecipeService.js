@@ -9,7 +9,7 @@ class RecipeService {
     }
 
     createRecipe(user){
-        return axios.post(USER_API_BASE_URL + '/' + "createRecipe" + '/', recipe);
+        return axios.post(USER_API_BASE_URL + '/' + "createRecipe", recipe);
     }
 
     getRecipeById(recipeId){
