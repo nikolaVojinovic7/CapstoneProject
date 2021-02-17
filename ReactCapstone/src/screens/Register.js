@@ -36,6 +36,7 @@ const RegisterScreen = ({ navigation }) => {
     confirmPasswordValidator();
     if (usernameValidator() && emailValidator() && passwordValidator() && confirmPasswordValidator()) {
       register_user();
+      navigation.navigate('Login')
     }
   }
 
@@ -49,7 +50,7 @@ const RegisterScreen = ({ navigation }) => {
 
   let usernameValidator = () => {
     if (username == "") {
-      setUsernameError("Enter a Valid Full Name");
+      setUsernameError("Please enter a valid username.");
     } else {
       setUsernameError("");
       return true;
@@ -59,9 +60,9 @@ const RegisterScreen = ({ navigation }) => {
 
   let emailValidator = () => {
     if (email == "") {
-      setEmailError("Enter a Valid Email");
+      setEmailError("Please enter a valid email.");
     } else if (email.indexOf('@') == -1) {
-      setEmailError("Enter a Valid Email");
+      setEmailError("Please enter a valid email.");
     } else {
       setEmailError("");
       return true;
@@ -71,7 +72,7 @@ const RegisterScreen = ({ navigation }) => {
 
   let passwordValidator = () => {
     if (password == "") {
-      setPasswordError("Enter a Valid Password");
+      setPasswordError("Please enter a valid password.");
     } else {
       setPasswordError("");
       return true;
@@ -81,9 +82,9 @@ const RegisterScreen = ({ navigation }) => {
 
   let confirmPasswordValidator = () => {
     if (confirmPassword == "") {
-      setConfirmPasswordError("Enter a Valid Password");
+      setConfirmPasswordError("Please enter a valid password.");
     } else if (password != confirmPassword) {
-      setConfirmPasswordError("Passwords Must Match");
+      setConfirmPasswordError("Passwords must match.");
     } else {
       setConfirmPasswordError("");
       return true;
