@@ -1,27 +1,27 @@
 import axios from 'axios';
 
-const USER_API_BASE_URL = "http://localhost:8087/api/public";
+const USER_API_BASE_URL = "http://10.0.2.2:8087/api/public/";
 
 class UserService {
 
     getUsers(){
-        return axios.get(USER_API_BASE_URL + '/' + "allUsers");
+        return axios.get(USER_API_BASE_URL + "allUsers");
     }
 
     createUser(user){
-        return axios.post(USER_API_BASE_URL + '/' + "createUser", user);
+        return axios.post(USER_API_BASE_URL + "createUser", user);
     }
 
     getUserByUsername(username){
-        return axios.get(USER_API_BASE_URL + '/' + 'users' + '/', username);
+        return axios.get(USER_API_BASE_URL + 'users' + '/', username);
     }
 
     verifyUser(username, password){
-        return axios.get(USER_API_BASE_URL + '/' + 'login' + '/', username, password);
+        return axios.get(USER_API_BASE_URL + 'login' + '/', username, password);
     }
 
     updateUser(user, username){
-        return axios.put(USER_API_BASE_URL + '/' + 'updateUser' + '/' + username, user);
+        return axios.put(USER_API_BASE_URL + 'updateUser' + '/' + username, user);
     }
 
     deleteUser(username){
