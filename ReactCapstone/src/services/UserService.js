@@ -20,8 +20,8 @@ class UserService {
         return axios.get(USER_API_BASE_URL + 'login' + '/' + email + '&' + password);
     }
 
-    updateUser(user, username){
-        return axios.put(USER_API_BASE_URL + 'updateUser' + '/' + username, user);
+    updateUser(user, email){
+        return axios.put(USER_API_BASE_URL + 'updateUser' + '/' + email, user);
     }
 
     deleteUser(username){

@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import styles from "../styles/ProfileStyles.js"
-import global from '../global.js'
 import userService from "../services/UserService"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -11,17 +11,18 @@ import {
 
 const ProfileScreen = ({ navigation }) => {
 
-    const [username, setUsername] = useState('');
-    const [email, setEmail] = useState('');
-    const [password, setPassword] = useState('')
+    const [user, setUser] = useState({})
+
+    const getData = async () => {
+      try {
+        const obj = await AsyncStorage.getItem('@user')
+        return JSON.parse(obj);
+      } catch(e) {
+      }
+    }
 
     useEffect(() => {
-          userService.getUserByEmail(global.email).then((res) => {
-              let user = res.data;
-              setEmail(user.email)
-              setUsername(user.username)
-              setPassword(user.password)
-            })
+      getData().then((data) => setUser(data))
     })
 
     return (
@@ -39,19 +40,19 @@ const ProfileScreen = ({ navigation }) => {
               <View style={styles.scroll}>
                  <View style={styles.inputView}>
                    <Text>{"Username:                               "}
-                   <Text>{username}</Text>
+                   <Text>{user.username}</Text>
                    </Text>
                  </View>
                  <TouchableOpacity
                    style={styles.editBtn}
                    onPress={() => {
-                     navigation.navigate('EditUsername');
+                     navigation.navigate('EditUsername', {user});
                    }}>
                    <Text style={styles.logoutText}>Edit Username</Text>
                  </TouchableOpacity>
                  <View style={styles.inputView}>
                    <Text>{"Email:                  "}
-                   <Text>{email}</Text>
+                   <Text>{user.email}</Text>
                    </Text>
                  </View>
                  <TouchableOpacity

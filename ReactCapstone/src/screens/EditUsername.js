@@ -1,35 +1,55 @@
 import React, { useState } from 'react';
 import styles from "../styles/EditNameStyles.js"
+import userService from "../services/UserService.js"
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   TextInput,
   TouchableOpacity,
-  Image,
   ImageBackground,
-  Alert,
 } from 'react-native';
 
-const EditNameScreen = ({ navigation }) => {
+const EditNameScreen = ({ route, navigation }) => {
 
-    let [fullName, setFullName] = useState(global.name);
-    let [fullNameError, setFullNameError] = useState('');
+    let [username, setUsername] = useState("");
+    let [usernameError, setUsernameError] = useState('');
+    let [userData, setUserData] = useState(route.params.user)
 
 
-    let fullNameValidator = () => {
-      if(fullName==""){
-        setFullNameError("Enter a Valid Full Name");
+    let usernameValidator = () => {
+      if(username==""){
+        setUsernameError("Username field cannot be empty.");
       } else{
-        setFullNameError("");
+        setUsernameError("");
         return true;
       }
       return false;
     };
+
+    const updateUserData = async (value) => {
+      try {
+        const obj = JSON.stringify(value)
+        await AsyncStorage.setItem('user', obj)
+      } catch (e) {
+      }
+    }
+
+    let onSubmit = () => {
+      usernameValidator();
+      if (usernameValidator()) {
+        update_user();
+        navigation.navigate('Profile')
+      }
+    }
+  
+    let update_user = () => {
+      let user = {username: username, email: userData.email, password: userData.password};
+      updateUserData(user);
+      console.log('user => ' + JSON.stringify(user));
+      userService.updateUser(user, user.email)
+      .then(response => console.log(response))
+      .catch(err => console.log(err));;
+    }
 
     return (
       <View style={styles.backgroundContainer}>
@@ -38,31 +58,31 @@ const EditNameScreen = ({ navigation }) => {
              <View style={styles.searchContainer}>
                  <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
                      <View style={styles.searchHeader}>
-                         <Text style={styles.searchText}>Edit Name</Text>
+                         <Text style={styles.searchText}>Edit Username</Text>
                      </View>
                  </ImageBackground>
              </View>
              <View style={styles.profileContainer}>
               <View style={styles.scroll}>
                   <View>
-                    <Text style={{color: 'red', fontWeight: 'bold'}}>{fullNameError}</Text>
+                    <Text style={{color: 'red', fontWeight: 'bold'}}>{usernameError}</Text>
                   </View>
-                  <Text>Full Name:</Text>
+                  <Text>Username:</Text>
 
                  <View style={styles.inputView}>
 
                    <TextInput
                      style={styles.inputText}
-                     placeholder="Full Name"
-                     onBlur={()=>fullNameValidator()}
+                     placeholder="Username"
+                     onBlur={()=>usernameValidator()}
                      placeholderTextColor="lightgrey"
-                     onChangeText={text => setFullName(text)}
-                     value={fullName}
+                     onChangeText={text => setUsername(text)}
+                     value={username}
                    />
 
                  </View>
                  <TouchableOpacity
-                   style={styles.editBtn}>
+                   style={styles.editBtn} onPress={() => onSubmit()}>
                    <Text style={styles.logoutText}>SAVE</Text>
                  </TouchableOpacity>
             </View>

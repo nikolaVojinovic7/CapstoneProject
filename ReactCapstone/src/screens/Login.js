@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/LoginStyles.js"
 import userService from '../services/UserService.js';
-import global from '../global.js'
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -18,6 +18,14 @@ const LoginScreen = ({ navigation }) => {
   let [password, setPassword] = useState('');
   let [passwordError, setPasswordError] = useState('');
 
+  const storeData = async (value) => {
+    try {
+      const obj = JSON.stringify(value)
+      await AsyncStorage.setItem('@user', obj)
+    } catch (e) {
+    }
+  }
+
   let onSubmit = () => {
     emailValidator();
     passwordValidator();
@@ -33,8 +41,11 @@ const LoginScreen = ({ navigation }) => {
         setPasswordError("Incorrect Password. Please try again.")
       }
       else {
+        userService.getUserByEmail(email).then((res) => {
+          let user = res.data;
+          storeData(user);
+        })
         navigation.navigate('Dashboard');
-        global.email = email
       }
     })
   }
