@@ -1,20 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/LoginStyles.js"
 import userService from '../services/UserService.js';
+import global from '../global.js'
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   TextInput,
   TouchableOpacity,
   Image,
   ImageBackground,
-  Alert,
-  Platform,
 } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
@@ -38,7 +32,10 @@ const LoginScreen = ({ navigation }) => {
       if (!passwordMatch) {
         setPasswordError("Incorrect Password. Please try again.")
       }
-      else navigation.navigate('Dashboard');
+      else {
+        navigation.navigate('Dashboard');
+        global.email = email
+      }
     })
   }
 

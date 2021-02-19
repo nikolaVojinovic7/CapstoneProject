@@ -6,7 +6,7 @@ import LoginScreen from '../screens/Login.js';
 import SearchRecipesScreen from '../screens/SearchRecipes.js';
 import StartRecipeScreen from '../screens/StartRecipe.js';
 import SearchParametersScreen from '../screens/SearchParameters.js';
-import EditNameScreen from '../screens/EditName.js';
+import EditUsernameScreen from '../screens/EditUsername.js';
 import EditEmailScreen from '../screens/EditEmail.js';
 import EditPasswordScreen from '../screens/EditPassword.js';
 import ForgotPasswordScreen from '../screens/ForgotPassword.js';
@@ -101,8 +101,8 @@ const AppStack = () => {
               }}
           />
            <Stack.Screen
-            name="EditName"
-            component={EditNameScreen}
+            name="EditUsername"
+            component={EditUsernameScreen}
             options={{
                 title: '',
                 headerStyle: {

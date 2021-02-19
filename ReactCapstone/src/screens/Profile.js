@@ -1,33 +1,27 @@
 import React, {useState, useEffect} from 'react';
 import styles from "../styles/ProfileStyles.js"
+import global from '../global.js'
+import userService from "../services/UserService"
 import {
-  SafeAreaView,
-  StyleSheet,
-  ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
-  TextInput,
   TouchableOpacity,
-  Image,
   ImageBackground,
 } from 'react-native';
 
 const ProfileScreen = ({ navigation }) => {
 
-    const [fullName, setFullName] = useState('');
+    const [username, setUsername] = useState('');
     const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('')
 
     useEffect(() => {
-      const unsubscribe = navigation.addListener('focus', () => {
-          setFullName(global.name);
-          setEmail(global.email);
-        });
-
-        return () => {
-          unsubscribe;
-        };
+          userService.getUserByEmail(global.email).then((res) => {
+              let user = res.data;
+              setEmail(user.email)
+              setUsername(user.username)
+              setPassword(user.password)
+            })
     })
 
     return (
@@ -44,20 +38,20 @@ const ProfileScreen = ({ navigation }) => {
              <View style={styles.profileContainer}>
               <View style={styles.scroll}>
                  <View style={styles.inputView}>
-                   <Text>{"Full Name:                               "}
-                   <Text>{fullName}</Text>
+                   <Text>{"Username:                               "}
+                   <Text>{username}</Text>
                    </Text>
                  </View>
                  <TouchableOpacity
                    style={styles.editBtn}
                    onPress={() => {
-                     navigation.navigate('EditName');
+                     navigation.navigate('EditUsername');
                    }}>
-                   <Text style={styles.logoutText}>Edit Name</Text>
+                   <Text style={styles.logoutText}>Edit Username</Text>
                  </TouchableOpacity>
                  <View style={styles.inputView}>
                    <Text>{"Email:                  "}
-                   <Text>{global.email}</Text>
+                   <Text>{email}</Text>
                    </Text>
                  </View>
                  <TouchableOpacity
@@ -69,7 +63,7 @@ const ProfileScreen = ({ navigation }) => {
                  </TouchableOpacity>
                  <View style={styles.inputView}>
                    <Text>{"Password:                               "}
-                   <Text>{global.password}</Text>
+                   <Text>**********</Text>
                    </Text>
                 </View>
                 <TouchableOpacity
