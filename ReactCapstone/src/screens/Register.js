@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/RegisterStyles.js";
-import userService from "../services/UserService.js"
+import UserService from '../services/UserService.js';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,7 +16,7 @@ import {
   Alert,
   Platform,
 } from 'react-native';
-import UserService from '../services/UserService.js';
+
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -35,12 +35,12 @@ const RegisterScreen = ({ navigation }) => {
     passwordValidator();
     confirmPasswordValidator();
     if (usernameValidator() && emailValidator() && passwordValidator() && confirmPasswordValidator()) {
-      register_user();
+      registerUser();
       navigation.navigate('Login')
     }
   }
 
-  let register_user = () => {
+  let registerUser = () => {
     let user = {username: username, email: email, password: password};
     console.log('user => ' + JSON.stringify(user));
     UserService.createUser(user)

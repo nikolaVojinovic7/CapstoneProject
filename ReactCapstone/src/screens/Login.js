@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/LoginStyles.js"
+import userService from '../services/UserService.js';
 import {
   SafeAreaView,
   StyleSheet,
@@ -26,17 +27,27 @@ const LoginScreen = ({ navigation }) => {
   let onSubmit = () => {
     emailValidator();
     passwordValidator();
-    if(emailValidator() && passwordValidator()){
-      navigation.navigate('Dashboard')
+    if (emailValidator() && passwordValidator()) {
+      verifyLogin()
     }
   }
 
+  let verifyLogin = () => {
+    userService.verifyUser(email, password).then((res) => {
+      let passwordMatch = res.data;
+      if (!passwordMatch) {
+        setPasswordError("Incorrect Password. Please try again.")
+      }
+      else navigation.navigate('Dashboard');
+    })
+  }
+
   let emailValidator = () => {
-    if(email==""){
+    if (email == "") {
       setEmailError("Enter a Valid Email");
-    } else if(email.indexOf('@') == -1 ){
+    } else if (email.indexOf('@') == -1) {
       setEmailError("Enter a Valid Email");
-    } else{
+    } else {
       setEmailError("");
       return true;
     }
@@ -44,17 +55,17 @@ const LoginScreen = ({ navigation }) => {
   };
 
   let passwordValidator = () => {
-    if(password==""){
+    if (password == "") {
       setPasswordError("Enter a Valid Password");
-    } else{
+    } else {
       setPasswordError("");
       return true;
     }
     return false;
   };
 
-   return (
-     <View style={styles.backgroundContainer}>
+  return (
+    <View style={styles.backgroundContainer}>
       <ImageBackground source={require("../assets/images/background/light-wood.jpg")} style={styles.image}>
         <View style={styles.container}>
           <Image
@@ -62,47 +73,47 @@ const LoginScreen = ({ navigation }) => {
             source={require("../assets/images/logo/bitstobiteslogo.png")}
           />
           <View style={styles.errorText}>
-            <Text style={{color: 'red', fontWeight: 'bold'}}>{emailError}</Text>
+            <Text style={{ color: 'red', fontWeight: 'bold' }}>{emailError}</Text>
           </View>
           <View style={styles.inputView} >
             <TextInput
               style={styles.inputText}
               placeholder="Email"
-              onBlur={()=>emailValidator()}
+              onBlur={() => emailValidator()}
               placeholderTextColor="lightgrey"
-              onChangeText={(text) => {setEmail(text)}}
+              onChangeText={(text) => { setEmail(text) }}
             />
           </View>
-          <Text style={{color: 'red', fontWeight: 'bold'}}>{passwordError}</Text>
+          <Text style={{ color: 'red', fontWeight: 'bold' }}>{passwordError}</Text>
           <View style={styles.inputView} >
             <TextInput
               secureTextEntry
               style={styles.inputText}
               placeholder="Password"
-              onBlur={()=>passwordValidator()}
+              onBlur={() => passwordValidator()}
               placeholderTextColor="lightgrey"
-              onChangeText={(text) => {setPassword(text)}}
+              onChangeText={(text) => { setPassword(text) }}
             />
           </View>
           <TouchableOpacity style={styles.loginBtn}
-            onPress = {() => onSubmit()}>
+            onPress={() => onSubmit()}>
             <Text style={styles.loginText}>
               Login</Text>
           </TouchableOpacity>
           <TouchableOpacity>
-            <Text style={styles.forgot} onPress={()=>{
+            <Text style={styles.forgot} onPress={() => {
               navigation.navigate('ForgotPassword');
-              }}>Forgot Password?</Text>
+            }}>Forgot Password?</Text>
           </TouchableOpacity>
           <Text style={styles.signupText1}> {"Don't have an account? "}
-            <Text style={styles.signupText} onPress={()=>{
+            <Text style={styles.signupText} onPress={() => {
               navigation.navigate('Register');
-              }}>
-            Sign Up</Text>
+            }}>
+              Sign Up</Text>
           </Text>
-          </View>
-        </ImageBackground>
-      </View>
+        </View>
+      </ImageBackground>
+    </View>
   );
 };
 

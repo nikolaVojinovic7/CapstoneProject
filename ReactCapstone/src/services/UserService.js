@@ -12,12 +12,12 @@ class UserService {
         return axios.post(USER_API_BASE_URL + "createUser", user);
     }
 
-    getUserByUsername(username){
-        return axios.get(USER_API_BASE_URL + 'users' + '/', username);
+    getUserByEmail(email){
+        return axios.get(USER_API_BASE_URL + 'users' + '/' + email);
     }
 
-    verifyUser(username, password){
-        return axios.get(USER_API_BASE_URL + 'login' + '/', username, password);
+    verifyUser(email, password){
+        return axios.get(USER_API_BASE_URL + 'login' + '/' + email + '&' + password);
     }
 
     updateUser(user, username){
