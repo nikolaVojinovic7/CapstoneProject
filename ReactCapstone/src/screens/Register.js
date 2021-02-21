@@ -36,16 +36,26 @@ const RegisterScreen = ({ navigation }) => {
     confirmPasswordValidator();
     if (usernameValidator() && emailValidator() && passwordValidator() && confirmPasswordValidator()) {
       registerUser();
-      navigation.navigate('Login')
     }
   }
 
   let registerUser = () => {
-    let user = {username: username, email: email, password: password};
+    let user = { username: username, email: email, password: password };
     console.log('user => ' + JSON.stringify(user));
     UserService.createUser(user)
-    .then(response => console.log(response))
-    .catch(err => console.log(err));;
+      .then(response => console.log(response),
+      Alert.alert(
+        'Success',
+        'Registration successful!',
+        [
+          {
+            text: 'Ok',
+            onPress: () => navigation.navigate('Login'),
+          },
+        ],
+        { cancelable: false }
+      ))
+      .catch(err => console.log(err));
   }
 
   let usernameValidator = () => {

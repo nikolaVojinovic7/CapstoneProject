@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import styles from "../styles/EditNameStyles.js"
 import userService from "../services/UserService.js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   View,
   Text,
@@ -29,7 +30,7 @@ const EditNameScreen = ({ route, navigation }) => {
     const updateUserData = async (value) => {
       try {
         const obj = JSON.stringify(value)
-        await AsyncStorage.setItem('user', obj)
+        await AsyncStorage.setItem('@user', obj)
       } catch (e) {
       }
     }
@@ -48,7 +49,7 @@ const EditNameScreen = ({ route, navigation }) => {
       console.log('user => ' + JSON.stringify(user));
       userService.updateUser(user, user.email)
       .then(response => console.log(response))
-      .catch(err => console.log(err));;
+      .catch(err => console.log(err));
     }
 
     return (

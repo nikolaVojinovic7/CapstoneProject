@@ -58,7 +58,7 @@ const ProfileScreen = ({ navigation }) => {
                  <TouchableOpacity
                    style={styles.editBtn}
                    onPress={() => {
-                     navigation.navigate('EditEmail');
+                     navigation.navigate('EditEmail', {user});
                    }}>
                    <Text style={styles.logoutText}>Edit Email</Text>
                  </TouchableOpacity>
@@ -70,7 +70,7 @@ const ProfileScreen = ({ navigation }) => {
                 <TouchableOpacity
                   style={styles.editBtn}
                   onPress={() => {
-                    navigation.navigate('EditPassword');
+                    navigation.navigate('EditPassword', {user});
                   }}>
                   <Text style={styles.logoutText}>Edit Password</Text>
                 </TouchableOpacity>

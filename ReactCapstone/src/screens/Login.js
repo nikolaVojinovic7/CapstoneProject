@@ -9,6 +9,7 @@ import {
   TouchableOpacity,
   Image,
   ImageBackground,
+  Alert,
 } from 'react-native';
 
 const LoginScreen = ({ navigation }) => {
@@ -48,6 +49,16 @@ const LoginScreen = ({ navigation }) => {
         navigation.navigate('Dashboard');
       }
     })
+    .catch(err => Alert.alert(
+      'Error',
+      'User not found!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false }
+    ))
   }
 
   let emailValidator = () => {

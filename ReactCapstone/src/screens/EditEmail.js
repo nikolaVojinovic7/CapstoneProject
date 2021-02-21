@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import styles from "../styles/EditEmailStyles.js"
+import userService from "../services/UserService.js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,10 +17,11 @@ import {
   Alert,
 } from 'react-native';
 
-const EditEmailScreen = ({ navigation }) => {
+const EditEmailScreen = ({ route, navigation }) => {
 
-  let [email, setEmail] = useState(global.email);
+  let [email, setEmail] = useState("");
   let [emailError, setEmailError] = useState('');
+  let [userData, setUserData] = useState(route.params.user)
 
   let emailValidator = () => {
     if(email==""){
@@ -31,6 +34,31 @@ const EditEmailScreen = ({ navigation }) => {
     }
     return false;
   };
+
+  const updateUserData = async (value) => {
+    try {
+      const obj = JSON.stringify(value)
+      await AsyncStorage.setItem('@user', obj)
+    } catch (e) {
+    }
+  }
+
+  let onSubmit = () => {
+    emailValidator();
+    if (emailValidator()) {
+      update_user();
+      navigation.navigate('Profile')
+    }
+  }
+
+  let update_user = () => {
+    let user = {username: userData.username, email: email, password: userData.password};
+    console.log('user => ' + JSON.stringify(user));
+    userService.updateUser(user, userData.email)
+    .then(response => console.log(response),
+    updateUserData(user))
+    .catch(err => console.log(err));
+  }
 
     return (
       <View style={styles.backgroundContainer}>
@@ -60,7 +88,7 @@ const EditEmailScreen = ({ navigation }) => {
                     />
                   </View>
                  <TouchableOpacity
-                   style={styles.editBtn}>
+                   style={styles.editBtn} onPress={() => onSubmit()}>
                    <Text style={styles.logoutText}>SAVE</Text>
                  </TouchableOpacity>
             </View>
