@@ -13,7 +13,7 @@ class IngredientService {
     }
 
     getIngredientByName(name){
-        return axios.get(USER_API_BASE_URL + '/' + 'findIngredient' + '/', name);
+        return axios.get(USER_API_BASE_URL + '/' + 'findIngredient' + '/' + name);
     }
 
     updateIngredient(ingredient, name){

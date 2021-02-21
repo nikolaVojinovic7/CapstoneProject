@@ -13,7 +13,7 @@ class RecipeService {
     }
 
     getRecipeById(recipeId){
-        return axios.get(USER_API_BASE_URL + '/' + 'getRecipe' + '/', recipeId);
+        return axios.get(USER_API_BASE_URL + '/' + 'getRecipe' + '/' + recipeId);
     }
 
     updateRecipe(recipe, recipeId){

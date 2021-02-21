@@ -13,7 +13,7 @@ class CategoryService {
     }
 
     getCategoryByName(name){
-        return axios.get(USER_API_BASE_URL + '/' + 'findCategories' + '/', name);
+        return axios.get(USER_API_BASE_URL + '/' + 'findCategories' + '/' + name);
     }
 
     updateCategory(category, name){
