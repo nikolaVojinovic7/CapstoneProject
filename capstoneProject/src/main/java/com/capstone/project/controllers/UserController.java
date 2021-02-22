@@ -45,9 +45,9 @@ public class UserController {
     }
 
     // get user by id rest api
-    @PostMapping("/login/{username}&{password}")
-    public Boolean userLogin(@PathVariable String username, @PathVariable String password) {
-        Boolean verifyLogin = userService.verifyLogin(username, password);
+    @PostMapping("/login/{email}&{password}")
+    public Boolean userLogin(@PathVariable String email, @PathVariable String password) {
+        Boolean verifyLogin = userService.verifyLogin(email, password);
         return verifyLogin;
     }
 
@@ -58,12 +58,12 @@ public class UserController {
     }
 
     // update employee rest api
-    @PutMapping("/updateUser/{username}")
-    public User updateUser(@PathVariable String username, @RequestBody User userDetails) {
+    @PutMapping("/updateUser/{email}")
+    public User updateUser(@PathVariable String email, @RequestBody User userDetails) {
 
-        User user = userService.findByUsername(username);
+        User user = userService.findByEmail(email);
         if(user == null){
-            throw new ResourceNotFoundException("There is no user with username" + username);
+            throw new ResourceNotFoundException("There is no user with username" + email);
         }
         user.setUsername(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
@@ -71,11 +71,11 @@ public class UserController {
     }
 
     // delete employee rest api
-    @DeleteMapping("/deleteUser/{username}")
-    public Map< String, Boolean > deleteUser(@PathVariable String username) {
-        User user = userService.findByUsername(username);
+    @DeleteMapping("/deleteUser/{email}")
+    public Map< String, Boolean > deleteUser(@PathVariable String email) {
+        User user = userService.findByEmail(email);
         if(user == null){
-            throw new ResourceNotFoundException("There is no user with username" + username);
+            throw new ResourceNotFoundException("There is no user with username" + email);
         }
         userService.delete(user);
         Map < String, Boolean > response = new HashMap< >();

@@ -35,8 +35,8 @@ public class UserService implements UserServiceAbs{
     }
 
     @Override
-    public Boolean verifyLogin(String username, String password) {
-        User user = userRepository.findByUsername(username);
+    public Boolean verifyLogin(String email, String password) {
+        User user = userRepository.findByEmail(email);
         return user.getPassword().equals(password);
     }
 
