@@ -7,7 +7,6 @@ export default StyleSheet.create({
       container: {
         flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
       },
       image: {
         flex: 1,
@@ -17,13 +16,17 @@ export default StyleSheet.create({
       searchContainer: {
         width:"100%",
         flex: 1,
+        position: 'absolute',
+        minHeight: 200,
       },
+
       searchHeader: {
         width:"100%",
         justifyContent:"center",
         alignItems: 'center',
         flex: 1,
       },
+
       searchText: {
         textAlign: 'center',
         marginBottom:20,
