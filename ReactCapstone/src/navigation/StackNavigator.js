@@ -16,15 +16,12 @@ import AdminManageUploadsScreen from "../screens/AdminManageUploads.js";
 import AdminManageUserScreen from "../screens/AdminManageUser.js";
 import AppTab from '../navigation/TabNavigator.js';
 
-
-
 const Stack = createStackNavigator();
 
 const AppStack = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-          
            <Stack.Screen
              name="Login"
              component={LoginScreen}

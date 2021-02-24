@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
         userService.getUserByEmail(email).then((res) => {
           let user = res.data;
           storeData(user);
-        })
+        }).catch(err => console.log(err))
         navigation.navigate('Dashboard');
       }
     })
