@@ -10,14 +10,14 @@ import {
   Button,
 } from 'react-native';
 
-const AdminManageUploadsScreen = ({ navigation }) => {
-  
+const AdminManageUserScreen = ({ navigation }) => {
+
 let [obj, setObj] = useState('');
 
 let Test1 = () =>{
     alert("Uploads Screen");
 }
-  
+
 
   return (
     <View style={styles.backgroundContainer}>
@@ -26,7 +26,7 @@ let Test1 = () =>{
           <View style={styles.searchContainer}>
             <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
               <View style={styles.searchHeader}>
-                <Text style={styles.searchText}>User List</Text>
+                <Text style={styles.searchText}>Uploaded Recipe List</Text>
                 <View style={styles.inputView} >
                   <TextInput
                     style={styles.inputText}
@@ -48,8 +48,8 @@ let Test1 = () =>{
               <View style={styles.scroll}>
               <Button
                 title="Push me"
-                onPress = {Test1} 
-                color="#7C9262"                
+                onPress = {Test1}
+                color="#7C9262"
                 accessibilityLabel="Test"
                 />
               </View>
@@ -61,4 +61,4 @@ let Test1 = () =>{
   );
 };
 
-export default AdminManageUploadsScreen;
+export default AdminManageUserScreen;
