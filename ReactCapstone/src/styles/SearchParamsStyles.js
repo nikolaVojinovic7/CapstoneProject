@@ -72,5 +72,6 @@ export default StyleSheet.create({
         backgroundColor: "#7C9262",
         marginLeft: 5,
         marginTop: 5
-      }    
+      }
+
 });
