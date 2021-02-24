@@ -25,12 +25,6 @@ const AppStack = () => {
       <NavigationContainer>
         <Stack.Navigator>
           
-        <Stack.Screen name="Dashboard"
-            component={AppTab}
-            options={{
-              headerShown: false, // change this to `false`
-            }}/>
-  
            <Stack.Screen
              name="Login"
              component={LoginScreen}
@@ -93,7 +87,11 @@ const AppStack = () => {
                  headerTransparent: true,
                }}
            />
-           
+          <Stack.Screen name="Dashboard"
+            component={AppTab}
+            options={{
+              headerShown: false, // change this to `false`
+            }}/>
   
             <Stack.Screen
              name="SearchParameters"
