@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/DashboardStyles.js"
+import recipeService from '../services/RecipeService.js';
 import {
   ScrollView,
   View,
@@ -7,11 +8,46 @@ import {
   TextInput,
   Image,
   ImageBackground,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 
 const DashboardScreen = ({ navigation }) => {
-  
+
   let [obj, setObj] = useState('');
+  let [recipeData, setRecipeData] = useState({});
+
+  const Item = ({ item, onPress, style }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <Image source={{ uri: item.imageUrl }} style={[styles.recipeImage]} />
+    </TouchableOpacity>
+  );
+
+  const renderItem = ({ item }) => {
+    return (
+      <Item
+        item={item}
+        onPress={() => { navigation.navigate('StartRecipe', { item }); }}
+      />
+    );
+  };
+
+  useEffect(() => {
+    recipeService.getRecipes().then((res) => {
+      let allRecipes = res.data;
+      setRecipeData(allRecipes);
+    })
+    .catch(err => Alert.alert(
+      'Error',
+      'No recipes found!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false }
+    ))
+  }, []);
 
   return (
     <View style={styles.backgroundContainer}>
@@ -39,7 +75,13 @@ const DashboardScreen = ({ navigation }) => {
           <View style={styles.scrollContainer}>
             <ScrollView>
               <View style={styles.scroll}>
-
+                <Text style={styles.headerText}>RECIPES</Text>
+                { <FlatList
+                  horizontal
+                  data={recipeData}
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                /> }
               </View>
             </ ScrollView>
           </View>

@@ -56,5 +56,16 @@ export default StyleSheet.create({
       headerText: {
         height: 20,
         fontWeight: 'bold',
+      },
+      item: {
+        flex: 1,
+        flexDirection: 'row',
+        padding: 10,
+        marginVertical: 8,
+      },
+      recipeImage: {
+        height: 175,
+        width: 175,
+        padding: 5
       }
 });

@@ -19,43 +19,60 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const StartRecipeScreen = ({ route, navigation }) => {
 
-    //let [recipeItem,setRecipeItem] = useState(route.params.item);
+    let [recipeItem,setRecipeItem] = useState(route.params.item);
 
     return (
         <View style={styles.backgroundContainer}>
             <View style={styles.container}>
                 <View style={styles.imageContainer}>
-                    {/* <ImageBackground source={{uri: recipeItem.recipe_imageUrl}} style={styles.image}>
-                    </ImageBackground> */}
+                    { <ImageBackground source={{uri: recipeItem.imageUrl}} style={styles.image}>
+                    </ImageBackground> }
                 </View>
                 <View style={styles.RectangleShapeView}>
-                {/* <Text style={styles.recipeTitleText}>{recipeItem.recipe_title}</Text> */}
+                { <Text style={styles.recipeTitleText}>{recipeItem.name}</Text> }
                 </View>
                 <TouchableOpacity style={styles.favBtn}>
                   <Icon name="heart" size={40} color="red" />
                 </TouchableOpacity>
             </View>
             <ScrollView>
+              <View style={styles.infoContainer}>
                         <Text style={styles.infoText2}>
                             Level:
-                                {/* <Text style={styles.infoText}>{recipeItem.recipe_level}</Text> */}
+                                { <Text style={styles.infoText}> {recipeItem.level}</Text> }
+                        </Text>
+                        <Text></Text>
+                        <Text style={styles.infoText2}>
+                            Prep Time:
+                                { <Text style={styles.infoText}> {recipeItem.prepTime}</Text> }
                         </Text>
                         <Text style={styles.infoText2}>
-                            Total:
-                                {/* <Text style={styles.infoText}>{recipeItem.recipe_cookTime}</Text> */}
+                            Cook Time:
+                                { <Text style={styles.infoText}> {recipeItem.cookTime}</Text> }
+                        </Text>
+                        <Text style={styles.infoText2}>
+                            Total Time:
+                                { <Text style={styles.infoText}> {recipeItem.totalTime}</Text> }
+                        </Text>
+                        <Text></Text>
+                        <Text style={styles.infoText2}>
+                            Servings:
+                                { <Text style={styles.infoText}> {recipeItem.servings}</Text> }
                         </Text>
                         <Text style={styles.h2Text}>
                             Ingredients:
                         </Text>
                         <Text>
+                          Ingredients
                         {/* {recipeItem.recipe_ingredients} */}
                         </Text>
                         <Text style={styles.h2Text}>
                             Directions:
                         </Text>
                         <Text>
-                        {/* {recipeItem.recipe_description} */}
+                        { recipeItem.directions.replace(/([^:]\/)\/+/g, "$1") }
                         </Text>
+                  </View>
                 </ ScrollView>
         </View>
     );

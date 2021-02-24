@@ -61,4 +61,8 @@ export default StyleSheet.create({
       width: 40,
       height: 40,
     },
+    infoContainer:{
+      marginLeft: 30,
+      marginRight: 30
+    }
 });
