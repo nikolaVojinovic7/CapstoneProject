@@ -11,8 +11,10 @@ import EditEmailScreen from '../screens/EditEmail.js';
 import EditPasswordScreen from '../screens/EditPassword.js';
 import ForgotPasswordScreen from '../screens/ForgotPassword.js';
 import RegisterScreen from '../screens/Register.js';
+import AdminDashboardScreen from "../screens/AdminDashboard.js";
+import AdminManageUploadsScreen from "../screens/AdminManageUploads.js";
+import AdminManageUserScreen from "../screens/AdminManageUser.js";
 import AppTab from '../navigation/TabNavigator.js';
-
 
 const Stack = createStackNavigator();
 
@@ -20,7 +22,6 @@ const AppStack = () => {
     return (
       <NavigationContainer>
         <Stack.Navigator>
-  
            <Stack.Screen
              name="Login"
              component={LoginScreen}
@@ -47,6 +48,31 @@ const AppStack = () => {
                }}
            />
            <Stack.Screen
+             name="AdminManageUser"
+             component={AdminManageUserScreen}
+             options={{
+                 title: '',
+                 headerStyle: {
+                   elevation: 0,
+                   shadowOpacity: 0
+                 },
+                 headerTransparent: true,
+               }}
+           />
+          <Stack.Screen
+             name="AdminManageUploads"
+             component={AdminManageUploadsScreen}
+             options={{
+                 title: '',
+                 headerStyle: {
+                   elevation: 0,
+                   shadowOpacity: 0
+                 },
+                 headerTransparent: true,
+               }}
+           />
+
+           <Stack.Screen
              name="ForgotPassword"
              component={ForgotPasswordScreen}
              options={{
@@ -58,7 +84,7 @@ const AppStack = () => {
                  headerTransparent: true,
                }}
            />
-           <Stack.Screen name="Dashboard"
+          <Stack.Screen name="Dashboard"
             component={AppTab}
             options={{
               headerShown: false, // change this to `false`

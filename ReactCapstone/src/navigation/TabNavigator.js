@@ -7,6 +7,7 @@ import DashboardScreen from '../screens/Dashboard.js';
 import ProfileScreen from '../screens/Profile.js';
 import MyPantryScreen from '../screens/MyPantry.js';
 import FavoritesScreen from '../screens/Favorites.js';
+import AdminDashboardScreen from "../screens/AdminDashboard.js";
 
 
 const Tab = createBottomTabNavigator();
@@ -27,7 +28,10 @@ const AppTab = ({navigation}) => {
                 iconName = focused ? 'ios-list-circle' : 'ios-list';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'person' : 'person-outline';
+              } else if (route.name === 'Admin'){
+                iconName = focused ? 'ios-server' : 'ios-server-outline';
               }
+
   
               return <Ionicons name={iconName} size={size} color={color} />;
             },
@@ -41,6 +45,7 @@ const AppTab = ({navigation}) => {
         <Tab.Screen name="Favorites" component={FavoritesScreen} />
         <Tab.Screen name="MyPantry" component={MyPantryScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
+        <Tab.Screen name="Admin" component={AdminDashboardScreen} />
       </Tab.Navigator>
     );
   };
