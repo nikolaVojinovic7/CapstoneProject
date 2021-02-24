@@ -35,7 +35,9 @@ export default StyleSheet.create({
         marginBottom:20
       },
       registerText:{
-        color:"white"
+        color:"white",
+        fontWeight: "bold",
+        fontSize: 17
       },
       headerView:{
         width:"100%",
@@ -47,15 +49,24 @@ export default StyleSheet.create({
       header1Text:{
         textAlign: 'center',
         marginBottom:20,
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: 'bold',
       },
       header2Text:{
         textAlign: 'center',
         marginBottom:20,
-        fontSize: 16,
+        fontSize: 17,
       },
       signupText:{
         color:"red"
-      }
+      },
+      signinText:{
+        color:"#cc0856"
+      },
+      signinText1:{
+        marginTop: 15,
+        color: "black",
+        fontWeight:"bold",
+        fontSize:17
+      },
 });

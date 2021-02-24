@@ -114,7 +114,7 @@ export default StyleSheet.create({
       color: 'white',
       position: "absolute",
       marginTop: 7,
-      marginHorizontal: 120
+      marginLeft: 120
   },
   myButton: {
     padding: 6,

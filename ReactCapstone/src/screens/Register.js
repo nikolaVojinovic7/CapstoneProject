@@ -166,10 +166,10 @@ const RegisterScreen = ({ navigation }) => {
           </View>
 
           <TouchableOpacity style={styles.registerBtn} onPress={() => onSubmit()}>
-            <Text style={styles.registerText}>REGISTER</Text>
+            <Text style={styles.registerText}>Register</Text>
           </TouchableOpacity>
-          <Text style={styles.loginText}> {"Already have an account? "}
-            <Text style={styles.signupText} onPress={() => {
+          <Text style={styles.signinText1}> {"Already have an account? "}
+            <Text style={styles.signinText} onPress={() => {
               navigation.navigate('Login');
             }}>
               Sign In</Text>

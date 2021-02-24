@@ -6,6 +6,9 @@ import pantryService from '../services/PantryService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
+import { LogBox } from 'react-native'
+
+LogBox.ignoreAllLogs();
 
 import {
   SafeAreaView,
@@ -178,7 +181,7 @@ const MyPantryScreen = ({ navigation }) => {
               </View>
             </ImageBackground>
           </View>
-          <SafeAreaView style={styles.scroll}>
+          <ScrollView style={styles.scroll} keyboardShouldPersistTaps='always'>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -187,11 +190,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Dairy</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
               data={dairy}
               renderItem={renderItem}
               keyExtractor={(item, index) => index.toString()}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -200,11 +205,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Vegetables</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
               data={vegetables}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -213,12 +220,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Fruits</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={fruits}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -227,12 +235,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Grains</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={grains}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -241,12 +250,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Meat</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={meat}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -255,12 +265,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Seafood</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={seafood}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -269,12 +280,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Spices</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={spices}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -283,12 +295,13 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Sweeteners</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={sweeteners}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
+            </View>
             <View style={styles.categoryContainer}>
               <ImageBackground
                 source={require('../assets/images/background/dark-wood.jpg')}
@@ -297,17 +310,19 @@ const MyPantryScreen = ({ navigation }) => {
                 <Text style={styles.categoryText}>Nuts</Text>
               </ImageBackground>
             </View>
+            <View>
             <FlatList
-              horizontal
               data={nuts}
               keyExtractor={(item, index) => index.toString()}
               renderItem={renderItem}
             />
-          </SafeAreaView>
+            </View>
+          </ScrollView>
         </View>
       </ImageBackground>
     </View>
   );
 };
+
 
 export default MyPantryScreen;
