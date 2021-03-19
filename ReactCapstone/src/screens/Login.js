@@ -45,7 +45,7 @@ const LoginScreen = ({ navigation }) => {
         userService.getUserByEmail(email).then((res) => {
           let user = res.data;
           storeData(user);
-        }).catch(err => console.log(err))
+        }).catch(err => console.log(err.response.data))
         navigation.navigate('Dashboard');
       }
     })
@@ -57,7 +57,8 @@ const LoginScreen = ({ navigation }) => {
           text: 'Ok',
         },
       ],
-      { cancelable: false }
+      { cancelable: false },
+      console.log(err)
     ))
   }
 
