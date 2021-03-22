@@ -11,6 +11,9 @@ public class Pantry {
     @Column
     private String expiryDate;
 
+    @Column
+    private String category;
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
@@ -19,10 +22,11 @@ public class Pantry {
     public Pantry(){
     }
 
-    public Pantry(long id, Ingredient ingredient, String expiryDate) {
+    public Pantry(long id, Ingredient ingredient, String expiryDate, String category) {
         this.id = id;
         this.ingredient = ingredient;
         this.expiryDate = expiryDate;
+        this.category = category;
     }
 
     public Ingredient getIngredient() {
@@ -47,5 +51,13 @@ public class Pantry {
 
     public long getId() {
         return id;
+    }
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
     }
 }
