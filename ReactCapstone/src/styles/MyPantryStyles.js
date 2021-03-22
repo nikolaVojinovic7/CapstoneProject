@@ -15,7 +15,7 @@ export default StyleSheet.create({
   searchContainer: {
     width: "100%",
     flex: 1,
-    position: 'absolute',
+    position: 'relative',
     minHeight: 200,
   },
 
@@ -39,7 +39,7 @@ export default StyleSheet.create({
     width: '80%'
   },
   scroll: {
-    marginTop: 200,
+    
     marginHorizontal: 25,
   },
   inputView: {
@@ -79,7 +79,6 @@ export default StyleSheet.create({
     marginTop: 5,
     marginHorizontal: 10,
     borderRadius: 100,
-    justifyContent: 'flex-start',
   },
   recipeImage: {
     height: 175,
@@ -105,7 +104,7 @@ export default StyleSheet.create({
     width: 300,
     height: 40,
     marginBottom: 20,
-    marginRight: 20
+    marginRight: 20,
   },
 
   categoryText:{
@@ -123,5 +122,13 @@ export default StyleSheet.create({
     flexDirection: 'row', 
     justifyContent: 'space-between',
     marginRight: 35
-  }    
-});
+  }, 
+  
+  arrow:{
+    color: "white",
+    marginTop: -30,
+    marginLeft: 250
+
+  }
+  
+}); 

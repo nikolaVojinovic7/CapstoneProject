@@ -57,7 +57,7 @@ const EditEmailScreen = ({ route, navigation }) => {
     userService.updateUser(user, userData.email)
     .then(response => console.log(response),
     updateUserData(user))
-    .catch(err => console.log(err));
+    .catch(err => console.log(err.response.data));
   }
 
     return (
