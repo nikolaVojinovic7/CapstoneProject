@@ -164,10 +164,24 @@ const MyPantryScreen = ({navigation}) => {
 
   const update_ingredients = (item) => {
 
-    pantryService
-      .updateUser(user.email, item.id)
-      .then((response) => console.log(response))
-      .catch((err) => console.log(err));
+    pantryService.getPantry(user.email)
+      .then((response) => {
+        let exists = false;
+        response.data.forEach((pantryIngredient) => {
+          if(pantryIngredient.ingredient.name == item.name){
+            exists = true;
+          }
+        })
+        if(exists){
+          alert("You already added this ingredient to your pantry!")
+        }
+        else{
+          pantryService
+          .updateUser(user.email, item.id)
+          .then((response) => console.log(response))
+          .catch((err) => console.log(err));
+        }
+      })
   };
 
   const Item = ({item}) => (
