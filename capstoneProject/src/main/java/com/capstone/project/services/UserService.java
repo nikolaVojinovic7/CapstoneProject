@@ -1,5 +1,6 @@
 package com.capstone.project.services;
 
+import com.capstone.project.model.Pantry;
 import com.capstone.project.model.User;
 import com.capstone.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,4 +63,5 @@ public class UserService implements UserServiceAbs{
     public void deleteById(Long aLong) {
         userRepository.deleteById(aLong);
     }
+
 }

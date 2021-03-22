@@ -1,6 +1,7 @@
 package com.capstone.project.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -27,26 +28,11 @@ public class User {
     private String role;
 
     @OneToMany(cascade = {CascadeType.ALL})
-    private Set<Pantry> pantryIngredients;
+    private Set<Pantry> pantryIngredients = new HashSet<Pantry>();
 
     @ManyToMany
     private Set<Recipe> favorites;
 
-    //no arg constructor
-    public User(){
-    }
-
-    //constructor
-    public User(long id, String username, String password, String email, Set<Pantry> pantryIngredients,
-                Set<Recipe> favorites, String role) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.pantryIngredients = pantryIngredients;
-        this.favorites = favorites;
-        this.role = role;
-    }
 
     //getters and setters
     public String getUsername() {
@@ -90,7 +76,11 @@ public class User {
     }
 
     public void addIngredientItem(Pantry item){
-        pantryIngredients.add(item);
+        this.pantryIngredients.add(item);
+    }
+
+    public void removePantryItem(Pantry item){
+        this.pantryIngredients.remove(item);
     }
 
     public String getStatus() {
