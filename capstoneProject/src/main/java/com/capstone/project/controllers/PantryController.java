@@ -46,6 +46,7 @@ public class PantryController {
         return userService.save(user);
     }
 
+
     //get all pantry ingredients by email api
     @GetMapping("allPantry/{email}")
     public Set<Pantry> allPantry(@PathVariable String email){
