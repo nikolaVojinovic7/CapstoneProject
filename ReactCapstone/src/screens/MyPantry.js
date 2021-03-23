@@ -7,6 +7,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import {LogBox} from 'react-native';
+import DateTimePickerModal from "react-native-modal-datetime-picker";
+
 
 LogBox.ignoreAllLogs();
 
@@ -28,6 +30,8 @@ import {
 } from 'react-native';
 
 const MyPantryScreen = ({navigation}) => {
+  const [isDatePickerVisible, setDatePickerVisibility] = useState(false);
+  const [selectedItem, setSelectedItem] = useState({})
   const [user, setUser] = useState({});
   const [showDairy, setShowDairy] = useState(false);
   const [showVegetables, setShowVegetables] = useState(false);
@@ -63,10 +67,10 @@ const MyPantryScreen = ({navigation}) => {
         let temp = [];
         response.data.forEach((item) => {
           if(item.category == category){
-            temp.push(item.ingredient.name);
+            temp.push(item);
           }
         })
-        temp.sort();
+        temp.sort((a, b) => (a.ingredient.name > b.ingredient.name) ? 1 : -1);
         if (category == "dairy") {
           setDairy(temp);
           if(showDairy == false){
@@ -155,7 +159,7 @@ const MyPantryScreen = ({navigation}) => {
     ingredientService
       .getIngredients()
       .then((response) => setIngredientData(response.data))
-      .catch((err) => console.log(err));
+      .catch(err => console.log(err.response.data));
   }, []);
 
   useEffect(() => {
@@ -179,19 +183,27 @@ const MyPantryScreen = ({navigation}) => {
           pantryService
           .updateUser(user.email, item.id)
           .then((response) => console.log(response))
-          .catch((err) => console.log(err));
+          .catch(err => console.log(err.response.data));
         }
       })
   };
 
+  const deleteItem = (id) =>{
+    pantryService
+    .deletePantryItem(id, user.email)
+    .then((response) => console.log(response))
+    .catch(err => console.log(err.response.data));
+  
+  }
+
   const Item = ({item}) => (
-    <View style={styles.myButton}>
-      <Text style={{fontWeight: 'bold', fontSize: 15}}>{item}</Text>
+    <View style={styles.myButton} backgroundColor="white">
+      <Text style={{fontWeight: 'bold', fontSize: 15}}>{item.ingredient.name}</Text>
       <View style={{flexDirection: 'row'}}>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {showDatePicker(); setSelectedItem(item) }}>
           <Icon name="calendar" size={20} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => {deleteItem(item.id) }}>
           <Icon name="trash" size={20} color="red" />
         </TouchableOpacity>
       </View>
@@ -200,6 +212,22 @@ const MyPantryScreen = ({navigation}) => {
 
   const renderItem = ({item}) => {
     return <Item item={item} />;
+  };
+
+  const showDatePicker = () => {
+    setDatePickerVisibility(true);
+  };
+
+  const hideDatePicker = () => {
+    setDatePickerVisibility(false);
+  };
+
+  const handleConfirm = (date) => {
+    let d = date.toISOString().replace('-', ' ').split('T')[0].replace('-', ' ');
+    pantryService.updatePantryItem(user.email,selectedItem.id, d)
+    .then((response) => console.log(response))
+    .catch(err => console.log(err.response.data));
+    hideDatePicker();
   };
 
   return (
@@ -470,6 +498,14 @@ const MyPantryScreen = ({navigation}) => {
             </View>
           </ScrollView>
         </View>
+        <View>
+      <DateTimePickerModal
+        isVisible={isDatePickerVisible}
+        mode="date"
+        onConfirm={handleConfirm}
+        onCancel={hideDatePicker}
+      />
+    </View>
       </ImageBackground>
     </View>
   );
