@@ -43,7 +43,6 @@ const MyPantryScreen = ({navigation}) => {
   const [showSweeteners, setShowSweeteners] = useState(false);
   const [showNuts, setShowNuts] = useState(false);
   let [ingredientData, setIngredientData] = useState({});
-  let [pantry, setPantry] = useState({});
   let [dairy, setDairy] = useState([]);
   let [vegetables, setVegetables] = useState([]);
   let [fruits, setFruits] = useState([]);
@@ -177,22 +176,84 @@ const MyPantryScreen = ({navigation}) => {
           }
         })
         if(exists){
-          alert("You already added this ingredient to your pantry!")
+          Alert.alert("", "You already added this ingredient to your pantry!",
+          [
+            {
+              text: 'Ok',
+            },
+          ],
+          { cancelable: false })
         }
         else{
           pantryService
           .updateUser(user.email, item.id)
-          .then((response) => console.log(response))
+          .then(response => Alert.alert(
+            '',
+            'This ingredient has been successfully added to your pantry.',
+            [
+              {
+                text: 'Ok',
+              },
+            ],
+            { cancelable: false },
+            console.log(response.data)
+          ))
           .catch(err => console.log(err.response.data));
         }
       })
   };
 
-  const deleteItem = (id) =>{
+  const deleteItem = (item) =>{
+    if (item.category == "dairy") {
+      let filteredDairy = dairy.filter(ingredient => ingredient !== item);
+      setDairy(filteredDairy);
+    }
+    if (item.category == "vegetables") {
+      let filteredVegetables = vegetables.filter(ingredient => ingredient !== item);
+      setVegetables(filteredVegetables);
+    }
+    if (item.category == "fruits") {
+      let filteredFruits = fruits.filter(ingredient => ingredient !== item);
+      setFruits(filteredFruits);
+    }
+    if (item.category == "grains") {
+      let filteredGrains = grains.filter(ingredient => ingredient !== item);
+      setGrains(filteredGrains);
+    }
+    if (item.category == "meat") {
+      let filteredMeat = meat.filter(ingredient => ingredient !== item);
+      setMeat(filteredMeat);
+    }
+    if (item.category == "seafood") {
+      let filteredSeafood = seafood.filter(ingredient => ingredient !== item);
+      setSeafood(filteredSeafood);
+    }
+    if (item.category == "spices") {
+      let filteredSpices = spices.filter(ingredient => ingredient !== item);
+      setSpices(filteredSpices);
+    }
+    if (item.category == "sweeteners") {
+      let filteredSweeteners = sweeteners.filter(ingredient => ingredient !== item);
+      setSweeteners(filteredSweeteners);
+    }
+    if (item.category == "nuts") {
+      let filteredNuts = nuts.filter(ingredient => ingredient !== item);
+      setNuts(filteredNuts);
+    }
     pantryService
-    .deletePantryItem(id, user.email)
-    .then((response) => console.log(response))
-    .catch(err => console.log(err.response.data));
+    .deletePantryItem(item.id, user.email)
+    .then(response => console.log(response.data))
+    .catch(err => Alert.alert(
+      'Error',
+      'Pantry item could not be deleted!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false },
+      console.log(err.response.data)
+    ))
   
   }
 
@@ -203,7 +264,7 @@ const MyPantryScreen = ({navigation}) => {
         <TouchableOpacity onPress={() => {showDatePicker(); setSelectedItem(item) }}>
           <Icon name="calendar" size={20} color="black" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => {deleteItem(item.id) }}>
+        <TouchableOpacity onPress={() => {deleteItem(item) }}>
           <Icon name="trash" size={20} color="red" />
         </TouchableOpacity>
       </View>
