@@ -59,18 +59,20 @@ export default StyleSheet.create({
       },
       category: {
         fontWeight: 'bold',
-        fontSize: 20,
+        fontSize: 18,
         marginTop: 15,
-        marginBottom: 15
+        marginBottom: 11
       },
       categories: {
         flexDirection: 'row',
       },
       myButton: {
+        paddingLeft:9,
+        paddingRight:9,
         padding: 6,
         borderRadius: 17,
         backgroundColor: "#7C9262",
-        marginLeft: 5,
+        marginRight:11,
         marginTop: 5
       }
 

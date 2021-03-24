@@ -101,7 +101,10 @@ const SearchParametersScreen = ({ route, navigation }) => {
             <View>
               <Text style={styles.category}>DIET</Text>
               <FlatList
-                horizontal
+                contentContainerStyle={{alignSelf: 'flex-start'}}
+                numColumns={4}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 data={diet}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
@@ -109,7 +112,10 @@ const SearchParametersScreen = ({ route, navigation }) => {
               />
               <Text style={styles.category}>CUISINE</Text>
               <FlatList
-                horizontal
+                contentContainerStyle={{alignSelf: 'flex-start'}}
+                numColumns={5}
+                showsVerticalScrollIndicator={false}
+                showsHorizontalScrollIndicator={false}
                 data={cuisine}
                 keyExtractor={(item) => item.id}
                 renderItem={renderItem}
@@ -139,7 +145,6 @@ const SearchParametersScreen = ({ route, navigation }) => {
                 renderItem={renderItem}
                 extraData={selectedId}
               />
-
             </View>
           </View>
         </View>
