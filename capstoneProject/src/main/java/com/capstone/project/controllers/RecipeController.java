@@ -67,6 +67,7 @@ public class RecipeController {
             System.out.println("Pantry: " + name);
             pantryArray.add(name);
         }
+        Collections.sort(pantryArray);
 
         for (Recipe recipe:recipeSet) {
             Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
@@ -75,8 +76,8 @@ public class RecipeController {
                 String ingredientName = recipeIngredient.getIngredient().getName();
                 ingredientArray.add(ingredientName);
                 System.out.println("Ingredient: " + ingredientName);
-
             }
+            Collections.sort(ingredientArray);
             if(ingredientArray.equals(pantryArray)){
                 finalRecipeSet.add(recipe);
             }
