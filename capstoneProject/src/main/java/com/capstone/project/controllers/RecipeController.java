@@ -52,84 +52,36 @@ public class RecipeController {
         return recipeService.save(recipe);
     }
 
-    //get all pantry ingredients by email api
-    @GetMapping("searchRecipeByPantry/{email}")
-    public Set<Recipe> searchRecipeByPantry(@PathVariable String email){
-        Set<Recipe> recipeSet = recipeService.findAll();
-        User user = userService.findByEmail(email);
-        Set<Pantry> pantrySet = user.getPantryIngredients();
-        Set<Recipe> finalRecipeSet = new HashSet<>();
-        ArrayList<String> ingredientArray = new ArrayList<String>();
-        ArrayList<String> pantryArray = new ArrayList<String>();
-
-        for (Pantry pantry:pantrySet) {
-            String name = pantry.getIngredient().getName();
-            System.out.println("Pantry: " + name);
-            pantryArray.add(name);
+    //find recipes by pantry
+    private static boolean contains(Set<Pantry> list, RecipeToIngredient i) {
+        for (Pantry e : list) {
+            if (e.getIngredient().getName().equals(i.getIngredient().getName())) return true;
         }
-        Collections.sort(pantryArray);
-
-        for (Recipe recipe:recipeSet) {
-            Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
-
-            for (RecipeToIngredient recipeIngredient:recipeToIngredients) {
-                String ingredientName = recipeIngredient.getIngredient().getName();
-                ingredientArray.add(ingredientName);
-                System.out.println("Ingredient: " + ingredientName);
-            }
-            Collections.sort(ingredientArray);
-            if(ingredientArray.equals(pantryArray)){
-                finalRecipeSet.add(recipe);
-            }
-            ingredientArray.clear();
-        }
-
-
-
-        return finalRecipeSet;
+        return false;
     }
 
+    @GetMapping("searchRecipeByPantry/{email}")
+    public Set<Recipe> searchRecipeByPantry(@PathVariable String email) {
 
-   /* //get all pantry ingredients by email api
-    @GetMapping("searchRecipeByPantry/{email}&{title}&{category}")
-    public Set<Recipe> searchRecipeByPantryCategory(@PathVariable String email,
-                                                    @PathVariable String title, @PathVariable String category){
         Set<Recipe> recipeSet = recipeService.findAll();
         User user = userService.findByEmail(email);
         Set<Pantry> pantrySet = user.getPantryIngredients();
         Set<Recipe> finalRecipeSet = new HashSet<>();
-        Boolean ingredientsPresent = false;
-        System.out.println(ingredientsPresent);
+        Boolean ingredientsPresent= true;
 
-        for (Recipe recipe:recipeSet) {
+        for (Recipe recipe : recipeSet) {
             Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
-
-            for (RecipeToIngredient recipeIngredient:recipeToIngredients) {
-                String ingredientName = recipeIngredient.getIngredient().getName();
-
-                for (Pantry pantry:pantrySet) {
-                    String name = pantry.getIngredient().getName();
-                    if(name.equals(ingredientName)){
-                        ingredientsPresent = true;
-                    }
-                    else{
-                        ingredientsPresent = false;
-                        break;
-                    }
-
-                }
-
-                if(ingredientsPresent){
-                    finalRecipeSet.add(recipe);
+            for (RecipeToIngredient recipeIngredient : recipeToIngredients){
+                if (!contains(pantrySet, recipeIngredient)){
+                    ingredientsPresent = false;
                 }
             }
+            if (ingredientsPresent) {
+                finalRecipeSet.add(recipe);
+            }
         }
-        
-
-
         return finalRecipeSet;
-    }*/
-
+    }
 
     //get all pantry ingredients by email api
     @GetMapping("allRecipeToIngredient/{recipeId}")
