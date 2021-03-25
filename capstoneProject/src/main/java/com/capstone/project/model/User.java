@@ -99,6 +99,14 @@ public class User {
         this.favorites = favorites;
     }
 
+    public void addFavoritesItem(Recipe item){
+        this.favorites.add(item);
+    }
+
+    public void removeFavoritesItem(Recipe item){
+        this.favorites.remove(item);
+    }
+
     public String getRole() {
         return role;
     }

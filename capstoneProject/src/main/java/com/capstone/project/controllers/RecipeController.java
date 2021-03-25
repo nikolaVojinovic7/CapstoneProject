@@ -7,10 +7,7 @@ import com.capstone.project.services.RecipeService;
 import com.capstone.project.services.UserService;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 
 @RestController
 @RequestMapping("api/recipe")
@@ -39,16 +36,16 @@ public class RecipeController {
     }
 
     //tie ingredient to recipe and add the weights and measurements
-    @PutMapping("/tieIngredientToRecipe/{recipeId}")
-    public Recipe updateRecipe(@RequestBody RecipeToIngredient ingredientRecipe, @PathVariable long recipeId) {
+    @PutMapping("/tieIngredientToRecipe/{recipeId}&{ingredientId}")
+    public Recipe updateRecipe(@RequestBody RecipeToIngredient ingredientRecipe, @PathVariable long ingredientId, @PathVariable long recipeId) {
 
         Recipe recipe = recipeService.findById(recipeId);
         if(recipe == null){
             throw new ResourceNotFoundException("There is no recipe with id" + recipeId);
         }
-        Ingredient ingredient = ingredientService.findById(ingredientRecipe.getIngredient().getId());
+        Ingredient ingredient = ingredientService.findById(ingredientId);
         if(ingredient == null){
-            throw new ResourceNotFoundException("There is no ingredient with id" + ingredientRecipe.getIngredient().getId());
+            throw new ResourceNotFoundException("There is no ingredient with id" + ingredientId);
         }
         ingredientRecipe.setIngredient(ingredient);
         recipe.addIngredientItem(ingredientRecipe);
@@ -62,6 +59,46 @@ public class RecipeController {
         User user = userService.findByEmail(email);
         Set<Pantry> pantrySet = user.getPantryIngredients();
         Set<Recipe> finalRecipeSet = new HashSet<>();
+        ArrayList<String> ingredientArray = new ArrayList<String>();
+        ArrayList<String> pantryArray = new ArrayList<String>();
+
+        for (Pantry pantry:pantrySet) {
+            String name = pantry.getIngredient().getName();
+            System.out.println("Pantry: " + name);
+            pantryArray.add(name);
+        }
+
+        for (Recipe recipe:recipeSet) {
+            Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
+
+            for (RecipeToIngredient recipeIngredient:recipeToIngredients) {
+                String ingredientName = recipeIngredient.getIngredient().getName();
+                ingredientArray.add(ingredientName);
+                System.out.println("Ingredient: " + ingredientName);
+
+            }
+            if(ingredientArray.equals(pantryArray)){
+                finalRecipeSet.add(recipe);
+            }
+            ingredientArray.removeAll(ingredientArray);
+        }
+
+
+
+        return finalRecipeSet;
+    }
+
+
+   /* //get all pantry ingredients by email api
+    @GetMapping("searchRecipeByPantry/{email}&{title}&{category}")
+    public Set<Recipe> searchRecipeByPantryCategory(@PathVariable String email,
+                                                    @PathVariable String title, @PathVariable String category){
+        Set<Recipe> recipeSet = recipeService.findAll();
+        User user = userService.findByEmail(email);
+        Set<Pantry> pantrySet = user.getPantryIngredients();
+        Set<Recipe> finalRecipeSet = new HashSet<>();
+        Boolean ingredientsPresent = false;
+        System.out.println(ingredientsPresent);
 
         for (Recipe recipe:recipeSet) {
             Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
@@ -72,14 +109,25 @@ public class RecipeController {
                 for (Pantry pantry:pantrySet) {
                     String name = pantry.getIngredient().getName();
                     if(name.equals(ingredientName)){
-                        finalRecipeSet.add(recipe);
+                        ingredientsPresent = true;
                     }
+                    else{
+                        ingredientsPresent = false;
+                        break;
+                    }
+
+                }
+
+                if(ingredientsPresent){
+                    finalRecipeSet.add(recipe);
                 }
             }
         }
+        
+
 
         return finalRecipeSet;
-    }
+    }*/
 
 
     //get all pantry ingredients by email api
