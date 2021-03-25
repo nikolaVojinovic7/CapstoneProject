@@ -80,7 +80,7 @@ public class RecipeController {
             if(ingredientArray.equals(pantryArray)){
                 finalRecipeSet.add(recipe);
             }
-            ingredientArray.removeAll(ingredientArray);
+            ingredientArray.clear();
         }
 
 
