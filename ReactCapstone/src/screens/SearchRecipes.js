@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from "../styles/SearchRecipesStyles.js"
+import styles from "../styles/SearchRecipesStyles.js";
+import recipeService from "../services/RecipeService"
+
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,22 +20,25 @@ import {
 const SearchRecipesScreen = ({ route, navigation }) => {
 
   let [recipeParam, setRecipeParam] = useState(route.params.recipeParam);
-  let [recipeData, setRecipeData] = useState({});
+  let [searchParam, setSearchParam] = useState(route.params.searchParam);
+  const [user, setUser] = useState(route.params.user);
+  let [recipeData, setRecipeData] = useState(route.params.recipeData);
+  
 
-  // const Item = ({ item, onPress, style }) => (
-  //   <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-  //     <Image source={{ uri: item.recipe_imageUrl }} style={[styles.recipeImage]} />
-  //   </TouchableOpacity>
-  // );
+  const Item = ({ item, onPress, style }) => (
+    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+      <Image source={{ uri: item.imageUrl }} style={[styles.recipeImage]} />
+    </TouchableOpacity>
+  );
 
-  // const renderItem = ({ item }) => {
-  //   return (
-  //     <Item
-  //       item={item}
-  //       onPress={() => { navigation.navigate('StartRecipe', { item, recipeParam }); }}
-  //     />
-  //   );
-  // };
+  const renderItem = ({ item }) => {
+    return (
+      <Item
+        item={item}
+        onPress={() => { navigation.navigate('StartRecipe', { item, recipeParam }); }}
+      />
+    );
+  };
 
   return (
     <View style={styles.backgroundContainer}>
@@ -48,12 +53,12 @@ const SearchRecipesScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.scrollContainer}>
             <View style={styles.scroll}>
-              {/* <FlatList
+              <FlatList
                 horizontal
                 data={recipeData}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-              /> */}
+              />
             </View>
           </View>
         </View>

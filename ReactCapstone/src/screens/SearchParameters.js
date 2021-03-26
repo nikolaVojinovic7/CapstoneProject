@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/SearchParamsStyles.js"
+import recipeService from "../services/RecipeService"
 import {
   SafeAreaView,
   StyleSheet,
@@ -19,8 +20,31 @@ import { TouchableHighlight } from 'react-native-gesture-handler';
 const SearchParametersScreen = ({ route, navigation }) => {
 
   let [recipeParam, setRecipeParam] = useState(route.params.obj);
+  const [user, setUser] = useState(route.params.user);
   const [selectedId, setSelectedId] = useState(null);
   let [searchParam, setSearchParam] = useState("");
+  let [recipeData, setRecipeData] = useState({});
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    recipeService.getRecipesByPantry(user.email).then((res) => {
+      console.log(res.data);
+      setRecipeData(res.data);
+    })
+    .catch(err => Alert.alert(
+      'Error',
+      'No recipes found!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false }
+    ))
+    });
+    return unsubscribe;
+  }, [navigation]);
+
 
   const diet = [
     {id: "1", title: "vegan"}, 
@@ -40,22 +64,22 @@ const SearchParametersScreen = ({ route, navigation }) => {
     {id: "13", title: "indian"}, 
     {id: "14", title: "chinese"}, 
     {id: "15", title: "caribbean"},
-    {id: "17", title: "greek"}, 
-    {id: "18", title: "japanese"}
+    {id: "16", title: "greek"}, 
+    {id: "17", title: "japanese"}
   ];
   const difficulty = [
-    {id: "19", title: "expert"}, 
-    {id: "20", title: "novice"}, 
-    {id: "21", title: "intermediate"}
+    {id: "18", title: "expert"}, 
+    {id: "19", title: "novice"}, 
+    {id: "20", title: "intermediate"}
   ];
   const cost = [
-    {id: "22", title: "under $30"}, 
-    {id: "23", title: "under $15"},
+    {id: "21", title: "under $30"}, 
+    {id: "22", title: "under $15"},
   ];
   const time = [
-    {id: "24", title: "under 1 hour"}, 
-    {id: "25", title: "under half hour"}, 
-    {id: "26", title: "under 15 min"}
+    {id: "23", title: "under 1 hour"}, 
+    {id: "24", title: "under half hour"}, 
+    {id: "25", title: "under 15 min"}
   ];
 
   const Item = ({ item, onPress, style }) => (
@@ -90,7 +114,7 @@ const SearchParametersScreen = ({ route, navigation }) => {
                     style={styles.inputText}
                     onChangeText={(text) => { setRecipeParam(text) }}
                     onSubmitEditing={() => {
-                      navigation.navigate('SearchRecipes', { recipeParam, searchParam });
+                      navigation.navigate('SearchRecipes', {user, recipeData, recipeParam, searchParam});
                     }}
                   />
                 </View>

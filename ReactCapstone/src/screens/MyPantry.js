@@ -8,8 +8,6 @@ import DropDownPicker from 'react-native-dropdown-picker';
 import Icon from 'react-native-vector-icons/Feather';
 import {LogBox} from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
-
-
 LogBox.ignoreAllLogs();
 
 import {
@@ -65,7 +63,7 @@ const MyPantryScreen = ({navigation}) => {
       .then((response) => {
         let temp = [];
         response.data.forEach((item) => {
-          if(item.category == category){
+          if(item.ingredient.category == category){
             temp.push(item);
           }
         })
@@ -155,15 +153,22 @@ const MyPantryScreen = ({navigation}) => {
   }
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
     ingredientService
       .getIngredients()
       .then((response) => setIngredientData(response.data))
       .catch(err => console.log(err.response.data));
-  }, []);
+    });
+    return unsubscribe;
+
+  }, [navigation]);
 
   useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
     getUser().then((data) => setUser(data));
-  }, []);
+    });
+    return unsubscribe;
+  }, [navigation]);
 
   const update_ingredients = (item) => {
 
@@ -196,7 +201,6 @@ const MyPantryScreen = ({navigation}) => {
               },
             ],
             { cancelable: false },
-            console.log(response.data)
           ))
           .catch(err => console.log(err.response.data));
         }
@@ -204,39 +208,39 @@ const MyPantryScreen = ({navigation}) => {
   };
 
   const deleteItem = (item) =>{
-    if (item.category == "dairy") {
+    if (item.ingredient.category == "dairy") {
       let filteredDairy = dairy.filter(ingredient => ingredient !== item);
       setDairy(filteredDairy);
     }
-    if (item.category == "vegetables") {
+    if (item.ingredient.category == "vegetables") {
       let filteredVegetables = vegetables.filter(ingredient => ingredient !== item);
       setVegetables(filteredVegetables);
     }
-    if (item.category == "fruits") {
+    if (item.ingredient.category == "fruits") {
       let filteredFruits = fruits.filter(ingredient => ingredient !== item);
       setFruits(filteredFruits);
     }
-    if (item.category == "grains") {
+    if (item.ingredient.category == "grains") {
       let filteredGrains = grains.filter(ingredient => ingredient !== item);
       setGrains(filteredGrains);
     }
-    if (item.category == "meat") {
+    if (item.ingredient.category == "meat") {
       let filteredMeat = meat.filter(ingredient => ingredient !== item);
       setMeat(filteredMeat);
     }
-    if (item.category == "seafood") {
+    if (item.ingredient.category == "seafood") {
       let filteredSeafood = seafood.filter(ingredient => ingredient !== item);
       setSeafood(filteredSeafood);
     }
-    if (item.category == "spices") {
+    if (item.ingredient.category == "spices") {
       let filteredSpices = spices.filter(ingredient => ingredient !== item);
       setSpices(filteredSpices);
     }
-    if (item.category == "sweeteners") {
+    if (item.ingredient.category == "sweeteners") {
       let filteredSweeteners = sweeteners.filter(ingredient => ingredient !== item);
       setSweeteners(filteredSweeteners);
     }
-    if (item.category == "nuts") {
+    if (item.ingredient.category == "nuts") {
       let filteredNuts = nuts.filter(ingredient => ingredient !== item);
       setNuts(filteredNuts);
     }
