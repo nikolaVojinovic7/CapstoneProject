@@ -54,33 +54,73 @@ public class RecipeController {
 
     //find recipes by pantry
     private static boolean contains(Set<Pantry> list, RecipeToIngredient i) {
+
         for (Pantry e : list) {
+
             if (e.getIngredient().getName().equals(i.getIngredient().getName())) return true;
+
         }
+
         return false;
+
     }
 
+
+
     @GetMapping("searchRecipeByPantry/{email}")
+
     public Set<Recipe> searchRecipeByPantry(@PathVariable String email) {
 
+
+
         Set<Recipe> recipeSet = recipeService.findAll();
+
         User user = userService.findByEmail(email);
+
         Set<Pantry> pantrySet = user.getPantryIngredients();
+
         Set<Recipe> finalRecipeSet = new HashSet<>();
-        Boolean ingredientsPresent= true;
+
+        boolean ingredientsPresent= true;
+
+
 
         for (Recipe recipe : recipeSet) {
+
             Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
+
             for (RecipeToIngredient recipeIngredient : recipeToIngredients){
+
+                System.out.println(!contains(pantrySet, recipeIngredient));
+
                 if (!contains(pantrySet, recipeIngredient)){
+
                     ingredientsPresent = false;
+
                 }
+
             }
+
+            System.out.println("value: " + ingredientsPresent );
+
+            System.out.println("===========================");
+
             if (ingredientsPresent) {
+
                 finalRecipeSet.add(recipe);
+
             }
+
+            else{
+
+                ingredientsPresent = true;
+
+            }
+
         }
+
         return finalRecipeSet;
+
     }
 
     //get all pantry ingredients by email api
