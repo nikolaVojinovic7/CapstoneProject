@@ -28,7 +28,6 @@ const SearchParametersScreen = ({ route, navigation }) => {
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
     recipeService.getRecipesByPantry(user.email).then((res) => {
-      console.log(res.data);
       setRecipeData(res.data);
     })
     .catch(err => Alert.alert(

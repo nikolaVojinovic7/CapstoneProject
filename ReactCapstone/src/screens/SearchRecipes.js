@@ -23,6 +23,21 @@ const SearchRecipesScreen = ({ route, navigation }) => {
   let [searchParam, setSearchParam] = useState(route.params.searchParam);
   const [user, setUser] = useState(route.params.user);
   let [recipeData, setRecipeData] = useState(route.params.recipeData);
+  let [searchResults, setSearchResults] = useState({});
+
+  useEffect(() => {
+
+    let temp = [];
+    let recipesByTitle = recipeData.filter(recipe => recipe.name.toLowerCase().includes(recipeParam.toLowerCase()))
+    recipesByTitle.forEach((recipe) => {
+      recipe.linkedCategories.forEach((category) => {
+        if (category.name == searchParam){
+          temp.push(recipe);
+        }
+      })
+    })
+    setSearchResults(temp);
+  }, []);
   
 
   const Item = ({ item, onPress, style }) => (
@@ -55,7 +70,7 @@ const SearchRecipesScreen = ({ route, navigation }) => {
             <View style={styles.scroll}>
               <FlatList
                 horizontal
-                data={recipeData}
+                data={searchResults}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
               />
