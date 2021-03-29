@@ -78,9 +78,9 @@ export default StyleSheet.create({
   categoryContainer: {
     marginTop: 30,
     width: 291,
-    height: 40,
+    height: 42,
     marginBottom: 20,
-    marginLeft: 20,
+    marginLeft: 20
   },
 
   categoryText: {
@@ -91,7 +91,7 @@ export default StyleSheet.create({
     marginTop: 7,
     marginLeft: 120,
   },
-  
+
   myButton: {
     padding: 6,
     marginLeft: 20,
@@ -133,4 +133,24 @@ export default StyleSheet.create({
     marginTop: 7,
     marginLeft: 100,
   },
+
+  sauce: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    position: 'absolute',
+    marginTop: 7,
+    marginLeft: 110,
+  },
+
+  beverage: {
+    fontSize: 18,
+    fontWeight: 'bold',
+    color: 'white',
+    position: 'absolute',
+    marginTop: 7,
+    marginLeft: 100,
+  },
+
+
 }); 

@@ -40,6 +40,9 @@ const MyPantryScreen = ({navigation}) => {
   const [showSpices, setShowSpices] = useState(false);
   const [showSweeteners, setShowSweeteners] = useState(false);
   const [showNuts, setShowNuts] = useState(false);
+  const [showBeverages, setShowBeverages] = useState(false);
+  const [showOils, setShowOils] = useState(false);
+  const [showSauces, setShowSauces] = useState(false);
   let [ingredientData, setIngredientData] = useState({});
   let [dairy, setDairy] = useState([]);
   let [vegetables, setVegetables] = useState([]);
@@ -50,6 +53,9 @@ const MyPantryScreen = ({navigation}) => {
   let [spices, setSpices] = useState([]);
   let [sweeteners, setSweeteners] = useState([]);
   let [nuts, setNuts] = useState([]);
+  let [oils, setOils] = useState([]);
+  let [beverages, setBeverages] = useState([]);
+  let [sauces, setSauces] = useState([]);
 
   //retrieve user data from local storage
   const getUser = async () => {
@@ -152,6 +158,33 @@ const MyPantryScreen = ({navigation}) => {
               setShowNuts(false);
             }
         }
+        if (category == "oils") {
+          setOils(temp);
+          if(showOils == false){
+            setShowOils(true)
+            }
+            else{
+              setShowOils(false);
+            }
+        }
+        if (category == "sauces") {
+          setSauces(temp);
+          if(showSauces == false){
+            setShowSauces(true)
+            }
+            else{
+              setShowSauces(false);
+            }
+        }
+        if (category == "beverages") {
+          setBeverages(temp);
+          if(showBeverages == false){
+            setShowBeverages(true)
+            }
+            else{
+              setShowBeverages(false);
+            }
+        }
       })
   }
 
@@ -250,6 +283,18 @@ const MyPantryScreen = ({navigation}) => {
     if (item.ingredient.category == "nuts") {
       let filteredNuts = nuts.filter(ingredient => ingredient !== item);
       setNuts(filteredNuts);
+    }
+    if (item.ingredient.category == "oils") {
+      let filteredOils = oils.filter(ingredient => ingredient !== item);
+      setOils(filteredOils);
+    }
+    if (item.ingredient.category == "sauces") {
+      let filteredSauces = sauces.filter(ingredient => ingredient !== item);
+      setSauces(filteredSauces);
+    }
+    if (item.ingredient.category == "beverages") {
+      let filteredBeverages = beverages.filter(ingredient => ingredient !== item);
+      setBeverages(filteredBeverages);
     }
     pantryService
     .deletePantryItem(item.id, user.email)
@@ -554,7 +599,7 @@ const MyPantryScreen = ({navigation}) => {
                 style={styles.backgroundImage}>
                 <Image
                   style={styles.icon}
-                  source={require('../assets/images/icons/dairy-icon.jpg')}
+                  source={require('../assets/images/icons/nuts-icon.jpg')}
                 />
                 <Text style={styles.categoryText}>Nuts</Text>
                 <TouchableOpacity style={styles.arrow}
@@ -568,6 +613,78 @@ const MyPantryScreen = ({navigation}) => {
             <View>
               {showNuts ? (<FlatList
                 data={nuts}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderItem}
+              />) : null}
+            </View>
+            <View style={styles.categoryContainer}>
+              <ImageBackground
+                source={require('../assets/images/background/dark-wood.jpg')}
+                style={styles.backgroundImage}>
+                <Image
+                  style={styles.icon}
+                  source={require('../assets/images/icons/oil-icon.jpg')}
+                />
+                <Text style={styles.categoryText}>Oils</Text>
+                <TouchableOpacity style={styles.arrow}
+                  onPress={() => {
+                    getPantry("oils");
+                  }}>
+                  <Icon name="caret-down-outline" size={25} color="white" />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View>
+              {showOils ? (<FlatList
+                data={oils}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderItem}
+              />) : null}
+            </View>
+            <View style={styles.categoryContainer}>
+              <ImageBackground
+                source={require('../assets/images/background/dark-wood.jpg')}
+                style={styles.backgroundImage}>
+                <Image
+                  style={styles.icon}
+                  source={require('../assets/images/icons/sauces-icon.jpg')}
+                />
+                <Text style={styles.sauce}>Sauces</Text>
+                <TouchableOpacity style={styles.arrow}
+                  onPress={() => {
+                    getPantry("sauces");
+                  }}>
+                  <Icon name="caret-down-outline" size={25} color="white" />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View>
+              {showSauces ? (<FlatList
+                data={sauces}
+                keyExtractor={(item, index) => index.toString()}
+                renderItem={renderItem}
+              />) : null}
+            </View>
+            <View style={styles.categoryContainer}>
+              <ImageBackground
+                source={require('../assets/images/background/dark-wood.jpg')}
+                style={styles.backgroundImage}>
+                <Image
+                  style={styles.icon}
+                  source={require('../assets/images/icons/beverages-icon.jpg')}
+                />
+                <Text style={styles.beverage}>Beverages</Text>
+                <TouchableOpacity style={styles.arrow}
+                  onPress={() => {
+                    getPantry("beverages");
+                  }}>
+                  <Icon name="caret-down-outline" size={25} color="white" />
+                </TouchableOpacity>
+              </ImageBackground>
+            </View>
+            <View>
+              {showBeverages ? (<FlatList
+                data={beverages}
                 keyExtractor={(item, index) => index.toString()}
                 renderItem={renderItem}
               />) : null}

@@ -21,11 +21,11 @@ const AppTab = ({navigation}) => {
   
               /* https://oblador.github.io/react-native-vector-icons/ */
               if (route.name === 'Dashboard') {
-                iconName = focused ? 'ios-search-circle' : 'ios-search';
+                iconName = focused ? 'search' : 'search-outline';
               } else if (route.name === 'Favorites') {
                 iconName = focused ? 'ios-heart-sharp' : 'ios-heart-outline';
               } else if (route.name === 'MyPantry') {
-                iconName = focused ? 'ios-list-circle' : 'ios-list';
+                iconName = focused ? 'list' : 'list-outline';
               } else if (route.name === 'Profile') {
                 iconName = focused ? 'person' : 'person-outline';
               } else if (route.name === 'Admin'){
