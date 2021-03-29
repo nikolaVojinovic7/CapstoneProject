@@ -25,6 +25,7 @@ const SearchParametersScreen = ({ route, navigation }) => {
   let [searchParam, setSearchParam] = useState("");
   let [recipeData, setRecipeData] = useState({});
 
+  //get a set of recipes the user can make with their pantry items
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
     recipeService.getRecipesByPantry(user.email).then((res) => {
@@ -81,12 +82,14 @@ const SearchParametersScreen = ({ route, navigation }) => {
     {id: "25", title: "under 15 min"}
   ];
 
+  //category button view
   const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.myButton, style]}>
       <Text>{item.title}</Text>
     </TouchableOpacity>
   );
 
+  //change button colour on click
   const renderItem = ({ item }) => {
     const backgroundColor = item.id === selectedId ? "#FF007F" : "#7C9262";
 

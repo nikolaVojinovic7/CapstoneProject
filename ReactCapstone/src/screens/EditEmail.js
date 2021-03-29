@@ -23,6 +23,7 @@ const EditEmailScreen = ({ route, navigation }) => {
   let [emailError, setEmailError] = useState('');
   let [userData, setUserData] = useState(route.params.user)
 
+  //validate email
   let emailValidator = () => {
     if(email==""){
       setEmailError("Enter a Valid Email");
@@ -35,6 +36,7 @@ const EditEmailScreen = ({ route, navigation }) => {
     return false;
   };
 
+  //update user information in local storage
   const updateUserData = async (value) => {
     try {
       const obj = JSON.stringify(value)
@@ -51,6 +53,7 @@ const EditEmailScreen = ({ route, navigation }) => {
     }
   }
 
+  //update user data in database
   let update_user = () => {
     let user = {username: userData.username, email: email, password: userData.password};
     console.log('user => ' + JSON.stringify(user));

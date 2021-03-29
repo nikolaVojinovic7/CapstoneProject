@@ -5,7 +5,7 @@ import ingredientService from '../services/IngredientService';
 import pantryService from '../services/PantryService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import DropDownPicker from 'react-native-dropdown-picker';
-import Icon from 'react-native-vector-icons/Feather';
+import Icon from 'react-native-vector-icons/Ionicons';
 import {LogBox} from 'react-native';
 import DateTimePickerModal from "react-native-modal-datetime-picker";
 LogBox.ignoreAllLogs();
@@ -51,6 +51,7 @@ const MyPantryScreen = ({navigation}) => {
   let [sweeteners, setSweeteners] = useState([]);
   let [nuts, setNuts] = useState([]);
 
+  //retrieve user data from local storage
   const getUser = async () => {
     try {
       const obj = await AsyncStorage.getItem('@user');
@@ -58,6 +59,7 @@ const MyPantryScreen = ({navigation}) => {
     } catch (e) {}
   };
 
+  //get pantry items from database based on category
   const getPantry = (category) => {
     pantryService.getPantry(user.email)
       .then((response) => {
@@ -67,6 +69,7 @@ const MyPantryScreen = ({navigation}) => {
             temp.push(item);
           }
         })
+        //sort items so they appear in alphabetical order 
         temp.sort((a, b) => (a.ingredient.name > b.ingredient.name) ? 1 : -1);
         if (category == "dairy") {
           setDairy(temp);
@@ -152,6 +155,7 @@ const MyPantryScreen = ({navigation}) => {
       })
   }
 
+  //retrieve ingredient data 
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
     ingredientService
@@ -163,6 +167,7 @@ const MyPantryScreen = ({navigation}) => {
 
   }, [navigation]);
 
+  //retrieve user
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
     getUser().then((data) => setUser(data));
@@ -170,8 +175,9 @@ const MyPantryScreen = ({navigation}) => {
     return unsubscribe;
   }, [navigation]);
 
+  //add item to user pantry
   const update_ingredients = (item) => {
-
+    //check to see if it's already in user's pantry before adding
     pantryService.getPantry(user.email)
       .then((response) => {
         let exists = false;
@@ -207,6 +213,7 @@ const MyPantryScreen = ({navigation}) => {
       })
   };
 
+  //delete item from user pantry
   const deleteItem = (item) =>{
     if (item.ingredient.category == "dairy") {
       let filteredDairy = dairy.filter(ingredient => ingredient !== item);
@@ -261,15 +268,16 @@ const MyPantryScreen = ({navigation}) => {
   
   }
 
+  //pantry item view 
   const Item = ({item}) => (
     <View style={styles.myButton} backgroundColor="white">
       <Text style={{fontWeight: 'bold', fontSize: 15}}>{item.ingredient.name}</Text>
       <View style={{flexDirection: 'row'}}>
         <TouchableOpacity onPress={() => {showDatePicker(); setSelectedItem(item) }}>
-          <Icon name="calendar" size={20} color="black" />
+          <Icon name="calendar-outline" size={20} color="black" />
         </TouchableOpacity>
         <TouchableOpacity onPress={() => {deleteItem(item) }}>
-          <Icon name="trash" size={20} color="red" />
+          <Icon name="trash-outline" size={20} color="red" />
         </TouchableOpacity>
       </View>
     </View>
@@ -279,14 +287,17 @@ const MyPantryScreen = ({navigation}) => {
     return <Item item={item} />;
   };
 
+  //show calendar on button click
   const showDatePicker = () => {
     setDatePickerVisibility(true);
   };
 
+  //hide calendar on button click
   const hideDatePicker = () => {
     setDatePickerVisibility(false);
   };
 
+  //set pantry item expiry date
   const handleConfirm = (date) => {
     let d = date.toISOString().replace('-', ' ').split('T')[0].replace('-', ' ');
     pantryService.updatePantryItem(user.email,selectedItem.id, d)
@@ -358,7 +369,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                    getPantry("dairy");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -377,12 +388,12 @@ const MyPantryScreen = ({navigation}) => {
                   style={styles.icon}
                   source={require('../assets/images/icons/broccoli-icon.jpg')}
                 />
-                <Text style={styles.categoryText}>Vegetables</Text>
+                <Text style={styles.vegetable}>Vegetables</Text>
                 <TouchableOpacity style={styles.arrow}
                   onPress={() => {
                     getPantry("vegetables");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -406,7 +417,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                     getPantry("fruits");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -430,7 +441,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                     getPantry("grains");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -454,7 +465,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                     getPantry("meat");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -473,12 +484,12 @@ const MyPantryScreen = ({navigation}) => {
                   style={styles.icon}
                   source={require('../assets/images/icons/seafood-icon.jpg')}
                 />
-                <Text style={styles.categoryText}>Seafood</Text>
+                <Text style={styles.sea}>Seafood</Text>
                 <TouchableOpacity style={styles.arrow}
                   onPress={() => {
                     getPantry("seafood");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -502,7 +513,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                     getPantry("spices");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -521,12 +532,12 @@ const MyPantryScreen = ({navigation}) => {
                   style={styles.icon}
                   source={require('../assets/images/icons/sweetners-icon.jpg')}
                 />
-                <Text style={styles.categoryText}>Sweeteners</Text>
+                <Text style={styles.sweetner}>Sweeteners</Text>
                 <TouchableOpacity style={styles.arrow}
                   onPress={() => {
                     getPantry("sweeteners");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>
@@ -550,7 +561,7 @@ const MyPantryScreen = ({navigation}) => {
                   onPress={() => {
                     getPantry("nuts");
                   }}>
-                  <Icon name="chevron-down" size={30} color="white" />
+                  <Icon name="caret-down-outline" size={25} color="white" />
                 </TouchableOpacity>
               </ImageBackground>
             </View>

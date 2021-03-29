@@ -28,6 +28,7 @@ const EditPasswordScreen = ({ route, navigation }) => {
   let [confirmPasswordError, setConfirmPasswordError] = useState('');
 
 
+  //validate old password
   let oldPasswordValidator = () => {
     if(oldPassword==""){
       setOldPasswordError("Enter a Valid Password");
@@ -38,6 +39,7 @@ const EditPasswordScreen = ({ route, navigation }) => {
     return false;
   };
 
+  //validate new password
   let newPasswordValidator = () => {
     if(newPassword==""){
       setNewPasswordError("Enter a Valid Password");
@@ -48,6 +50,7 @@ const EditPasswordScreen = ({ route, navigation }) => {
     return false;
   };
 
+  //confirm that passwords match
   let confirmPasswordValidator = () => {
     if(confirmPassword==""){
       setConfirmPasswordError("Enter a Valid Password");
@@ -60,6 +63,7 @@ const EditPasswordScreen = ({ route, navigation }) => {
     return false;
   };
 
+  //update user data in local storage
   const updateUserData = async (value) => {
     try {
       const obj = JSON.stringify(value)
@@ -78,6 +82,7 @@ const EditPasswordScreen = ({ route, navigation }) => {
     }
   }
 
+  //update user data in database
   let update_user = () => {
     let user = {username: userData.username, email: userData.email, password: newPassword};
     console.log('user => ' + JSON.stringify(user));

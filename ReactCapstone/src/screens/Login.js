@@ -19,6 +19,7 @@ const LoginScreen = ({ navigation }) => {
   let [password, setPassword] = useState('');
   let [passwordError, setPasswordError] = useState('');
 
+  //store logged in user
   const storeData = async (value) => {
     try {
       const obj = JSON.stringify(value)
@@ -35,6 +36,7 @@ const LoginScreen = ({ navigation }) => {
     }
   }
 
+  //verify that user exists and that password is correct
   let verifyLogin = () => {
     userService.verifyUser(email, password).then((res) => {
       let passwordMatch = res.data;
@@ -62,6 +64,7 @@ const LoginScreen = ({ navigation }) => {
     ))
   }
 
+  //validate email
   let emailValidator = () => {
     if (email == "") {
       setEmailError("Enter a Valid Email");
@@ -74,6 +77,7 @@ const LoginScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate password
   let passwordValidator = () => {
     if (password == "") {
       setPasswordError("Enter a Valid Password");

@@ -25,10 +25,12 @@ const SearchRecipesScreen = ({ route, navigation }) => {
   let [recipeData, setRecipeData] = useState(route.params.recipeData);
   let [searchResults, setSearchResults] = useState({});
 
+  //filter recipe data 
   useEffect(() => {
-
     let temp = [];
+    //find all recipes where the title contains the keyword entered by the user in search bar
     let recipesByTitle = recipeData.filter(recipe => recipe.name.toLowerCase().includes(recipeParam.toLowerCase()))
+    //find all recipes that match the category selected by the user
     recipesByTitle.forEach((recipe) => {
       recipe.linkedCategories.forEach((category) => {
         if (category.name == searchParam){
@@ -40,12 +42,14 @@ const SearchRecipesScreen = ({ route, navigation }) => {
   }, []);
   
 
+  //recipe item view
   const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
       <Image source={{ uri: item.imageUrl }} style={[styles.recipeImage]} />
     </TouchableOpacity>
   );
 
+  //on click send recipe data to start recipe page
   const renderItem = ({ item }) => {
     return (
       <Item
