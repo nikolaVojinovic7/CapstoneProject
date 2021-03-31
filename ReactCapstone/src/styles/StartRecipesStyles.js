@@ -64,5 +64,8 @@ export default StyleSheet.create({
     infoContainer:{
       marginLeft: 30,
       marginRight: 30
+    },
+    recipeName:{
+       
     }
 });

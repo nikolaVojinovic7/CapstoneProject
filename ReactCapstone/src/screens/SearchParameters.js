@@ -28,19 +28,14 @@ const SearchParametersScreen = ({ route, navigation }) => {
   //get a set of recipes the user can make with their pantry items
   useEffect(() => {
     const unsubscribe = navigation.addListener('focus', () => {
-    recipeService.getRecipesByPantry(user.email).then((res) => {
-      setRecipeData(res.data);
-    })
-    .catch(err => Alert.alert(
-      'Error',
-      'No recipes found!',
-      [
-        {
-          text: 'Ok',
-        },
-      ],
-      { cancelable: false }
-    ))
+      recipeService
+        .getRecipesByPantry(user.email)
+        .then((res) => {
+          setRecipeData(res.data);
+        })
+        .catch((err) =>
+         console.log(err.response.data)
+        );
     });
     return unsubscribe;
   }, [navigation]);

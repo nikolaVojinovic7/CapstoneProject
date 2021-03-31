@@ -27,10 +27,10 @@ export default StyleSheet.create({
   },
 
   searchText: {
+    fontFamily: 'PatrickHand-Regular',
     textAlign: 'center',
     marginBottom: 20,
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontSize: 27,
     color: 'white',
   },
 
@@ -84,11 +84,11 @@ export default StyleSheet.create({
   },
 
   categoryText: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 120,
   },
 
@@ -108,47 +108,47 @@ export default StyleSheet.create({
   },
 
   vegetable: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 103,
   },
 
   sea: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 110,
   },
 
   sweetner: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 100,
   },
 
   sauce: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 110,
   },
 
   beverage: {
-    fontSize: 18,
-    fontWeight: 'bold',
+    fontFamily: 'PatrickHand-Regular',
+    fontSize: 22,
     color: 'white',
     position: 'absolute',
-    marginTop: 7,
+    marginTop: 5,
     marginLeft: 100,
   },
 
