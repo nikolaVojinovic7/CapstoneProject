@@ -4,23 +4,19 @@ export default StyleSheet.create({
     backgroundContainer: {
         flex: 1,
     },
+
     container: {
-        flex: 2,
+        flex: 0.5,
         alignItems: 'center',
         justifyContent: 'center',
     },
+
     image: {
         flex: 1,
         resizeMode: "cover",
-        justifyContent: "center"
-    },
-    imageContainer: {
-        width: "100%",
-        flex: 2,
-    },
-    scrollContainer: {
-        flex: 3,
-        marginHorizontal:18
+        justifyContent: "center",
+        width: 400,
+        height:200,
     },
 
     headerText: {
@@ -28,16 +24,17 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
     RectangleShapeView: {
-
-        marginTop: -30,
-        marginBottom: 25,
-        width: 120 * 1.9,
-        height: 85,
+        position: 'absolute',
+        top: 159,
+        width: 210,
+        height: 75,
+        paddingHorizontal:5,
         backgroundColor: "#7C9262",
+        justifyContent: "center",
     },
+    
     recipeTitleText: {
         textAlign: 'center',
-        marginTop: 26,
         fontSize: 20,
         fontWeight: 'bold',
         color: 'white',
@@ -61,11 +58,11 @@ export default StyleSheet.create({
       width: 40,
       height: 40,
     },
+
     infoContainer:{
       marginLeft: 30,
-      marginRight: 30
+      marginRight: 30,
+      flex: 0.5,
+      marginTop: 30
     },
-    recipeName:{
-       
-    }
 });

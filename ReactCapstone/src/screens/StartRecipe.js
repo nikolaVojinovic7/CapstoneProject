@@ -35,8 +35,7 @@ const StartRecipeScreen = ({ route, navigation }) => {
                   <Icon name="heart" size={40} color="red" />
                 </TouchableOpacity>
             </View>
-            <ScrollView>
-              <View style={styles.infoContainer}>
+            <ScrollView style={styles.infoContainer}>
                         <Text style={styles.infoText2}>
                             Level:
                                 { <Text style={styles.infoText}> {recipeItem.level}</Text> }
@@ -72,7 +71,6 @@ const StartRecipeScreen = ({ route, navigation }) => {
                         <Text>
                         { recipeItem.directions.replace(/([^:]\/)\/+/g, "$1") }
                         </Text>
-                  </View>
                 </ ScrollView>
         </View>
     );
