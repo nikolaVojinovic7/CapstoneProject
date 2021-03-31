@@ -58,10 +58,10 @@ export default StyleSheet.create({
         fontWeight: 'bold',
       },
       category: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginTop: 15,
-        marginBottom: 11
+        fontWeight: "700",
+        fontSize: 19,
+        marginTop: 20,
+        marginBottom: 5
       },
       categories: {
         flexDirection: 'row',
@@ -74,6 +74,11 @@ export default StyleSheet.create({
         backgroundColor: "#7C9262",
         marginRight:11,
         marginTop: 5
+      },
+
+      categoryContainer: {
+        marginBottom: 8
       }
+      
 
 });
