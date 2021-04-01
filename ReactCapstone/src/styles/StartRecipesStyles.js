@@ -1,3 +1,4 @@
+import { BottomTabBar } from '@react-navigation/bottom-tabs';
 import { StyleSheet } from 'react-native';
 
 export default StyleSheet.create({
@@ -25,7 +26,7 @@ export default StyleSheet.create({
     },
     RectangleShapeView: {
         position: 'absolute',
-        top: 159,
+        top: 168,
         width: 210,
         height: 75,
         paddingHorizontal:5,
@@ -35,7 +36,7 @@ export default StyleSheet.create({
     
     recipeTitleText: {
         textAlign: 'center',
-        fontSize: 20,
+        fontSize: 22,
         fontWeight: 'bold',
         color: 'white',
     },
@@ -46,7 +47,7 @@ export default StyleSheet.create({
         fontSize: 16
     },
     h2Text:{
-        fontSize: 18,
+        fontSize: 20,
         fontWeight: "bold",
         marginTop: 30,
         marginBottom:5
@@ -63,6 +64,6 @@ export default StyleSheet.create({
       marginLeft: 30,
       marginRight: 30,
       flex: 0.5,
-      marginTop: 30
+      marginTop: 40
     },
 });

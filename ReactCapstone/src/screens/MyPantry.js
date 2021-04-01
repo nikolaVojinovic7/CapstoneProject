@@ -318,6 +318,7 @@ const MyPantryScreen = ({navigation}) => {
     <View style={styles.myButton} backgroundColor="white">
       <Text style={{fontWeight: 'bold', fontSize: 15}}>{item.ingredient.name}</Text>
       <View style={{flexDirection: 'row'}}>
+      <Text style={{fontSize: 15, color: "green", paddingRight:7}}>{item.expiryDate}</Text>
         <TouchableOpacity onPress={() => {showDatePicker(); setSelectedItem(item) }}>
           <Icon name="calendar-outline" size={20} color="black" />
         </TouchableOpacity>
@@ -344,7 +345,7 @@ const MyPantryScreen = ({navigation}) => {
 
   //set pantry item expiry date
   const handleConfirm = (date) => {
-    let d = date.toISOString().replace('-', ' ').split('T')[0].replace('-', ' ');
+    let d = date.toISOString().split('T')[0];
     pantryService.updatePantryItem(user.email,selectedItem.id, d)
     .then((response) => console.log(response))
     .catch(err => console.log(err.response.data));

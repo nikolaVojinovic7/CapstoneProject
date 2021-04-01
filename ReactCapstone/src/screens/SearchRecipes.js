@@ -89,7 +89,7 @@ const SearchRecipesScreen = ({ route, navigation }) => {
     return (
       <Item
         item={item}
-        onPress={() => { navigation.navigate('StartRecipe', { item, recipeParam }); }}
+        onPress={() => { navigation.navigate('StartRecipe', { item }); }}
       />
     );
   };
