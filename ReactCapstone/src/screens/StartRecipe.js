@@ -1,36 +1,29 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/StartRecipesStyles.js';
+import IdleTimerManager from 'react-native-idle-timer';
 import {
   Table,
-  TableWrapper,
   Row,
-  Rows,
-  Col,
-  Cols,
-  Cell,
 } from 'react-native-table-component';
 import {
-  SafeAreaView,
-  StyleSheet,
   ScrollView,
   View,
   Text,
-  StatusBar,
-  Button,
   TextInput,
   TouchableOpacity,
-  Image,
-  FlatList,
   ImageBackground,
-  Alert,
 } from 'react-native';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 
 const StartRecipeScreen = ({route, navigation}) => {
   let [recipeItem, setRecipeItem] = useState(route.params.item);
   let [ingredients, setIngredients] = useState(recipeItem.recipeToIngredients);
   let [displayIngredients, setDisplayIngredients] = useState(recipeItem.recipeToIngredients);
-  let [input, setInput] = useState(0)
+  let [input, setInput] = useState(0);
+  let [lock, setLock] = useState(false);
+  let [iconName, setIconName] = useState("lock-open-sharp")
+  let [lockColour, setLockColour] = useState("black");
   let details = [
     'PREP TIME: \n' + recipeItem.prepTime,
     'COOK TIME: \n' + recipeItem.cookTime,
@@ -48,6 +41,29 @@ const StartRecipeScreen = ({route, navigation}) => {
    setDisplayIngredients(copy);
   };
 
+  const setScreenLock = () => {
+    IdleTimerManager.setIdleTimerDisabled(true);
+  }
+
+  const disableScreenLock = () => {
+    IdleTimerManager.setIdleTimerDisabled(false);
+  }
+
+  const lockScreen = () => {
+    if (lock == false) {
+      setScreenLock;
+      setLock(true);
+      setIconName("lock-closed-sharp");
+      setLockColour("red");
+    }
+    else {
+      disableScreenLock;
+      setLock(false);
+      setIconName("lock-open-sharp");
+      setLockColour("black");
+    }
+
+  }
 
   return (
     <View style={styles.backgroundContainer}>
@@ -64,6 +80,14 @@ const StartRecipeScreen = ({route, navigation}) => {
         </View>
         <TouchableOpacity style={styles.favBtn}>
           <Icon name="heart" size={40} color="red" />
+        </TouchableOpacity>
+      </View>
+      <View style={styles.lockBtn}>
+      <TouchableOpacity style={styles.lock} onPress={() => lockScreen()}>
+          <Ionicon name={iconName} size={35} color={lockColour}/>
+        </TouchableOpacity>
+        <TouchableOpacity style={styles.clock}>
+          <Ionicon name="alarm-sharp" size={35} color="black" />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.infoContainer}>

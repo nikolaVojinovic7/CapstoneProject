@@ -8,6 +8,8 @@ target 'ReactCapstone' do
 
   use_react_native!(:path => config["reactNativePath"])
 
+  pod 'react-native-idle-timer', :path => '../node_modules/react-native-idle-timer'
+
   target 'ReactCapstoneTests' do
     inherit! :complete
     # Pods for testing

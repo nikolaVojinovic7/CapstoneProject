@@ -87,5 +87,19 @@ export default StyleSheet.create({
 
     servings: {
         flexDirection: 'row',
+    },
+    
+    lockBtn:{
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 7
+    },
+
+    lock:{
+        marginLeft: 25
+    },
+
+    clock:{
+        marginRight: 25
     }
 });
