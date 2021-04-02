@@ -41,15 +41,16 @@ export default StyleSheet.create({
         color: 'white',
     },
     infoText: {
-        fontWeight: 'bold',
+       fontSize: 15,
+       fontWeight: 'normal'
     },
     infoText2:{
         fontSize: 16
     },
     h2Text:{
-        fontSize: 20,
+        fontSize: 18,
         fontWeight: "bold",
-        marginTop: 30,
+        marginTop: 20,
         marginBottom:5
     },
     favBtn:{
@@ -66,4 +67,25 @@ export default StyleSheet.create({
       flex: 0.5,
       marginTop: 40
     },
+
+    lvlServings: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        marginTop: 7
+    },
+    inputText: {
+        height: 31,
+        width: 30,
+        color: "black",
+        borderWidth: 1,
+        paddingTop: 1,
+        paddingBottom: 1,
+        textAlign: 'center',
+        marginTop: 17,
+        marginLeft: 5
+      },
+
+    servings: {
+        flexDirection: 'row',
+    }
 });
