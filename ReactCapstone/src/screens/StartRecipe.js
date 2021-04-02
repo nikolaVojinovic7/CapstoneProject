@@ -1,10 +1,11 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/StartRecipesStyles.js';
 import IdleTimerManager from 'react-native-idle-timer';
-import {
-  Table,
-  Row,
-} from 'react-native-table-component';
+import {Alert, Modal, Pressable} from 'react-native';
+import {Table, Row} from 'react-native-table-component';
+import CountDown from 'react-native-countdown-component';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import {
   ScrollView,
   View,
@@ -13,56 +14,90 @@ import {
   TouchableOpacity,
   ImageBackground,
 } from 'react-native';
-import Icon from 'react-native-vector-icons/FontAwesome';
-import Ionicon from 'react-native-vector-icons/Ionicons';
+import { min } from 'react-native-reanimated';
+
 
 const StartRecipeScreen = ({route, navigation}) => {
   let [recipeItem, setRecipeItem] = useState(route.params.item);
   let [ingredients, setIngredients] = useState(recipeItem.recipeToIngredients);
-  let [displayIngredients, setDisplayIngredients] = useState(recipeItem.recipeToIngredients);
+  let [displayIngredients, setDisplayIngredients] = useState(
+    recipeItem.recipeToIngredients,
+  );
   let [input, setInput] = useState(0);
   let [lock, setLock] = useState(false);
-  let [iconName, setIconName] = useState("lock-open-sharp")
-  let [lockColour, setLockColour] = useState("black");
+  let [iconName, setIconName] = useState('lock-open-sharp');
+  let [lockColour, setLockColour] = useState('black');
+  const [modalVisible, setModalVisible] = useState(false);
+  const [cooktime, setCooktime] = useState(0)
+  const [running, setRunning] = useState(false);
   let details = [
     'PREP TIME: \n' + recipeItem.prepTime,
     'COOK TIME: \n' + recipeItem.cookTime,
     'TOTAL TIME: \n' + recipeItem.totalTime,
   ];
 
-  const calculateWeight = () => {
+  const cooktimeToSeconds = () =>{
+    let time = recipeItem.cookTime;
+    let hours = 0;
+    let mins = 0;
+    
+    if(time.includes("hr")){
+    hours = parseInt(time.match(/([\d.]+) *hr/)[1]);
+    }
+    if(time.includes("min")){
+    mins = parseInt(time.match(/([\d.]+) *min/)[1]);
+    }
 
-   let serv = parseFloat(recipeItem.servings);
-   let multiplyBy = parseFloat(input);
-   const copy = ingredients.map(item => ({...item}))
-   copy.forEach(element => {
-     element.weight = (element.weight/serv) * multiplyBy;
-   });
-   setDisplayIngredients(copy);
+    let hoursInSec = hours * 3600;
+    let minInSec = mins * 60
+    let totalSec = hoursInSec + minInSec;
+
+    setCooktime(totalSec);
+
+  }
+
+  useEffect(() => {
+    cooktimeToSeconds();
+  })
+
+  const calculateWeight = () => {
+    let serv = parseFloat(recipeItem.servings);
+    let multiplyBy = parseFloat(input);
+    const copy = ingredients.map((item) => ({...item}));
+    copy.forEach((element) => {
+      element.weight = (element.weight / serv) * multiplyBy;
+    });
+    setDisplayIngredients(copy);
   };
 
   const setScreenLock = () => {
     IdleTimerManager.setIdleTimerDisabled(true);
-  }
+  };
 
   const disableScreenLock = () => {
     IdleTimerManager.setIdleTimerDisabled(false);
-  }
+  };
 
   const lockScreen = () => {
     if (lock == false) {
       setScreenLock;
       setLock(true);
-      setIconName("lock-closed-sharp");
-      setLockColour("red");
-    }
-    else {
+      setIconName('lock-closed-sharp');
+      setLockColour('red');
+    } else {
       disableScreenLock;
       setLock(false);
-      setIconName("lock-open-sharp");
-      setLockColour("black");
+      setIconName('lock-open-sharp');
+      setLockColour('black');
     }
+  };
 
+  const pause = () => {
+    setRunning(false);
+  }
+
+  const play =() => {
+    setRunning(true);
   }
 
   return (
@@ -83,15 +118,20 @@ const StartRecipeScreen = ({route, navigation}) => {
         </TouchableOpacity>
       </View>
       <View style={styles.lockBtn}>
-      <TouchableOpacity style={styles.lock} onPress={() => lockScreen()}>
-          <Ionicon name={iconName} size={35} color={lockColour}/>
+        <TouchableOpacity style={styles.lock} onPress={() => lockScreen()}>
+          <Ionicon name={iconName} size={35} color={lockColour} />
         </TouchableOpacity>
         <TouchableOpacity style={styles.clock}>
-          <Ionicon name="alarm-sharp" size={35} color="black" />
+          <Ionicon
+            name="alarm-sharp"
+            size={35}
+            color="black"
+            onPress={() => setModalVisible(true)}
+          />
         </TouchableOpacity>
       </View>
       <ScrollView style={styles.infoContainer}>
-        <View style={{padding: 10, paddingBottom: 3}}>
+        <View style={{padding: 10, paddingTop: 0, paddingBottom: 3}}>
           <Table borderStyle={{borderWidth: 1.5, borderColor: '#C0C0C0'}}>
             <Row
               data={details}
@@ -110,12 +150,16 @@ const StartRecipeScreen = ({route, navigation}) => {
             <TextInput
               style={styles.inputText}
               maxLength={2}
-              keyboardType='numeric'
+              keyboardType="numeric"
               numeric
               placeholder={recipeItem.servings.toString()}
               placeholderTextColor="black"
-              onChangeText = {(num) => {setInput(num)}}
-              onSubmitEditing={() => {calculateWeight()}}
+              onChangeText={(num) => {
+                setInput(num);
+              }}
+              onSubmitEditing={() => {
+                calculateWeight();
+              }}
             />
           </View>
         </View>
@@ -135,6 +179,54 @@ const StartRecipeScreen = ({route, navigation}) => {
           {recipeItem.directions.replace(/([^:]\/)\/+/g, '$1')}
         </Text>
       </ScrollView>
+      <View>
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}>
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <TouchableOpacity
+                style={styles.closeBtn}
+                onPress={() => setModalVisible(!modalVisible)}>
+                <Ionicon name="close-circle-outline" size={35} color="red" />
+              </TouchableOpacity>
+              <CountDown
+                size={30}
+                until={cooktime}
+                onFinish={() => alert('Your meal is ready! Enjoy!')}
+                digitStyle={{
+                  backgroundColor: 'black',
+                  borderWidth: 4,
+                  borderColor: '#1CC625',
+                }}
+                digitTxtStyle={{color: '#1CC625'}}
+                timeLabelStyle={{color: 'red', fontWeight: 'bold'}}
+                separatorStyle={{color: '#1CC625'}}
+                timeToShow={['H', 'M', 'S']}
+                timeLabels={{m: null, s: null}}
+                showSeparator
+                running={running}
+              />
+              <View style={styles.playStop}>
+                <TouchableOpacity
+                  style={styles.playBtn}
+                  onPress={() => play()}>
+                  <Ionicon name="play-circle" size={45} color="#1CC625" />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.pauseBtn}
+                  onPress={() => pause()}>
+                  <Ionicon name="pause-circle" size={45} color="red" />
+                </TouchableOpacity>
+              </View>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </View>
   );
 };
