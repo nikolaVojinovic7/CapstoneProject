@@ -37,21 +37,24 @@ const StartRecipeScreen = ({route, navigation}) => {
     'TOTAL TIME: \n' + recipeItem.totalTime,
   ];
 
+  //convert cooktime to seconds (for use by timer)
   const cooktimeToSeconds = () =>{
     let time = recipeItem.cookTime;
     let hours = 0;
     let mins = 0;
     
+    //if string includes hours, extract number of hours from cookTime string and convert to number.
     if(time.includes("hr")){
     hours = parseInt(time.match(/([\d.]+) *hr/)[1]);
     }
+    //if string includes mins, extract number of minutes from cookTime string and convert to number.
     if(time.includes("min")){
     mins = parseInt(time.match(/([\d.]+) *min/)[1]);
     }
 
-    let hoursInSec = hours * 3600;
-    let minInSec = mins * 60
-    let totalSec = hoursInSec + minInSec;
+    let hoursInSec = hours * 3600; //convert hours to seconds
+    let minInSec = mins * 60 //convert mins to seconds
+    let totalSec = hoursInSec + minInSec; //total seconds
 
     setCooktime(totalSec);
 
@@ -61,27 +64,29 @@ const StartRecipeScreen = ({route, navigation}) => {
     cooktimeToSeconds();
   })
 
+  // check to see if number is a decimal
   const isDecimal = (num) => {
     let result = (num - Math.floor(num)) !== 0;
 
     return result;
   }
 
+  //calculate serving size 
   const calculateWeight = () => {
     let serv = parseFloat(recipeItem.servings);
     let multiplyBy = parseFloat(input);
-    const copy = ingredients.map((item) => ({...item}));
+    const copy = ingredients.map((item) => ({...item})); //make a copy of ingredient set for manipulation
     copy.forEach((element) => {
-      let usCustomaryWeight = (element.usCustomaryWeight / serv) * multiplyBy;
+      let usCustomaryWeight = (element.usCustomaryWeight / serv) * multiplyBy; //multiply by servings
       let metricWeight = (element.metricWeight / serv) * multiplyBy;
-      if(usCustomaryWeight > 1 && element.usCustomaryUnitType == "cup"){
+      if(usCustomaryWeight > 1 && element.usCustomaryUnitType == "cup"){ //if ingredient weight is more than 1, use plural 
         element.usCustomaryUnitType = "cups";
       }
-      if(metricWeight >= 1000){
+      if(metricWeight >= 1000){ //convert unit type to kg if over 1000 grams
         metricWeight = metricWeight * 0.001;
         element.metricUnitType = "kg"
       }
-      if(isDecimal(usCustomaryWeight)){
+      if(isDecimal(usCustomaryWeight)){ //if weight is a decimal, round to 2 decimal places
       usCustomaryWeight = usCustomaryWeight.toFixed(2);
       }
 
@@ -89,20 +94,23 @@ const StartRecipeScreen = ({route, navigation}) => {
       metricWeight = metricWeight.toFixed(2);
       }
 
-      element.metricWeight = metricWeight;
+      element.metricWeight = metricWeight; //set weights
       element.usCustomaryWeight = usCustomaryWeight;
     });
-    setDisplayIngredients(copy);
+    setDisplayIngredients(copy); //set ingredients to display
   };
 
+  // keep screen active
   const setScreenLock = () => {
     IdleTimerManager.setIdleTimerDisabled(true);
   };
 
+  //enable idle timer 
   const disableScreenLock = () => {
     IdleTimerManager.setIdleTimerDisabled(false);
   };
 
+  //activate/disable screen lock
   const lockScreen = () => {
     if (lock == false) {
       setScreenLock;
@@ -117,18 +125,22 @@ const StartRecipeScreen = ({route, navigation}) => {
     }
   };
 
+  //pause timer
   const pause = () => {
     setRunning(false);
   }
 
+  //start timer
   const play =() => {
     setRunning(true);
   }
 
+  //set us customary unit type ingredient view
   const convertUSCustomary = () =>{
     setUnitType('usCustomary');
   }
 
+  //set metric unit type ingredient view
   const convertMetric =() => {
     setUnitType('metric')
   }
