@@ -61,6 +61,12 @@ const StartRecipeScreen = ({route, navigation}) => {
     cooktimeToSeconds();
   })
 
+  const isDecimal = (num) => {
+    let result = (num - Math.floor(num)) !== 0;
+
+    return result;
+  }
+
   const calculateWeight = () => {
     let serv = parseFloat(recipeItem.servings);
     let multiplyBy = parseFloat(input);
@@ -75,11 +81,11 @@ const StartRecipeScreen = ({route, navigation}) => {
         metricWeight = metricWeight * 0.001;
         element.metricUnitType = "kg"
       }
-      if((usCustomaryWeight - Math.floor(usCustomaryWeight)) !== 0){
+      if(isDecimal(usCustomaryWeight)){
       usCustomaryWeight = usCustomaryWeight.toFixed(2);
       }
 
-      if((metricWeight - Math.floor(metricWeight)) !== 0){
+      if(isDecimal(metricWeight)){
       metricWeight = metricWeight.toFixed(2);
       }
 
