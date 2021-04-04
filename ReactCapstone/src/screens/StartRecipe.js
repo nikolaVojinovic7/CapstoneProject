@@ -30,6 +30,7 @@ const StartRecipeScreen = ({route, navigation}) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [cooktime, setCooktime] = useState(0)
   const [running, setRunning] = useState(false);
+  const [unitType, setUnitType] = useState('usCustomary');
   let details = [
     'PREP TIME: \n' + recipeItem.prepTime,
     'COOK TIME: \n' + recipeItem.cookTime,
@@ -65,7 +66,8 @@ const StartRecipeScreen = ({route, navigation}) => {
     let multiplyBy = parseFloat(input);
     const copy = ingredients.map((item) => ({...item}));
     copy.forEach((element) => {
-      element.weight = (element.weight / serv) * multiplyBy;
+      element.usCustomaryWeight = (element.usCustomaryWeight / serv) * multiplyBy;
+      element.metricWeight = (element.metricWeight / serv) * multiplyBy;
     });
     setDisplayIngredients(copy);
   };
@@ -99,6 +101,15 @@ const StartRecipeScreen = ({route, navigation}) => {
   const play =() => {
     setRunning(true);
   }
+
+  const convertUSCustomary = () =>{
+    setUnitType('usCustomary');
+  }
+
+  const convertMetric =() => {
+    setUnitType('metric')
+  }
+
 
   return (
     <View style={styles.backgroundContainer}>
@@ -163,15 +174,33 @@ const StartRecipeScreen = ({route, navigation}) => {
             />
           </View>
         </View>
+        <View style={styles.unitStyle}>
+          <TouchableOpacity style={styles.customaryBtn} onPress={() => convertUSCustomary()}>
+            <Text style={styles.units}>US Customary</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={() => convertMetric()}>
+            <Text style={styles.units}>Metric</Text>
+          </TouchableOpacity>
+        </View>
         <Text style={styles.h2Text}>Ingredients:</Text>
         <Text style={{flexDirection: 'column'}}>
           {displayIngredients.map((item) => {
+            if(unitType == 'usCustomary'){
             return (
               <Text key={item.id} style={styles.infoText}>
-                {item.weight} {item.typeMeasurement} {item.ingredient.name}
+                {item.usCustomaryWeight} {item.usCustomaryUnitType} {item.ingredient.name}
                 {'\n'}
               </Text>
             );
+            }
+            else{
+              return (
+                <Text key={item.id} style={styles.infoText}>
+                  {item.metricWeight} {item.metricUnitType} {item.ingredient.name}
+                  {'\n'}
+                </Text>
+              );
+            }
           })}
         </Text>
         <Text style={styles.h2Text}>Directions:</Text>

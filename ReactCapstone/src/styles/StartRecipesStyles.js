@@ -162,7 +162,22 @@ export default StyleSheet.create({
 
     playBtn:{
         marginRight: 50
-    }
+    },
+
+    unitStyle :{
+      flexDirection: 'row',
+      marginTop: 10
+    },
+
+    customaryBtn: {
+      marginRight: 10,
+    },
+
+    units: {
+      textDecorationLine: "underline",
+      fontSize: 16,
+      color: "blue"
+    },
 
     
 });
