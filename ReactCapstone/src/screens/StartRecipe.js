@@ -66,8 +66,25 @@ const StartRecipeScreen = ({route, navigation}) => {
     let multiplyBy = parseFloat(input);
     const copy = ingredients.map((item) => ({...item}));
     copy.forEach((element) => {
-      element.usCustomaryWeight = (element.usCustomaryWeight / serv) * multiplyBy;
-      element.metricWeight = (element.metricWeight / serv) * multiplyBy;
+      let usCustomaryWeight = (element.usCustomaryWeight / serv) * multiplyBy;
+      let metricWeight = (element.metricWeight / serv) * multiplyBy;
+      if(usCustomaryWeight > 1 && element.usCustomaryUnitType == "cup"){
+        element.usCustomaryUnitType = "cups";
+      }
+      if(metricWeight >= 1000){
+        metricWeight = metricWeight * 0.001;
+        element.metricUnitType = "kg"
+      }
+      if((usCustomaryWeight - Math.floor(usCustomaryWeight)) !== 0){
+      usCustomaryWeight = usCustomaryWeight.toFixed(2);
+      }
+
+      if((metricWeight - Math.floor(metricWeight)) !== 0){
+      metricWeight = metricWeight.toFixed(2);
+      }
+
+      element.metricWeight = metricWeight;
+      element.usCustomaryWeight = usCustomaryWeight;
     });
     setDisplayIngredients(copy);
   };
