@@ -32,11 +32,10 @@ export default StyleSheet.create({
         color: 'white',
       },
       scrollContainer: {
-        flex: 3,
+        flex: 10,
       },
       scroll: {
         width: "100%",
-        height: 200,
         marginBottom: 20,
         justifyContent: "center",
         padding: 20

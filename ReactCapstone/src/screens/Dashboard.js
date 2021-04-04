@@ -10,6 +10,7 @@ import {
   ImageBackground,
   FlatList,
   TouchableOpacity,
+  Alert,
 } from 'react-native';
 
 const DashboardScreen = ({ navigation }) => {
@@ -17,25 +18,101 @@ const DashboardScreen = ({ navigation }) => {
   let [obj, setObj] = useState('');
   let [recipeData, setRecipeData] = useState({});
 
-  const Item = ({ item, onPress, style }) => (
-    <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
-      <Image source={{ uri: item.imageUrl }} style={[styles.recipeImage]} />
-    </TouchableOpacity>
-  );
+  let [recipeData1, setRecipeData1] = useState({});
+  let [recipeData2, setRecipeData2] = useState({});
+  let [recipeData3, setRecipeData3] = useState({});
+  let [pantryData, setPantryData] = useState([]);
 
-  const renderItem = ({ item }) => {
-    return (
-      <Item
-        item={item}
-        onPress={() => { navigation.navigate('StartRecipe', { item }); }}
-      />
+  const Item = ({ item, onPress }) => (
+      <TouchableOpacity onPress={ onPress } style={styles.item}>
+        <Image source={{ uri: item.imageUrl }} style={styles.recipeImage} />
+      </TouchableOpacity>
     );
-  };
+
+    const renderItem = ({ item }) => {
+
+      return (
+        <Item
+          item={item}
+          onPress={() => { navigation.navigate('StartRecipe', { item }); }}
+        />
+      );
+    };
 
   useEffect(() => {
-    recipeService.getRecipes().then((res) => {
-      let allRecipes = res.data;
-      setRecipeData(allRecipes);
+    recipeService.test("a@a").then((res) => {
+      let allPantry = res.data;
+      //setPantryData(allPantry)
+      pantryData[0] = allPantry[0]
+      pantryData[1] = allPantry[1]
+      pantryData[2] = allPantry[2]
+
+
+
+
+
+      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[0]).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData1(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+
+      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[1]).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData2(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+
+      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[2]).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData3(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     })
     .catch(err => Alert.alert(
       'Error',
@@ -47,6 +124,8 @@ const DashboardScreen = ({ navigation }) => {
       ],
       { cancelable: false }
     ))
+
+
   }, []);
 
   return (
@@ -73,12 +152,39 @@ const DashboardScreen = ({ navigation }) => {
             </ImageBackground>
           </View>
           <View style={styles.scrollContainer}>
+
+
+            <TouchableOpacity onPress={() => {
+              navigation.navigate('UploadRecipe', {recipeData2});
+            }} style={styles.item}>
+              <Image source={require("../assets/images/background/light-wood.jpg")} style={styles.recipeImage} />
+            </TouchableOpacity>
+
+
             <ScrollView>
               <View style={styles.scroll}>
-                <Text style={styles.headerText}>RECIPES</Text>
+                <Text style={styles.headerText}>Use your {pantryData[0]}</Text>
                 { <FlatList
                   horizontal
-                  data={recipeData}
+                  data={ recipeData1 }
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                /> }
+              </View>
+              <View style={styles.scroll}>
+                <Text style={styles.headerText}>Use your {pantryData[1]}</Text>
+                { <FlatList
+                  horizontal
+                  data={ recipeData2 }
+                  renderItem={renderItem}
+                  keyExtractor={(item, index) => index.toString()}
+                /> }
+              </View>
+              <View style={styles.scroll}>
+                <Text style={styles.headerText}>Use your {pantryData[2]}</Text>
+                { <FlatList
+                  horizontal
+                  data={ recipeData3 }
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
                 /> }

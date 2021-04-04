@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/StartRecipesStyles.js"
+import favoriteService from '../services/FavoriteService.js';
 import {
     SafeAreaView,
     StyleSheet,
@@ -21,6 +22,24 @@ const StartRecipeScreen = ({ route, navigation }) => {
 
     let [recipeItem,setRecipeItem] = useState(route.params.item);
 
+    let favorite = (id) => {
+
+      favoriteService.addToFavorites("a@a", id).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!' + id,
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+    };
+
     return (
         <View style={styles.backgroundContainer}>
             <View style={styles.container}>
@@ -31,7 +50,7 @@ const StartRecipeScreen = ({ route, navigation }) => {
                 <View style={styles.RectangleShapeView}>
                 { <Text style={styles.recipeTitleText}>{recipeItem.name}</Text> }
                 </View>
-                <TouchableOpacity style={styles.favBtn}>
+                <TouchableOpacity style={styles.favBtn} onPress={() => { favorite(recipeItem.id) }}>
                   <Icon name="heart" size={40} color="red" />
                 </TouchableOpacity>
             </View>

@@ -8,6 +8,7 @@ import ProfileScreen from '../screens/Profile.js';
 import MyPantryScreen from '../screens/MyPantry.js';
 import FavoritesScreen from '../screens/Favorites.js';
 import AdminDashboardScreen from "../screens/AdminDashboard.js";
+import TestScreen from "../screens/Test.js";
 
 
 const Tab = createBottomTabNavigator();
@@ -18,7 +19,7 @@ const AppTab = ({navigation}) => {
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
-  
+
               /* https://oblador.github.io/react-native-vector-icons/ */
               if (route.name === 'Dashboard') {
                 iconName = focused ? 'ios-search-circle' : 'ios-search';
@@ -30,9 +31,11 @@ const AppTab = ({navigation}) => {
                 iconName = focused ? 'person' : 'person-outline';
               } else if (route.name === 'Admin'){
                 iconName = focused ? 'ios-server' : 'ios-server-outline';
+              } else if (route.name === 'Test'){
+                iconName = focused ? 'ios-server' : 'ios-server-outline';
               }
 
-  
+
               return <Ionicons name={iconName} size={size} color={color} />;
             },
           })}
@@ -40,12 +43,13 @@ const AppTab = ({navigation}) => {
             activeTintColor: 'black',
             inactiveTintColor: 'gray',
           }}>
-            
+
         <Tab.Screen name="Dashboard"component={DashboardScreen}/>
         <Tab.Screen name="Favorites" component={FavoritesScreen} />
         <Tab.Screen name="MyPantry" component={MyPantryScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
         <Tab.Screen name="Admin" component={AdminDashboardScreen} />
+        <Tab.Screen name="Test" component={TestScreen} />
       </Tab.Navigator>
     );
   };

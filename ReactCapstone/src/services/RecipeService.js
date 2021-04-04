@@ -23,6 +23,15 @@ class RecipeService {
     deleteRecipe(recipeId){
         return axios.delete(RECIPE_API_BASE_URL + '/' + 'deleteRecipe' + '/' + recipeId);
     }
+
+    searchRecipeByPantry(userId){
+        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipeByPantry' + '/' + userId);
+    }
+
+    test(email){
+      return axios.get(RECIPE_API_BASE_URL + '/' + 'test' + '/' + email);
+    }
+
 }
 
 export default new RecipeService()
