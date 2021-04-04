@@ -238,10 +238,12 @@ const StartRecipeScreen = ({route, navigation}) => {
             }
           })}
         </Text>
+        <View style={styles.directionsStyle}>
         <Text style={styles.h2Text}>Directions:</Text>
         <Text style={styles.infoText}>
           {recipeItem.directions.replace(/([^:]\/)\/+/g, '$1')}
         </Text>
+        </View>
       </ScrollView>
       <View>
         <Modal

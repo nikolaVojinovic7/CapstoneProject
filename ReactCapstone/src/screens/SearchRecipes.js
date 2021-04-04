@@ -79,7 +79,10 @@ const SearchRecipesScreen = ({ route, navigation }) => {
   const Item = ({ item, onPress, style }) => (
     <View>
       <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
+        <View>
         <Image source={{ uri: item.imageUrl }} style={[styles.recipeImage]} />
+        <Text style={[styles.recipeName]}>{item.name}</Text>
+        </View>
       </TouchableOpacity>
     </View>
   );

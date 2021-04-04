@@ -103,7 +103,9 @@ export default StyleSheet.create({
         marginRight: 25
     },
 
-    //-----------------------------------------------------
+    directionsStyle:{
+      paddingBottom: 20
+    },
 
     centeredView: {
         flex: 1,

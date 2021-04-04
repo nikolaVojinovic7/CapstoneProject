@@ -66,9 +66,24 @@ export default StyleSheet.create({
         
       },
       recipeImage: {
-        height: 165,
+        height: 155,
         width: 165,
         padding: 5
+      },
+
+      recipeName:{
+        textAlign: "center",
+        backgroundColor: 'rgba(52, 52, 52, 0.7)',
+        width: 165,
+        justifyContent: "center",
+        color: "white",
+        fontSize: 14,
+        position: "absolute",
+        bottom: 10,
+        fontWeight: 'bold'
+        
+      
+
       },
 
       headerText:{
