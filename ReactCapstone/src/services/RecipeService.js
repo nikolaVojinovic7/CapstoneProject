@@ -24,12 +24,12 @@ class RecipeService {
         return axios.delete(RECIPE_API_BASE_URL + '/' + 'deleteRecipe' + '/' + recipeId);
     }
 
-    searchRecipeByPantry(userId){
-        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipeByPantry' + '/' + userId);
+    searchRecipesBasedOnIngredient(email){
+        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipesBasedOnIngredient' + '/' + email);
     }
 
-    test(email){
-      return axios.get(RECIPE_API_BASE_URL + '/' + 'test' + '/' + email);
+    searchThreeIngredients(email){
+      return axios.get(RECIPE_API_BASE_URL + '/' + 'searchThreeIngredients' + '/' + email);
     }
 
 }

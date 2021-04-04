@@ -40,18 +40,18 @@ const DashboardScreen = ({ navigation }) => {
     };
 
   useEffect(() => {
-    recipeService.test("a@a").then((res) => {
+    recipeService.searchThreeIngredients("a@a").then((res) => {
       let allPantry = res.data;
       //setPantryData(allPantry)
       pantryData[0] = allPantry[0]
       pantryData[1] = allPantry[1]
       pantryData[2] = allPantry[2]
 
+      console.log(allPantry)
 
 
 
-
-      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[0]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[0]).then((res) => {
         let allRecipes = res.data;
         setRecipeData1(allRecipes);
       })
@@ -66,7 +66,7 @@ const DashboardScreen = ({ navigation }) => {
         { cancelable: false }
       ))
 
-      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[1]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[1]).then((res) => {
         let allRecipes = res.data;
         setRecipeData2(allRecipes);
       })
@@ -81,7 +81,7 @@ const DashboardScreen = ({ navigation }) => {
         { cancelable: false }
       ))
 
-      recipeService.searchRecipeByPantry("a@a"+"&"+pantryData[2]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[2]).then((res) => {
         let allRecipes = res.data;
         setRecipeData3(allRecipes);
       })
