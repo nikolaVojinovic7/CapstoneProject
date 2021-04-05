@@ -3,6 +3,8 @@ package com.capstone.project.controllers;
 import com.capstone.project.exception.ResourceNotFoundException;
 import com.capstone.project.model.User;
 import com.capstone.project.services.UserService;
+import org.springframework.mail.SimpleMailMessage;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
@@ -13,9 +15,12 @@ import java.util.Set;
 @RequestMapping("api/public")
 public class UserController {
     private final UserService userService;
+    private final JavaMailSender javaMailSender;
 
-    public UserController(UserService userService){
+
+    public UserController(UserService userService, JavaMailSender javaMailSender){
         this.userService = userService;
+        this.javaMailSender = javaMailSender;
     }
 
     //get all users api
@@ -82,5 +87,19 @@ public class UserController {
         Map < String, Boolean > response = new HashMap< >();
         response.put("deleted", Boolean.TRUE);
         return response;
+    }
+
+    //get all users api
+    @GetMapping("sendEmail/{email}")
+    public void sendEmail(@PathVariable String email){
+        SimpleMailMessage msg = new SimpleMailMessage();
+        msg.setTo(email);
+        User user = userService.findByEmail(email);
+        String password = user.getPassword();
+        msg.setSubject("Forgot Password: Bits To Bites App");
+        msg.setText("Your password is " + password);
+
+
+        javaMailSender.send(msg);
     }
 }
