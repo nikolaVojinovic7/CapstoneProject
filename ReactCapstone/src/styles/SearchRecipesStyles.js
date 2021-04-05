@@ -80,14 +80,12 @@ export default StyleSheet.create({
         fontSize: 14,
         position: "absolute",
         bottom: 10,
-        fontWeight: 'bold'
-        
-      
-
+        paddingBottom: 2
       },
 
       headerText:{
-        fontFamily: 'PatrickHand-Regular',
-        fontSize: 25,
+        //fontFamily: 'PatrickHand-Regular',
+        fontSize: 23,
+        fontWeight: "bold"
       }
 });
