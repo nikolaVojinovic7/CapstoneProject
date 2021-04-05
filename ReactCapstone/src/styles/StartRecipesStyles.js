@@ -56,9 +56,7 @@ export default StyleSheet.create({
     favBtn:{
       position: 'absolute',
       top: 20,
-      left: 330,
-      width: 40,
-      height: 40,
+      right: 20,
     },
 
     infoContainer:{

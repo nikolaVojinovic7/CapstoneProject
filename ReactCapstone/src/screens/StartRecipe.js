@@ -6,6 +6,7 @@ import {Table, Row} from 'react-native-table-component';
 import CountDown from 'react-native-countdown-component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
+import favoriteService from '../services/FavoriteService.js';
 import {
   ScrollView,
   View,
@@ -18,6 +19,7 @@ import { min } from 'react-native-reanimated';
 
 
 const StartRecipeScreen = ({route, navigation}) => {
+  const [user, setUser] = useState(route.params.user);
   let [recipeItem, setRecipeItem] = useState(route.params.item);
   let [ingredients, setIngredients] = useState(recipeItem.recipeToIngredients);
   let [displayIngredients, setDisplayIngredients] = useState(
@@ -31,6 +33,8 @@ const StartRecipeScreen = ({route, navigation}) => {
   const [cooktime, setCooktime] = useState(0)
   const [running, setRunning] = useState(false);
   const [unitType, setUnitType] = useState('usCustomary');
+  const [fav, setFav] = useState(false);
+  const [favIcon, setFavIcon] = useState('heart-outline')
   let details = [
     'PREP TIME: \n' + recipeItem.prepTime,
     'COOK TIME: \n' + recipeItem.cookTime,
@@ -62,6 +66,18 @@ const StartRecipeScreen = ({route, navigation}) => {
 
   useEffect(() => {
     cooktimeToSeconds();
+  })
+
+  useEffect(() => {
+    favoriteService.getFavorites(user.email).then((res) => {
+      res.data.forEach((recipe) =>{
+        if(recipeItem.id == recipe.id){
+          setFav(true);
+          setFavIcon('heart');
+        }
+      })
+    })
+    .catch(err => console.log(err.response.data));
   })
 
   // check to see if number is a decimal
@@ -145,6 +161,54 @@ const StartRecipeScreen = ({route, navigation}) => {
     setUnitType('metric')
   }
 
+  //add recipe to favourites
+  const favoriteRecipe = (id) => {
+    favoriteService.addToFavorites(user.email, id).then((res) => {
+      console.log(res.data);
+    })
+    .catch(err => Alert.alert(
+      'Error',
+      'Not able to add to favourites!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false }
+    ))
+  }
+
+  //remove recipe from favorites
+  const removeFavorite = (id) => {
+    favoriteService.removeFavorite(user.email, id).then((res) => {
+      console.log(res.data);
+    })
+    .catch(err => Alert.alert(
+      'Error',
+      'Not able to remove from favourites!',
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false },
+      console.log(err.response.data)
+    ))
+  }
+
+  //favourite functionality
+  const favorite = (id) => {
+    if (fav == false) {
+      favoriteRecipe(id);
+      setFav(true);
+      setFavIcon('heart');
+    } else {
+      removeFavorite(id);
+      setFav(false);
+      setFavIcon('heart-outline');
+    }
+  }
+
 
   return (
     <View style={styles.backgroundContainer}>
@@ -159,8 +223,8 @@ const StartRecipeScreen = ({route, navigation}) => {
         <View style={styles.RectangleShapeView}>
           {<Text style={styles.recipeTitleText}>{recipeItem.name}</Text>}
         </View>
-        <TouchableOpacity style={styles.favBtn}>
-          <Icon name="heart" size={40} color="red" />
+        <TouchableOpacity style={styles.favBtn} onPress={() => { favorite(recipeItem.id) }}>
+          <Ionicon name={favIcon} size={45} color="red" />
         </TouchableOpacity>
       </View>
       <View style={styles.lockBtn}>

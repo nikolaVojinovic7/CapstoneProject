@@ -93,7 +93,7 @@ const SearchRecipesScreen = ({route, navigation}) => {
       <Item
         item={item}
         onPress={() => {
-          navigation.navigate('StartRecipe', {item});
+          navigation.navigate('StartRecipe', {item, user});
         }}
       />
     );

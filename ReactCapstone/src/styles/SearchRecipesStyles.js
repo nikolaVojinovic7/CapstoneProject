@@ -61,10 +61,8 @@ export default StyleSheet.create({
         flexDirection: 'row',
         marginRight: 15,
         marginTop: 12,
-        marginBottom: 22,
-
-        
       },
+
       recipeImage: {
         height: 155,
         width: 165,
@@ -91,6 +89,6 @@ export default StyleSheet.create({
       },
 
       categoryContainer:{
-        marginBottom: 22
+        marginBottom: 45
       }
 });
