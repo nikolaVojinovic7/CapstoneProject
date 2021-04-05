@@ -3,6 +3,8 @@ import styles from "../styles/DashboardStyles.js"
 import recipeService from '../services/RecipeService.js';
 import pantryService from '../services/PantryService';
 import ingredientService from '../services/IngredientService';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ScrollView,
   View,
@@ -14,24 +16,44 @@ import {
   TouchableOpacity,
   Alert,
   Button,
-  SearchableDropdown,
+  Picker,
 } from 'react-native';
 
 const TestScreen = ({ navigation }) => {
 
-  let [data, setData] = useState([1, 2, 3, 4, 5]);
-  var initialElements = [
-    { id : "0", text : "Object 1"},
-    { id : "1", text : "Object 2"},
-  ]
+  const [user, setUser] = useState({});
+  const [selectedValue, setSelectedValue] = useState("grams");
+  let [amtError, setAmtError] = useState('');
+  let [amt, setAmt] = useState('');
 
-  const [exampleState, setExampleState] = useState(initialElements)
+  const [exampleState, setExampleState] = useState([])
   let [ingredientData, setIngredientData] = useState({});
 
   const addElement = () => {
-    var newArray = [...initialElements , {id : "2", text: "Object 3"}];
+    var newArray = [...exampleState , {id : "2", text: "Object 3"}];
     setExampleState(newArray);
   }
+
+  const getUser = async () => {
+    try {
+      const obj = await AsyncStorage.getItem('@user');
+      return JSON.parse(obj);
+    } catch (e) {}
+  };
+
+  let amtValidator = () => {
+    if (time == "") {
+      setAmtError("Enter a Valid Amount");
+    } else {
+      setAmtError("");
+      return true;
+    }
+    return false;
+  };
+
+  useEffect(() => {
+    getUser().then((data) => setUser(data));
+  }, []);
 
   useEffect(() => {
     ingredientService
@@ -43,62 +65,47 @@ const TestScreen = ({ navigation }) => {
 
   const update_ingredients = (item) => {
 
-    pantryService.getPantry(user.email)
-      .then((response) => {
-        let exists = false;
-        response.data.forEach((pantryIngredient) => {
-          if(pantryIngredient.ingredient.name == item.name){
-            exists = true;
-          }
-        })
-        if(exists){
-          Alert.alert("", "You already added this ingredient to your pantry!",
-          [
-            {
-              text: 'Ok',
-            },
-          ],
-          { cancelable: false })
-        }
-        else{
-          pantryService
-          .updateUser(user.email, item.id)
-          .then(response => Alert.alert(
-            '',
-            'This ingredient has been successfully added to your pantry.',
-            [
-              {
-                text: 'Ok',
-              },
-            ],
-            { cancelable: false },
-            console.log(response.data)
-          ))
-          .catch(err => console.log(err.response.data));
-        }
-      })
+          var newArray = [...exampleState , item];
+          console.log("ARRRRRRRRRRRR ", newArray)
+          setExampleState(newArray);
+
+  };
+
+  const Item = ({item}) => (
+    <View style={styles.myButton} backgroundColor="white">
+      <Text style={{fontWeight: 'bold', fontSize: 15}}>{item.name}</Text>
+      <View style={{flexDirection: 'row'}}>
+        <View style={styles.errorText}>
+          <Text style={{ color: 'red', fontWeight: 'bold' }}>{amtError}</Text>
+        </View>
+        <TextInput
+          style={styles.inputText}
+          placeholder="Amount"
+          onBlur={() => amtValidator()}
+          placeholderTextColor="lightgrey"
+          onChangeText={(text) => { setAmt(text) }}
+        />
+        <Picker
+          selectedValue={selectedValue}
+          style={{ height: 50, width: 150 }}
+          onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+        >
+          <Picker.Item label="Grams" value="grams" />
+          <Picker.Item label="Cups" value="cups" />
+        </Picker>
+
+      </View>
+    </View>
+  );
+
+  const renderItem = ({item}) => {
+    return <Item item={item} />;
   };
 
 
 
   return (
     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <View style={{ flex: 1, alignSelf: 'stretch' }} />
-      <View style={{ flex: 1, alignSelf: 'stretch' }}>
-        <Text>AAAA</Text>
-      </View>
-      <View style={{ flex: 1, alignSelf: 'stretch' }} >
-        <Text>BBBB</Text>
-      </View>
-      <View style={{ flex: 1, alignSelf: 'stretch' }} >
-        <Text>CCCC</Text>
-      </View>
-      <View style={{ flex: 1, alignSelf: 'stretch' }} >
-        <Text>DDDD</Text>
-      </View>
-      <View style={{ flex: 1, alignSelf: 'stretch' }} >
-        <Text>DDDD</Text>
-      </View>
 
 
 
@@ -136,12 +143,18 @@ const TestScreen = ({ navigation }) => {
           nestedScrollEnabled: true,
         }}
       />
+        {
+        // <FlatList
+        //   keyExtractor = {item => item.id}
+        //   data={exampleState}
+        //   renderItem = {item => (<Text>{item.item.text}</Text>)} />
+      }
 
         <FlatList
-          keyExtractor = {item => item.id}
           data={exampleState}
-          renderItem = {item => (<Text>{item.item.text}</Text>)} />
-
+          renderItem={renderItem}
+          keyExtractor={(item, index) => index.toString()}
+        />
 
       <Button
         title="Add element"
