@@ -1,63 +1,144 @@
 package com.capstone.project.model;
 
+
+
 import javax.persistence.*;
 
+
+
 @Entity
+
 public class RecipeToIngredient {
 
     @ManyToOne(cascade = {CascadeType.ALL})
     private Ingredient ingredient;
 
-    @Column
-    private Double weight;
 
     @Column
-    private String typeMeasurement;
+    private Double usCustomaryWeight;
+
+
+    @Column
+    private Double metricWeight;
+
+
+    @Column
+    private String usCustomaryUnitType;
+
+
+    @Column
+    private String metricUnitType;
+
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
 
+
     public RecipeToIngredient(){
 
+
+
     }
 
-    public RecipeToIngredient(Ingredient ingredient, Double weight, String typeMeasurement, long id) {
+    public RecipeToIngredient(Ingredient ingredient, Double USCustomaryWeight, Double metricWeight, String usCustomaryUnitType, String metricUnitType, long id) {
+
         this.ingredient = ingredient;
-        this.weight = weight;
-        this.typeMeasurement = typeMeasurement;
+
+        this.usCustomaryWeight = USCustomaryWeight;
+
+        this.metricWeight = metricWeight;
+
+        this.usCustomaryUnitType = usCustomaryUnitType;
+
+        this.metricUnitType = metricUnitType;
+
         this.id = id;
+
     }
+
 
     public Ingredient getIngredient() {
+
         return ingredient;
+
     }
+
 
     public void setIngredient(Ingredient ingredient) {
+
         this.ingredient = ingredient;
+
     }
 
-    public Double getWeight() {
-        return weight;
+
+    public Double getUsCustomaryWeight() {
+
+        return usCustomaryWeight;
+
     }
 
-    public void setWeight(Double weight) {
-        this.weight = weight;
+
+    public void setUsCustomaryWeight(Double usCustomaryWeight) {
+
+        this.usCustomaryWeight = usCustomaryWeight;
+
     }
 
-    public String getTypeMeasurement() {
-        return typeMeasurement;
+
+    public Double getMetricWeight() {
+
+        return metricWeight;
+
     }
 
-    public void setTypeMeasurement(String typeMeasurement) {
-        this.typeMeasurement = typeMeasurement;
+
+    public void setMetricWeight(Double metricWeight) {
+
+        this.metricWeight = metricWeight;
+
     }
+
+
+    public String getUsCustomaryUnitType() {
+
+        return usCustomaryUnitType;
+
+    }
+
+
+    public void setUsCustomaryUnitType(String usCustomaryUnitType) {
+
+        this.usCustomaryUnitType = usCustomaryUnitType;
+
+    }
+
+
+    public String getMetricUnitType() {
+
+        return metricUnitType;
+
+    }
+
+
+    public void setMetricUnitType(String metricUnitType) {
+
+        this.metricUnitType = metricUnitType;
+
+    }
+
 
     public long getId() {
+
         return id;
+
     }
 
+
     public void setId(long id) {
+
         this.id = id;
+
     }
+
 }
