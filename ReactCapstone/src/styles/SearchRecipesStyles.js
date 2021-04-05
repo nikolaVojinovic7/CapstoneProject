@@ -60,7 +60,7 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         marginRight: 15,
-        marginTop: 10,
+        marginTop: 12,
         marginBottom: 22,
 
         
@@ -79,13 +79,18 @@ export default StyleSheet.create({
         color: "white",
         fontSize: 14,
         position: "absolute",
-        bottom: 10,
-        paddingBottom: 2
+        bottom: 0,
+        paddingBottom: 2,
+        paddingTop: 2
       },
 
       headerText:{
         //fontFamily: 'PatrickHand-Regular',
         fontSize: 23,
         fontWeight: "bold"
+      },
+
+      categoryContainer:{
+        marginBottom: 22
       }
 });
