@@ -67,5 +67,11 @@ export default StyleSheet.create({
         height: 175,
         width: 175,
         padding: 5
+      },
+
+      plusBtn:{
+        position: "absolute",
+        right: 20,
+        top: 10
       }
 });
