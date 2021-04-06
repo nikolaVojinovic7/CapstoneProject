@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.Set;
 
 @RestController
@@ -89,17 +90,26 @@ public class UserController {
         return response;
     }
 
-    //get all users api
-    @GetMapping("sendEmail/{email}")
-    public void sendEmail(@PathVariable String email){
+    //send user forgotten password email
+    @PostMapping("/sendEmail/{email}")
+    public User sendEmail(@PathVariable String email){
+        String SALTCHARS = "abcdefjhijklmnopqrstuvwxyz1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 10) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String pwd = salt.toString();
         SimpleMailMessage msg = new SimpleMailMessage();
         msg.setTo(email);
         User user = userService.findByEmail(email);
-        String password = user.getPassword();
+        user.setPassword(pwd);
         msg.setSubject("Forgot Password: Bits To Bites App");
-        msg.setText("Your password is " + password);
-
-
+        msg.setText("Hello "+ user.getUsername() + "!"+ "\n\n" +
+                "Your temporary password is: " + pwd + "\n" + "Please log into the Bits to Bites App to " +
+                "change this password.");
         javaMailSender.send(msg);
+        return userService.save(user);
     }
 }
