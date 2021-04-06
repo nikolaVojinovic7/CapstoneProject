@@ -60,6 +60,8 @@ public class UserController {
     // create user rest api
     @PostMapping("/createUser")
     public User createUser(@RequestBody User user) {
+        user.setStatus("active");
+        user.setRole("user");
         return userService.save(user);
     }
 

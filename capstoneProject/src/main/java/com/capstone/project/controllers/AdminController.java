@@ -34,4 +34,12 @@ public class AdminController {
         user.setStatus("banned");
         return userService.save(user);
     }
+
+    // create user rest api
+    @PostMapping("/createAdmin")
+    public User createAdmin(@RequestBody User user) {
+        user.setStatus("active");
+        user.setRole("admin");
+        return userService.save(user);
+    }
 }

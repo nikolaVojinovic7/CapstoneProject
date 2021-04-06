@@ -27,8 +27,6 @@ public class UserService implements UserServiceAbs{
 
     @Override
     public User save(User user) {
-        user.setStatus("active");
-        user.setRole("user");
         return userRepository.save(user);
     }
 
