@@ -35,6 +35,18 @@ public class AdminController {
         return userService.save(user);
     }
 
+    // update employee rest api
+    @PutMapping("/unbanUser/{email}")
+    public User unbanUser(@PathVariable String email) {
+
+        User user = userService.findByEmail(email);
+        if(user == null){
+            throw new ResourceNotFoundException("There is no user with username" + email);
+        }
+        user.setStatus("active");
+        return userService.save(user);
+    }
+
     // create user rest api
     @PostMapping("/createAdmin")
     public User createAdmin(@RequestBody User user) {
