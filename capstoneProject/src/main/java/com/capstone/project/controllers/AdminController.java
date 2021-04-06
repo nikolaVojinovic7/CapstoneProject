@@ -25,7 +25,7 @@ public class AdminController {
 
     // update employee rest api
     @PutMapping("/banUser/{email}")
-    public User updateUser(@PathVariable String email) {
+    public User banUser(@PathVariable String email) {
 
         User user = userService.findByEmail(email);
         if(user == null){
