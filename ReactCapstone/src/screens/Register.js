@@ -72,15 +72,15 @@ const RegisterScreen = ({ navigation }) => {
 
   //validate email
   let emailValidator = () => {
-    if (email == "") {
-      setEmailError("Please enter a valid email.");
-    } else if (email.indexOf('@') == -1) {
-      setEmailError("Please enter a valid email.");
-    } else {
-      setEmailError("");
-      return true;
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let isValid = re.test(String(email).toLowerCase());
+    if(!isValid){
+      setEmailError("Enter a valid email.");
     }
-    return false;
+    else{
+      setEmailError("");
+    }
+    return isValid;
   };
 
   //validate password

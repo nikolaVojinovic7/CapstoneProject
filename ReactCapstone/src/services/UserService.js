@@ -25,7 +25,11 @@ class UserService {
     }
 
     deleteUser(username){
-        return axios.delete(USER_API_BASE_URL + '/' + 'deleteUser' + '/' + username);
+        return axios.delete(USER_API_BASE_URL + 'deleteUser' + '/' + username);
+    }
+
+    sendEmail(email){
+        return axios.post(USER_API_BASE_URL + 'sendEmail' + '/' + email)
     }
 }
 
