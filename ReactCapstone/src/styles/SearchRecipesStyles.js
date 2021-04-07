@@ -60,19 +60,34 @@ export default StyleSheet.create({
         flex: 1,
         flexDirection: 'row',
         marginRight: 15,
-        marginTop: 10,
-        marginBottom: 22,
-
-        
+        marginTop: 12,
       },
+
       recipeImage: {
-        height: 165,
+        height: 155,
         width: 165,
         padding: 5
       },
+      recipeName:{
+        textAlign: "center",
+        backgroundColor: 'rgba(52, 52, 52, 0.7)',
+        width: 165,
+        justifyContent: "center",
+        color: "white",
+        fontSize: 14,
+        position: "absolute",
+        bottom: 0,
+        paddingBottom: 2,
+        paddingTop: 2
+      },
 
       headerText:{
-        fontFamily: 'PatrickHand-Regular',
-        fontSize: 25,
+        //fontFamily: 'PatrickHand-Regular',
+        fontSize: 23,
+        fontWeight: "bold"
+      },
+
+      categoryContainer:{
+        marginBottom: 45
       }
 });

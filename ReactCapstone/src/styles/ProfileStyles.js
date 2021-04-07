@@ -17,6 +17,7 @@ export default StyleSheet.create({
       searchContainer: {
         width:"100%",
         flex: 1,
+        minHeight: 60
       },
       searchHeader: {
         width:"100%",

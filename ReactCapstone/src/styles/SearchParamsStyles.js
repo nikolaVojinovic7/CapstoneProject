@@ -59,7 +59,7 @@ export default StyleSheet.create({
       },
       category: {
         fontWeight: "700",
-        fontSize: 19,
+        fontSize: 20,
         marginTop: 20,
         marginBottom: 5
       },
@@ -77,7 +77,12 @@ export default StyleSheet.create({
       },
 
       categoryContainer: {
-        marginBottom: 8
+        marginBottom: 10
+      },
+
+      itemText: {
+        fontSize: 15,
+        color: "white",
       }
       
 

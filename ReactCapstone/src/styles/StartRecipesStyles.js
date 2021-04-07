@@ -56,9 +56,7 @@ export default StyleSheet.create({
     favBtn:{
       position: 'absolute',
       top: 20,
-      left: 330,
-      width: 40,
-      height: 40,
+      right: 20,
     },
 
     infoContainer:{
@@ -103,7 +101,9 @@ export default StyleSheet.create({
         marginRight: 25
     },
 
-    //-----------------------------------------------------
+    directionsStyle:{
+      paddingBottom: 20
+    },
 
     centeredView: {
         flex: 1,
@@ -178,8 +178,6 @@ export default StyleSheet.create({
       fontSize: 16,
       color: "blue"
     },
-
-    //-----------------------------------------------------
 
     approveButton: {
       margin: 25,

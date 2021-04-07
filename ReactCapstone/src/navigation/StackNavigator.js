@@ -16,6 +16,7 @@ import AdminStartRecipeScreen from '../screens/AdminStartRecipe.js';
 import AdminManageUploadsScreen from "../screens/AdminManageUploads.js";
 import AdminManageUserScreen from "../screens/AdminManageUser.js";
 import AppTab from '../navigation/TabNavigator.js';
+import UploadRecipeScreen from '../screens/UploadRecipe.js';
 
 const Stack = createStackNavigator();
 
@@ -34,7 +35,7 @@ const AppStack = () => {
                 },
                 headerTransparent: true,
               }}
-  
+
            />
            <Stack.Screen
              name="Register"
@@ -102,7 +103,7 @@ const AppStack = () => {
             options={{
               headerShown: false, // change this to `false`
             }}/>
-  
+
             <Stack.Screen
              name="SearchParameters"
              component={SearchParametersScreen}
@@ -175,9 +176,21 @@ const AppStack = () => {
               headerTransparent: true,
             }}
         />
+        <Stack.Screen
+         name="UploadRecipe"
+         component={UploadRecipeScreen}
+         options={{
+             title: '',
+             headerStyle: {
+               elevation: 0,
+               shadowOpacity: 0
+             },
+             headerTransparent: true,
+           }}
+          />
         </Stack.Navigator>
       </NavigationContainer>
     );
   };
-  
+
   export {AppStack};

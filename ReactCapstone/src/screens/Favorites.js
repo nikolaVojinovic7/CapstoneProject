@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import styles from "../styles/FavoritesStyles.js"
+import styles from "../styles/FavoritesStyles.js";
+import favoriteService from '../services/FavoriteService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   StyleSheet,
@@ -18,24 +20,86 @@ import {
 
 const FavoritesScreen = ({ route, navigation }) => {
 
-  let [recipeParam, setRecipeParam] = useState();
-  let [recipeData, setRecipeData] = useState({});
-  let [favKey, setFavKey] = useState();
+  let [recipeData, setRecipeData] = useState([]);
+  const [user, setUser] = useState({});
+  let [appertizersSides, setAppetizersSides] = useState({});
+  let [mains, setMains] = useState({});
+  let [snacksDesserts, setSnacksDesserts] = useState({});
 
-  // const Item = ({ item, onPress }) => (
-  //     <TouchableOpacity onPress={ onPress } style={styles.item}>
-  //       <Image source={{ uri: item.recipe_imageUrl }} style={styles.recipeImage} />
-  //     </TouchableOpacity>
-  //   );
+  const Item = ({ item, onPress }) => (
+      <TouchableOpacity onPress={ onPress } style={styles.item}>
+        <Image source={{ uri: item.imageUrl }} style={styles.recipeImage} />
+        <Text style={styles.recipeName}>{item.name}</Text>
+      </TouchableOpacity>
+    );
 
-  //   const renderItem = ({ item }) => {
-  //     return (
-  //       <Item
-  //         item={item}
-  //         onPress={() => { navigation.navigate('StartRecipe', { item }); }}
-  //       />
-  //     );
-  //   };
+    const renderItem = ({ item }) => {
+      return (
+        <Item
+          item={item}
+          onPress={() => { navigation.navigate('StartRecipe', { item }); }}
+        />
+      );
+    };
+
+    const getUser = async () => {
+      try {
+        const obj = await AsyncStorage.getItem('@user');
+        return JSON.parse(obj);
+      } catch (e) {}
+    };
+
+  useEffect(() => {
+
+      getUser().then((data) => {
+        setUser(data);
+
+      favoriteService.getFavorites(data.email).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData(allRecipes);
+        sortSearchResults(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!' + err,
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+
+    })
+
+  }, []);
+
+  const sortSearchResults = (arr) => {
+    let AppSides = [];
+    let main = [];
+    let snacksDsrt = [];
+
+    arr.forEach((recipe) => {
+      recipe.linkedCategories.forEach((category) => {
+        if (category.name == 'appetizer' || category.name == 'side') {
+          AppSides.push(recipe);
+        }
+        if (category.name == 'main') {
+          main.push(recipe);
+        }
+        if (category.name == 'snack' || category.name == 'dessert') {
+          snacksDsrt.push(recipe);
+        }
+      });
+    });
+    setAppetizersSides(AppSides);
+    setMains(main);
+    setSnacksDesserts(snacksDsrt);
+    console.log(appertizersSides)
+    console.log(mains)
+    console.log(snacksDesserts)
+  };
+
 
   return (
     <View style={styles.backgroundContainer}>
@@ -44,7 +108,7 @@ const FavoritesScreen = ({ route, navigation }) => {
           <View style={styles.searchContainer}>
           <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
               <View style={styles.searchHeader}>
-                  <Text style={styles.searchText}>Favourites</Text>
+                  <Text style={styles.searchText}>Favorites</Text>
                   <View style={styles.inputView} >
                       <TextInput
                         style={styles.inputText}
@@ -57,11 +121,11 @@ const FavoritesScreen = ({ route, navigation }) => {
           </View>
           <View style={styles.scrollContainer}>
             <View style={styles.scroll}>
-              {/* <FlatList
+              { <FlatList
                 data={recipeData}
                 renderItem={renderItem}
                 keyExtractor={(item, index) => index.toString()}
-              /> */}
+              /> }
             </View>
           </View>
         </View>

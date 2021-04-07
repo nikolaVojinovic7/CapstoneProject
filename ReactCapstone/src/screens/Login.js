@@ -66,21 +66,21 @@ const LoginScreen = ({ navigation }) => {
 
   //validate email
   let emailValidator = () => {
-    if (email == "") {
-      setEmailError("Enter a Valid Email");
-    } else if (email.indexOf('@') == -1) {
-      setEmailError("Enter a Valid Email");
-    } else {
-      setEmailError("");
-      return true;
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let isValid = re.test(String(email).toLowerCase());
+    if(!isValid){
+      setEmailError("Enter a valid email.");
     }
-    return false;
+    else{
+      setEmailError("");
+    }
+    return isValid;
   };
 
   //validate password
   let passwordValidator = () => {
     if (password == "") {
-      setPasswordError("Enter a Valid Password");
+      setPasswordError("Enter a Valid Password.");
     } else {
       setPasswordError("");
       return true;
@@ -97,7 +97,7 @@ const LoginScreen = ({ navigation }) => {
             source={require("../assets/images/logo/bitstobiteslogo.png")}
           />
           <View style={styles.errorText}>
-            <Text style={{ color: 'red', fontWeight: 'bold' }}>{emailError}</Text>
+            <Text style={{ color: 'red', fontWeight: 'bold',  fontSize: 16 }}>{emailError}</Text>
           </View>
           <View style={styles.inputView} >
             <TextInput
@@ -108,7 +108,7 @@ const LoginScreen = ({ navigation }) => {
               onChangeText={(text) => { setEmail(text) }}
             />
           </View>
-          <Text style={{ color: 'red', fontWeight: 'bold' }}>{passwordError}</Text>
+          <Text style={{ color: 'red', fontWeight: 'bold', fontSize: 16 }}>{passwordError}</Text>
           <View style={styles.inputView} >
             <TextInput
               secureTextEntry

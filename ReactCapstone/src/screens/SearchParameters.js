@@ -76,7 +76,7 @@ const SearchParametersScreen = ({route, navigation}) => {
   //category button view
   const Item = ({item, onPress, style}) => (
     <TouchableOpacity onPress={onPress} style={[styles.myButton, style]}>
-      <Text>{item.title}</Text>
+      <Text style={styles.itemText}>{item.title}</Text>
     </TouchableOpacity>
   );
 

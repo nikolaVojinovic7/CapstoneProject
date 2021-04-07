@@ -53,7 +53,7 @@ const ProfileScreen = ({ navigation }) => {
                    <Text style={styles.logoutText}>Edit Username</Text>
                  </TouchableOpacity>
                  <View style={styles.inputView}>
-                   <Text>{"Email:                  "}
+                   <Text>{"Email:         "}
                    <Text>{user.email}</Text>
                    </Text>
                  </View>
