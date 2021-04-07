@@ -25,10 +25,11 @@ export default StyleSheet.create({
         flex: 1,
       },
       searchText: {
+        fontFamily: 'PatrickHand-Regular',
         textAlign: 'center',
-        marginBottom:20,
-        fontSize: 30,
-        fontWeight: 'bold',
+        marginTop: 20,
+        marginBottom: 20,
+        fontSize: 40,
         color: 'white',
       },
       profileContainer: {
@@ -48,6 +49,7 @@ export default StyleSheet.create({
       inputContainer: {
         width:"100%",
         height:200,
+
         marginBottom:20,
         justifyContent:"center",
         padding:20
@@ -78,7 +80,7 @@ export default StyleSheet.create({
       editBtn: {
         width: '30%',
         backgroundColor: '#7C9262',
-        height: 30,
+        height: 35,
         alignItems: 'center',
         justifyContent: 'center',
         marginBottom: 20,

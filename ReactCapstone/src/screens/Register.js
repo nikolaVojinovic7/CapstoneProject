@@ -39,6 +39,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   }
 
+  //register new user account
   let registerUser = () => {
     let user = { username: username, email: email, password: password };
     console.log('user => ' + JSON.stringify(user));
@@ -58,6 +59,7 @@ const RegisterScreen = ({ navigation }) => {
       .catch(err => console.log(err));
   }
 
+  //validate username
   let usernameValidator = () => {
     if (username == "") {
       setUsernameError("Please enter a valid username.");
@@ -68,6 +70,7 @@ const RegisterScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate email
   let emailValidator = () => {
     if (email == "") {
       setEmailError("Please enter a valid email.");
@@ -80,6 +83,7 @@ const RegisterScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate password
   let passwordValidator = () => {
     if (password == "") {
       setPasswordError("Please enter a valid password.");
@@ -90,6 +94,7 @@ const RegisterScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate password match
   let confirmPasswordValidator = () => {
     if (confirmPassword == "") {
       setConfirmPasswordError("Please enter a valid password.");
@@ -166,10 +171,10 @@ const RegisterScreen = ({ navigation }) => {
           </View>
 
           <TouchableOpacity style={styles.registerBtn} onPress={() => onSubmit()}>
-            <Text style={styles.registerText}>REGISTER</Text>
+            <Text style={styles.registerText}>Register</Text>
           </TouchableOpacity>
-          <Text style={styles.loginText}> {"Already have an account? "}
-            <Text style={styles.signupText} onPress={() => {
+          <Text style={styles.signinText1}> {"Already have an account? "}
+            <Text style={styles.signinText} onPress={() => {
               navigation.navigate('Login');
             }}>
               Sign In</Text>

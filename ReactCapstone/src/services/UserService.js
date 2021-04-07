@@ -13,7 +13,7 @@ class UserService {
     }
 
     getUserByEmail(email){
-        return axios.get(USER_API_BASE_URL + 'users' + '/' + email);
+        return axios.get(USER_API_BASE_URL + 'users' + '/' + 'email' + '/' + email);
     }
 
     verifyUser(email, password){

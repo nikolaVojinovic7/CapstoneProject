@@ -1,5 +1,7 @@
 import React, {useState} from 'react';
 import styles from "../styles/EditPasswordStyles.js"
+import userService from "../services/UserService.js"
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   StyleSheet,
@@ -15,9 +17,10 @@ import {
   Alert,
 } from 'react-native';
 
-const EditPasswordScreen = ({ navigation }) => {
+const EditPasswordScreen = ({ route, navigation }) => {
 
-  let [oldPassword, setOldPassword] = useState(global.password);
+  let [userData, setUserData] = useState(route.params.user)
+  let [oldPassword, setOldPassword] = useState(route.params.user.password);
   let [oldPasswordError, setOldPasswordError] = useState('');
   let [newPassword, setNewPassword] = useState('');
   let [newPasswordError, setNewPasswordError] = useState('');
@@ -25,6 +28,7 @@ const EditPasswordScreen = ({ navigation }) => {
   let [confirmPasswordError, setConfirmPasswordError] = useState('');
 
 
+  //validate old password
   let oldPasswordValidator = () => {
     if(oldPassword==""){
       setOldPasswordError("Enter a Valid Password");
@@ -35,6 +39,7 @@ const EditPasswordScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate new password
   let newPasswordValidator = () => {
     if(newPassword==""){
       setNewPasswordError("Enter a Valid Password");
@@ -45,6 +50,7 @@ const EditPasswordScreen = ({ navigation }) => {
     return false;
   };
 
+  //confirm that passwords match
   let confirmPasswordValidator = () => {
     if(confirmPassword==""){
       setConfirmPasswordError("Enter a Valid Password");
@@ -56,6 +62,35 @@ const EditPasswordScreen = ({ navigation }) => {
     }
     return false;
   };
+
+  //update user data in local storage
+  const updateUserData = async (value) => {
+    try {
+      const obj = JSON.stringify(value)
+      await AsyncStorage.setItem('@user', obj)
+    } catch (e) {
+    }
+  }
+
+  let onSubmit = () => {
+    oldPasswordValidator();
+    newPasswordValidator();
+    confirmPasswordValidator();
+    if (oldPasswordValidator() & newPasswordValidator() & confirmPasswordValidator()) {
+      update_user();
+      navigation.navigate('Profile')
+    }
+  }
+
+  //update user data in database
+  let update_user = () => {
+    let user = {username: userData.username, email: userData.email, password: newPassword};
+    console.log('user => ' + JSON.stringify(user));
+    userService.updateUser(user, userData.email)
+    .then(response => console.log(response),
+    updateUserData(user))
+    .catch(err => console.log(err));
+  }
 
     return (
       <View style={styles.backgroundContainer}>
@@ -116,7 +151,7 @@ const EditPasswordScreen = ({ navigation }) => {
                    />
                  </View>
                  <TouchableOpacity
-                   style={styles.editBtn}>
+                   style={styles.editBtn} onPress={() => onSubmit()}>
                    <Text style={styles.logoutText}>SAVE</Text>
                  </TouchableOpacity>
             </View>

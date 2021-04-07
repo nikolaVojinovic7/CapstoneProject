@@ -13,6 +13,7 @@ const ProfileScreen = ({ navigation }) => {
 
     const [user, setUser] = useState({})
 
+    ////retrieve stored logged in user data
     const getData = async () => {
       try {
         const obj = await AsyncStorage.getItem('@user')
@@ -21,6 +22,7 @@ const ProfileScreen = ({ navigation }) => {
       }
     }
 
+    //get logged in user data
     useEffect(() => {
       getData().then((data) => setUser(data))
     })
