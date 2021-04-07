@@ -35,7 +35,7 @@ const DashboardScreen = ({ navigation }) => {
       return (
         <Item
           item={item}
-          onPress={() => { navigation.navigate('StartRecipe', { item }); }}
+          onPress={() => { navigation.navigate('StartRecipe', { item, user }); }}
         />
       );
     };
