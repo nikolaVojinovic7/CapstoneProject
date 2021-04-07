@@ -8,8 +8,6 @@ import MyPantryScreen from '../screens/MyPantry.js';
 import FavoritesScreen from '../screens/Favorites.js';
 import AdminScreen from '../screens/AdminDashboard';
 
-import userService from '../services/UserService.js';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 
@@ -37,6 +35,7 @@ const AppTab = ({navigation}) => {
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
+
             /* https://oblador.github.io/react-native-vector-icons/ */
             if (route.name === 'Dashboard') {
               iconName = focused ? 'search' : 'search-outline';
