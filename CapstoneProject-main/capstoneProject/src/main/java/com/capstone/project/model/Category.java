@@ -13,13 +13,10 @@ public class Category {
     @Column(nullable = false, name="name")
     private String name;
 
-    @ManyToMany
-    private Set<Recipe> linkedRecipes;
 
-    public Category(long id, String name, Set<Recipe> linkedRecipes) {
+    public Category(long id, String name) {
         this.id = id;
         this.name = name;
-        this.linkedRecipes = linkedRecipes;
     }
 
     public Category() {
@@ -42,11 +39,4 @@ public class Category {
         this.name = name;
     }
 
-    public Set<Recipe> getLinkedRecipes() {
-        return linkedRecipes;
-    }
-
-    public void setLinkedRecipes(Set<Recipe> linkedRecipes) {
-        this.linkedRecipes = linkedRecipes;
-    }
 }

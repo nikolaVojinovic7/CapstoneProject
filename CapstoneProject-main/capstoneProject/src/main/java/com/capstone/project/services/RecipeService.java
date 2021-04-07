@@ -2,6 +2,7 @@ package com.capstone.project.services;
 
 import com.capstone.project.model.Ingredient;
 import com.capstone.project.model.Recipe;
+import com.capstone.project.model.RecipeToIngredient;
 import com.capstone.project.repositories.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,18 @@ public class RecipeService implements RecipeServiceAbs{
     }
 
     @Override
-    public Recipe addIngredientToRecipe(Ingredient ingredient, Recipe recipe) {
+    public Recipe addIngredientToRecipe(RecipeToIngredient ingredient, Recipe recipe) {
         recipe.addIngredientItem(ingredient);
         return save(recipe);
+    }
+
+    @Override
+    public Recipe findByName(String name) {
+        return recipeRepository.findByName(name);
+    }
+
+    @Override
+    public Set<Recipe> findAllByName(String name) {
+        return recipeRepository.findAllByName(name);
     }
 }

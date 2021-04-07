@@ -1,6 +1,7 @@
 package com.capstone.project.model;
 
 import javax.persistence.*;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
@@ -20,20 +21,18 @@ public class User {
     @Column(nullable = false, name="password")
     private String password;
 
-    @ManyToMany
-    private Set<Ingredient> pantryIngredients;
+    @Column(name="status")
+    private String status;
 
-    //no arg constructor
-    public User(){
-    }
-    //constructor
-    public User(long id, String username, String password, String email, Set<Ingredient> pantryIngredients) {
-        this.id = id;
-        this.username = username;
-        this.password = password;
-        this.email = email;
-        this.pantryIngredients = pantryIngredients;
-    }
+    @Column(name="role")
+    private String role;
+
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<Pantry> pantryIngredients = new HashSet<Pantry>();
+
+    @ManyToMany
+    private Set<Recipe> favorites;
+
 
     //getters and setters
     public String getUsername() {
@@ -68,15 +67,52 @@ public class User {
         this.email = email;
     }
 
-    public Set<Ingredient> getPantryIngredients() {
+    public Set<Pantry> getPantryIngredients() {
         return pantryIngredients;
     }
 
-    public void setPantryIngredients(Set<Ingredient> pantryIngredients) {
+    public void setPantryIngredients(Set<Pantry> pantryIngredients) {
         this.pantryIngredients = pantryIngredients;
     }
 
-    public void addIngredientItem(Ingredient item){
-        pantryIngredients.add(item);
+    public void addIngredientItem(Pantry item){
+        this.pantryIngredients.add(item);
     }
+
+    public void removePantryItem(Pantry item){
+        this.pantryIngredients.remove(item);
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
+    public Set<Recipe> getFavorites() {
+        return favorites;
+    }
+
+    public void setFavorites(Set<Recipe> favorites) {
+        this.favorites = favorites;
+    }
+
+    public void addFavoritesItem(Recipe item){
+        this.favorites.add(item);
+    }
+
+    public void removeFavoritesItem(Recipe item){
+        this.favorites.remove(item);
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
 }
