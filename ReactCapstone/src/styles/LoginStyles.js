@@ -82,5 +82,6 @@ export default StyleSheet.create({
       },
       errorText:{
         alignItems:"center",
+        fontSize: 17
       }
 });

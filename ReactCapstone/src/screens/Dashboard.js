@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/DashboardStyles.js"
 import recipeService from '../services/RecipeService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import {
   ScrollView,
   View,
@@ -16,6 +18,22 @@ const DashboardScreen = ({ navigation }) => {
 
   let [obj, setObj] = useState('');
   let [recipeData, setRecipeData] = useState({});
+  const [user, setUser] = useState({});
+
+  const getUser = async () => {
+    try {
+      const obj = await AsyncStorage.getItem('@user');
+      return JSON.parse(obj);
+    } catch (e) {}
+  };
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    getUser().then((data) => setUser(data));
+    });
+    return unsubscribe;
+  }, [navigation]);
+
 
   const Item = ({ item, onPress, style }) => (
     <TouchableOpacity onPress={onPress} style={[styles.item, style]}>
@@ -27,7 +45,7 @@ const DashboardScreen = ({ navigation }) => {
     return (
       <Item
         item={item}
-        onPress={() => { navigation.navigate('StartRecipe', { item }); }}
+        onPress={() => { navigation.navigate('StartRecipe', { item, user }); }}
       />
     );
   };
@@ -57,6 +75,9 @@ const DashboardScreen = ({ navigation }) => {
             <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
               <View style={styles.searchHeader}>
                 <Text style={styles.searchText}>Discover</Text>
+                <TouchableOpacity style={styles.plusBtn} onPress={() => { navigation.navigate('UploadRecipe')}}>
+          <Ionicon name="add" size={50} color="lightgreen" />
+        </TouchableOpacity>
                 <View style={styles.inputView} >
                   <TextInput
                     style={styles.inputText}
@@ -65,7 +86,7 @@ const DashboardScreen = ({ navigation }) => {
                     returnKeyType="search"
                     onChangeText={(text) => { setObj(text) }}
                     onSubmitEditing={() => {
-                      navigation.navigate('SearchParameters', { obj });
+                      navigation.navigate('SearchParameters', { obj, user });
                     }}
                   />
                 </View>

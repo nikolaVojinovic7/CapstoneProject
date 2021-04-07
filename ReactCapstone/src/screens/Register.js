@@ -39,6 +39,7 @@ const RegisterScreen = ({ navigation }) => {
     }
   }
 
+  //register new user account
   let registerUser = () => {
     let user = { username: username, email: email, password: password };
     console.log('user => ' + JSON.stringify(user));
@@ -58,6 +59,7 @@ const RegisterScreen = ({ navigation }) => {
       .catch(err => console.log(err));
   }
 
+  //validate username
   let usernameValidator = () => {
     if (username == "") {
       setUsernameError("Please enter a valid username.");
@@ -68,18 +70,20 @@ const RegisterScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate email
   let emailValidator = () => {
-    if (email == "") {
-      setEmailError("Please enter a valid email.");
-    } else if (email.indexOf('@') == -1) {
-      setEmailError("Please enter a valid email.");
-    } else {
-      setEmailError("");
-      return true;
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let isValid = re.test(String(email).toLowerCase());
+    if(!isValid){
+      setEmailError("Enter a valid email.");
     }
-    return false;
+    else{
+      setEmailError("");
+    }
+    return isValid;
   };
 
+  //validate password
   let passwordValidator = () => {
     if (password == "") {
       setPasswordError("Please enter a valid password.");
@@ -90,6 +94,7 @@ const RegisterScreen = ({ navigation }) => {
     return false;
   };
 
+  //validate password match
   let confirmPasswordValidator = () => {
     if (confirmPassword == "") {
       setConfirmPasswordError("Please enter a valid password.");

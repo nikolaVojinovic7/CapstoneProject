@@ -23,10 +23,10 @@ export default StyleSheet.create({
         flex: 1,
       },
       searchText: {
+        fontFamily: 'PatrickHand-Regular',
         textAlign: 'center',
         marginBottom: 20,
-        fontSize: 18,
-        fontWeight: 'bold',
+        fontSize: 27,
         color: 'white',
       },
       scrollContainer: {
@@ -58,10 +58,10 @@ export default StyleSheet.create({
         fontWeight: 'bold',
       },
       category: {
-        fontWeight: 'bold',
-        fontSize: 18,
-        marginTop: 15,
-        marginBottom: 11
+        fontWeight: "700",
+        fontSize: 20,
+        marginTop: 20,
+        marginBottom: 5
       },
       categories: {
         flexDirection: 'row',
@@ -74,6 +74,16 @@ export default StyleSheet.create({
         backgroundColor: "#7C9262",
         marginRight:11,
         marginTop: 5
+      },
+
+      categoryContainer: {
+        marginBottom: 10
+      },
+
+      itemText: {
+        fontSize: 15,
+        color: "white",
       }
+      
 
 });
