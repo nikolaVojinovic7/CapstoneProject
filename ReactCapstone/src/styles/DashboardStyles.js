@@ -56,16 +56,29 @@ export default StyleSheet.create({
       headerText: {
         height: 20,
         fontWeight: 'bold',
+        textTransform: 'capitalize',
       },
       item: {
         flex: 1,
         flexDirection: 'row',
-        padding: 10,
-        marginVertical: 8,
+        marginRight: 15,
+        marginTop: 12,
       },
       recipeImage: {
-        height: 175,
-        width: 175,
+        height: 165,
+        width: 165,
         padding: 5
-      }
+      },
+      recipeName:{
+        textAlign: "center",
+        backgroundColor: 'rgba(52, 52, 52, 0.7)',
+        width: 165,
+        justifyContent: "center",
+        color: "white",
+        fontSize: 14,
+        position: "absolute",
+        bottom: 0,
+        paddingBottom: 2,
+        paddingTop: 2
+      },
 });

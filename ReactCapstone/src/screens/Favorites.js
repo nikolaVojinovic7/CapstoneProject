@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/FavoritesStyles.js";
 import favoriteService from '../services/FavoriteService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   SafeAreaView,
   StyleSheet,
@@ -20,10 +21,15 @@ import {
 const FavoritesScreen = ({ route, navigation }) => {
 
   let [recipeData, setRecipeData] = useState([]);
+  const [user, setUser] = useState({});
+  let [appertizersSides, setAppetizersSides] = useState({});
+  let [mains, setMains] = useState({});
+  let [snacksDesserts, setSnacksDesserts] = useState({});
 
   const Item = ({ item, onPress }) => (
       <TouchableOpacity onPress={ onPress } style={styles.item}>
         <Image source={{ uri: item.imageUrl }} style={styles.recipeImage} />
+        <Text style={styles.recipeName}>{item.name}</Text>
       </TouchableOpacity>
     );
 
@@ -36,22 +42,64 @@ const FavoritesScreen = ({ route, navigation }) => {
       );
     };
 
+    const getUser = async () => {
+      try {
+        const obj = await AsyncStorage.getItem('@user');
+        return JSON.parse(obj);
+      } catch (e) {}
+    };
+
   useEffect(() => {
-    favoriteService.getFavorites("a@a").then((res) => {
-      let allRecipes = res.data;
-      setRecipeData(allRecipes);
+
+      getUser().then((data) => {
+        setUser(data);
+
+      favoriteService.getFavorites(data.email).then((res) => {
+        let allRecipes = res.data;
+        setRecipeData(allRecipes);
+        sortSearchResults(allRecipes);
+      })
+      .catch(err => Alert.alert(
+        'Error',
+        'No recipes found!' + err,
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false }
+      ))
+
     })
-    .catch(err => Alert.alert(
-      'Error',
-      'No recipes found!' + err,
-      [
-        {
-          text: 'Ok',
-        },
-      ],
-      { cancelable: false }
-    ))
+
   }, []);
+
+  const sortSearchResults = (arr) => {
+    let AppSides = [];
+    let main = [];
+    let snacksDsrt = [];
+
+    arr.forEach((recipe) => {
+      recipe.linkedCategories.forEach((category) => {
+        if (category.name == 'appetizer' || category.name == 'side') {
+          AppSides.push(recipe);
+        }
+        if (category.name == 'main') {
+          main.push(recipe);
+        }
+        if (category.name == 'snack' || category.name == 'dessert') {
+          snacksDsrt.push(recipe);
+        }
+      });
+    });
+    setAppetizersSides(AppSides);
+    setMains(main);
+    setSnacksDesserts(snacksDsrt);
+    console.log(appertizersSides)
+    console.log(mains)
+    console.log(snacksDesserts)
+  };
+
 
   return (
     <View style={styles.backgroundContainer}>

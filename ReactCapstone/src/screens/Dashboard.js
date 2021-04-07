@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/DashboardStyles.js"
 import recipeService from '../services/RecipeService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ScrollView,
   View,
@@ -16,21 +17,20 @@ import {
 const DashboardScreen = ({ navigation }) => {
 
   let [obj, setObj] = useState('');
-  let [recipeData, setRecipeData] = useState({});
-
   let [recipeData1, setRecipeData1] = useState({});
   let [recipeData2, setRecipeData2] = useState({});
   let [recipeData3, setRecipeData3] = useState({});
   let [pantryData, setPantryData] = useState([]);
+  const [user, setUser] = useState({});
 
   const Item = ({ item, onPress }) => (
       <TouchableOpacity onPress={ onPress } style={styles.item}>
         <Image source={{ uri: item.imageUrl }} style={styles.recipeImage} />
+        <Text style={styles.recipeName}>{item.name}</Text>
       </TouchableOpacity>
     );
 
     const renderItem = ({ item }) => {
-
       return (
         <Item
           item={item}
@@ -39,19 +39,25 @@ const DashboardScreen = ({ navigation }) => {
       );
     };
 
+    const getUser = async () => {
+      try {
+        const obj = await AsyncStorage.getItem('@user');
+        return JSON.parse(obj);
+      } catch (e) {}
+    };
+
   useEffect(() => {
-    recipeService.searchThreeIngredients("a@a").then((res) => {
+    getUser().then((data) => {
+      setUser(data);
+
+    recipeService.searchThreeIngredients(data.email).then((res) => {
       let allPantry = res.data;
-      //setPantryData(allPantry)
+
       pantryData[0] = allPantry[0]
       pantryData[1] = allPantry[1]
       pantryData[2] = allPantry[2]
 
-      console.log(allPantry)
-
-
-
-      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[0]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient(data.email+"&"+pantryData[0]).then((res) => {
         let allRecipes = res.data;
         setRecipeData1(allRecipes);
       })
@@ -66,7 +72,7 @@ const DashboardScreen = ({ navigation }) => {
         { cancelable: false }
       ))
 
-      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[1]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient(data.email+"&"+pantryData[1]).then((res) => {
         let allRecipes = res.data;
         setRecipeData2(allRecipes);
       })
@@ -81,7 +87,7 @@ const DashboardScreen = ({ navigation }) => {
         { cancelable: false }
       ))
 
-      recipeService.searchRecipesBasedOnIngredient("a@a"+"&"+pantryData[2]).then((res) => {
+      recipeService.searchRecipesBasedOnIngredient(data.email+"&"+pantryData[2]).then((res) => {
         let allRecipes = res.data;
         setRecipeData3(allRecipes);
       })
@@ -95,24 +101,6 @@ const DashboardScreen = ({ navigation }) => {
         ],
         { cancelable: false }
       ))
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
     })
     .catch(err => Alert.alert(
       'Error',
@@ -125,8 +113,12 @@ const DashboardScreen = ({ navigation }) => {
       { cancelable: false }
     ))
 
-
+  });
   }, []);
+
+  const Capitalize = (str) => {
+    return str.charAt(0).toUpperCase() + str.slice(1);
+  };
 
   return (
     <View style={styles.backgroundContainer}>
@@ -152,42 +144,33 @@ const DashboardScreen = ({ navigation }) => {
             </ImageBackground>
           </View>
           <View style={styles.scrollContainer}>
-
-
-            <TouchableOpacity onPress={() => {
-              navigation.navigate('UploadRecipe', {recipeData2});
-            }} style={styles.item}>
-              <Image source={require("../assets/images/background/light-wood.jpg")} style={styles.recipeImage} />
-            </TouchableOpacity>
-
-
             <ScrollView>
               <View style={styles.scroll}>
-                <Text style={styles.headerText}>Use your {pantryData[0]}</Text>
-                { <FlatList
+                <Text style={styles.headerText}>{ pantryData[0] != null ? ("Use Your " + pantryData[0]) : ""}</Text>
+                { pantryData[0] != null ? ( <FlatList
                   horizontal
                   data={ recipeData1 }
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
-                /> }
+                />): null}
               </View>
               <View style={styles.scroll}>
-                <Text style={styles.headerText}>Use your {pantryData[1]}</Text>
-                { <FlatList
+                <Text style={styles.headerText}>{ pantryData[1] != null ? ("Use Your " + pantryData[1]) : ""}</Text>
+                { pantryData[1] != null ? ( <FlatList
                   horizontal
                   data={ recipeData2 }
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
-                /> }
+                />): null}
               </View>
               <View style={styles.scroll}>
-                <Text style={styles.headerText}>Use your {pantryData[2]}</Text>
-                { <FlatList
+                <Text style={styles.headerText}>{ pantryData[2] != null ? ("Use Your " + pantryData[2]) : ""}</Text>
+                { pantryData[2] != null ? ( <FlatList
                   horizontal
                   data={ recipeData3 }
                   renderItem={renderItem}
                   keyExtractor={(item, index) => index.toString()}
-                /> }
+                />): null}
               </View>
             </ ScrollView>
           </View>

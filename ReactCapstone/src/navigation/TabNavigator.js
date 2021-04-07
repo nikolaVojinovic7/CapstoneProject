@@ -8,7 +8,6 @@ import ProfileScreen from '../screens/Profile.js';
 import MyPantryScreen from '../screens/MyPantry.js';
 import FavoritesScreen from '../screens/Favorites.js';
 import AdminDashboardScreen from "../screens/AdminDashboard.js";
-import TestScreen from "../screens/Test.js";
 
 
 const Tab = createBottomTabNavigator();
@@ -31,8 +30,6 @@ const AppTab = ({navigation}) => {
                 iconName = focused ? 'person' : 'person-outline';
               } else if (route.name === 'Admin'){
                 iconName = focused ? 'ios-server' : 'ios-server-outline';
-              } else if (route.name === 'Test'){
-                iconName = focused ? 'ios-server' : 'ios-server-outline';
               }
 
 
@@ -49,7 +46,6 @@ const AppTab = ({navigation}) => {
         <Tab.Screen name="MyPantry" component={MyPantryScreen} />
         <Tab.Screen name="Profile" component={ProfileScreen} />
         <Tab.Screen name="Admin" component={AdminDashboardScreen} />
-        <Tab.Screen name="Test" component={TestScreen} />
       </Tab.Navigator>
     );
   };
