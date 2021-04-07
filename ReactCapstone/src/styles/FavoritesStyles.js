@@ -25,6 +25,7 @@ export default StyleSheet.create({
         flex: 1,
       },
       searchText: {
+        fontFamily: 'PatrickHand-Regular',
         textAlign: 'center',
         marginBottom: 20,
         fontSize: 18,

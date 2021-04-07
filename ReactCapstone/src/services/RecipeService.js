@@ -31,6 +31,10 @@ class RecipeService {
     searchThreeIngredients(email){
       return axios.get(RECIPE_API_BASE_URL + '/' + 'searchThreeIngredients' + '/' + email);
     }
+  
+    getRecipesByPantry(email){
+        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipeByPantry' + '/' + email)
+    }
 
 }
 

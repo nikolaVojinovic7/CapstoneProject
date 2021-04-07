@@ -1,5 +1,7 @@
-import React from 'react';
-import styles from "../styles/ForgotPasswordStyles.js"
+import React, {useState, useEffect} from 'react';
+import { Linking } from 'react-native';
+import styles from "../styles/ForgotPasswordStyles.js";
+import userService from '../services/UserService.js';
 import {
   SafeAreaView,
   StyleSheet,
@@ -16,70 +18,72 @@ import {
   Platform,
 } from 'react-native';
 
-class ForgotPasswordScreen extends React.Component {
+const ForgotPasswordScreen = ({navigation}) => {
 
-  constructor({navigation}) {
-    super();
-    this.state = {
-      email: '',
-      emailError: '',
-    }
-  }
+  const [email, setEmail] = useState("");
+  const [emailError, setEmailError] = useState("");
 
-  onSubmit(){
-    this.emailValidator();
-    if(this.emailValidator()){
+  let onSubmit = () => {
+    emailValidator();
+    if(emailValidator()){
+      sendEmail();
       Alert.alert(
         "",
-        "Please check your email for password reset instructions.",
+        "A temporary password has been sent to your email!",
         [{ text: "OK", onPress: () => console.log("OK Pressed") }],
         { cancelable: false }
       );
-      this.props.navigation.navigate('Login');
+      navigation.navigate('Login');
     }
   }
 
-  emailValidator(){
-    if(this.state.email==""){
-      this.setState({emailError:"Enter a Valid Email"})
-    } else if(this.state.email.indexOf('@') == -1 ){
-      this.setState({emailError:"Enter a Valid Email"})
-    } else{
-      this.setState({emailError:""})
-      return true;
+  //validate email
+  let emailValidator = () => {
+    let re = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    let isValid = re.test(String(email).toLowerCase());
+    if(!isValid){
+      setEmailError("Enter a valid email.");
     }
-    return false;
+    else{
+      setEmailError("");
+    }
+    return isValid;
+  };
+
+  let sendEmail = () => {
+    userService.sendEmail(email).then((res) => {
+      console.log(res.data);
+    }).catch(err => console.log(err.response.data));
   }
 
-  render() {
    return (
      <View style={styles.backgroundContainer}>
       <ImageBackground source={require("../assets/images/background/light-wood.jpg")} style={styles.image}>
      <View style={styles.container}>
-         <Image
-           style={{ width: 313.5, height: 232.5, marginBottom: 20 }}
-           source={require("../assets/images/logo/bitstobiteslogo.png")}
-         />
+       <View style ={styles.headerText}>
+         <Text style={styles.mainText}>Forgot password?</Text>
+         <Text style={styles.subText}>Enter the email address associated with your account.</Text>
+        </View>
          <View style={styles.errorText}>
-           <Text style={{color: 'red', fontWeight: 'bold'}}>{this.state.emailError}</Text>
+           <Text style={{color: 'red', fontWeight: 'bold', fontSize: 16 }}>{emailError}</Text>
          </View>
         <View style={styles.inputView} >
           <TextInput
             style={styles.inputText}
             placeholder="Email"
-            onBlur={()=>this.emailValidator()}
+            onBlur={()=> emailValidator()}
             placeholderTextColor="lightgrey"
-            onChangeText={(text) => {this.setState({email: text})}}
+            onChangeText={(text) => setEmail(text)}
           />
         </View>
-        <TouchableOpacity onPress={() => this.onSubmit()} style={styles.registerBtn} >
-          <Text style={styles.registerText}>SEND EMAIL</Text>
+        <TouchableOpacity onPress={() => onSubmit()} style={styles.registerBtn} >
+          <Text style={styles.registerText}>Reset Password</Text>
         </TouchableOpacity>
         </View>
       </ImageBackground>
       </View>
   );
-}
+
 };
 
 export default ForgotPasswordScreen;

@@ -16,7 +16,7 @@ const EditNameScreen = ({ route, navigation }) => {
     let [usernameError, setUsernameError] = useState('');
     let [userData, setUserData] = useState(route.params.user)
 
-
+    //validate username
     let usernameValidator = () => {
       if(username==""){
         setUsernameError("Username field cannot be empty.");
@@ -27,6 +27,7 @@ const EditNameScreen = ({ route, navigation }) => {
       return false;
     };
 
+    //update user data in local storage
     const updateUserData = async (value) => {
       try {
         const obj = JSON.stringify(value)
@@ -43,6 +44,7 @@ const EditNameScreen = ({ route, navigation }) => {
       }
     }
   
+    //update user data in database
     let update_user = () => {
       let user = {username: username, email: userData.email, password: userData.password};
       updateUserData(user);

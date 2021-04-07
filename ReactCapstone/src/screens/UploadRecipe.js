@@ -1,6 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import styles from "../styles/UploadStyles.js"
 import uploadService from '../services/UploadService.js';
+import ingredientService from '../services/IngredientService.js';
+import categoryService from '../services/CategoryService.js';
+import SearchableDropdown from 'react-native-searchable-dropdown';
+import {Modal, Pressable} from 'react-native';
 import {
   ScrollView,
   View,
@@ -33,6 +37,40 @@ const UploadRecipeScreen = ({ navigation }) => {
   let [imageError, setImageError] = useState('');
   let [image, setImage] = useState('');
 
+  let [ingredientData, setIngredientData] = useState({});
+  let [recipeIngredients,setRecipeIngredients] = useState([]);
+  let [categoriesData, setCategoriesData] = useState({});
+  let [recipeCategories,setRecipeCategories] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [usCustomaryWeight, setUsCustomaryWeight] = useState(0);
+  const [metricWeight, setMetricWeight] = useState(0);
+  const [usCustomaryUnit, setUsCustomaryUnit] = useState("");
+  const [metricUnit, setMetricUnit] = useState("");
+  const [selectedIngredient, setSelectedIngredient] = useState({});
+
+
+  //retrieve ingredient data 
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    ingredientService
+      .getIngredients()
+      .then((response) => setIngredientData(response.data))
+      .catch(err => console.log(err.response.data));
+    });
+    return unsubscribe;
+
+  }, [navigation]);
+
+  useEffect(() => {
+    const unsubscribe = navigation.addListener('focus', () => {
+    categoryService
+      .getCategories()
+      .then((response) => setCategoriesData(response.data))
+      .catch(err => console.log(err.response.data));
+    });
+    return unsubscribe;
+
+  }, [navigation]);
 
 
   let nameValidator = () => {
@@ -126,6 +164,16 @@ const UploadRecipeScreen = ({ navigation }) => {
     imageValidator();
     if (nameValidator() && prepValidator() && cookValidator() && timeValidator() && directionValidator() && servingValidator() && levelValidator() && imageValidator()) {
       uploadRecipe()
+      Alert.alert(
+        '',
+        'Your recipe has been submitted for approval! ',
+        [
+          {
+            text: 'Ok',
+          },
+        ],
+        { cancelable: false },
+      )
     }
   }
 
@@ -139,22 +187,13 @@ const UploadRecipeScreen = ({ navigation }) => {
       "servings": serving,
       "level": level,
       "imageUrl": image,
+      "recipeToIngredients": recipeIngredients,
+      "linkedCategories": recipeCategories
     });
 
     console.log("PARAMS                    ", params);
 
     uploadService.createRecipes(params).then((res) => {
-      // let passwordMatch = res.data;
-      // if (!passwordMatch) {
-      //   setPasswordError("Incorrect Password. Please try again.")
-      // }
-      // else {
-      //   userService.getUserByEmail(email).then((res) => {
-      //     let user = res.data;
-      //     storeData(user);
-      //   }).catch(err => console.log(err.response.data))
-      //   navigation.navigate('Dashboard');
-      // }
       console.log(res);
     })
     .catch(err => Alert.alert(
@@ -170,32 +209,44 @@ const UploadRecipeScreen = ({ navigation }) => {
     ))
   }
 
+  const addCategories = (item) => {
+    setRecipeCategories(recipeCategories => [...recipeCategories, item]);
+    console.log(recipeCategories);
+  }
 
-  var initialElements = [
-  { id : "0", text : "Object 1"},
-  { id : "1", text : "Object 2"},
-]
 
-const [exampleState, setExampleState] = useState(initialElements)
+  const addIngredient = () => {
+    let recipeIngredient = {
+      "ingredient": selectedIngredient,
+      "usCustomaryWeight": parseFloat(usCustomaryWeight),
+      "metricWeight": parseFloat(metricWeight),
+      "usCustomaryUnitType": usCustomaryUnit,
+      "metricUnitType": metricUnit
+    }
 
-const addElement = () => {
-  var newArray = [...initialElements , {id : "2", text: "Object 3"}];
-  setExampleState(newArray);
-}
+   
+    setModalVisible(false);
+    setRecipeIngredients(recipeIngredients => [...recipeIngredients, recipeIngredient]);
+    console.log(recipeIngredients);
+  }
 
   return (
     <View style={styles.backgroundContainer}>
-      <ImageBackground source={require("../assets/images/background/light-wood.jpg")} style={styles.image}>
+      <ImageBackground
+        source={require('../assets/images/background/light-wood.jpg')}
+        style={styles.image}>
         <View style={styles.container}>
           <View style={styles.searchContainer}>
-            <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
+            <ImageBackground
+              source={require('../assets/images/background/dark-wood.jpg')}
+              style={styles.image}>
               <View style={styles.searchHeader}>
                 <Text style={styles.searchText}>Upload Recipe</Text>
               </View>
             </ImageBackground>
           </View>
           <View style={styles.scrollContainer}>
-            <ScrollView>
+            <ScrollView keyboardShouldPersistTaps="always">
               <View style={styles.scroll}>
 
                 <View style={styles.errorText}>
@@ -251,19 +302,6 @@ const addElement = () => {
                 </View>
 
                 <View style={styles.errorText}>
-                  <Text style={{ color: 'red', fontWeight: 'bold' }}>{directionError}</Text>
-                </View>
-                <View style={styles.inputView} >
-                  <TextInput
-                    style={styles.inputText}
-                    placeholder="Directions"
-                    onBlur={() => directionValidator()}
-                    placeholderTextColor="lightgrey"
-                    onChangeText={(text) => { setDirection(text) }}
-                  />
-                </View>
-
-                <View style={styles.errorText}>
                   <Text style={{ color: 'red', fontWeight: 'bold' }}>{servingError}</Text>
                 </View>
                 <View style={styles.inputView} >
@@ -282,7 +320,7 @@ const addElement = () => {
                 <View style={styles.inputView} >
                   <TextInput
                     style={styles.inputText}
-                    placeholder="Level"
+                    placeholder="Difficulty level"
                     onBlur={() => levelValidator()}
                     placeholderTextColor="lightgrey"
                     onChangeText={(text) => { setLevel(text) }}
@@ -301,31 +339,156 @@ const addElement = () => {
                     onChangeText={(text) => { setImage(text) }}
                   />
                 </View>
-
+                <View>
+                <SearchableDropdown
+                  onItemSelect={(item) => {
+                    setSelectedIngredient(item);
+                    setModalVisible(true);
+                  }}
+                  containerStyle={{padding: 5, width: 300}}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: 'white',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  itemTextStyle={{color: '#222'}}
+                  itemsContainerStyle={{maxHeight: 140}}
+                  items={ingredientData}
+                  defaultIndex={2}
+                  resetValue={false}
+                  textInputProps={{
+                    placeholder: 'add ingredient',
+                    underlineColorAndroid: 'transparent',
+                    backgroundColor: 'white',
+                    style: {
+                      padding: 12,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                    },
+                  }}
+                  listProps={{
+                    nestedScrollEnabled: true,
+                  }}
+                />
+                </View>
+                <View>
+                <SearchableDropdown
+                  onItemSelect={(item) => {
+                    addCategories(item)
+                  }}
+                  containerStyle={{padding: 5, width: 300}}
+                  itemStyle={{
+                    padding: 10,
+                    marginTop: 2,
+                    backgroundColor: 'white',
+                    borderColor: '#bbb',
+                    borderWidth: 1,
+                    borderRadius: 5,
+                  }}
+                  itemTextStyle={{color: '#222'}}
+                  itemsContainerStyle={{maxHeight: 140}}
+                  items={categoriesData}
+                  defaultIndex={2}
+                  resetValue={false}
+                  textInputProps={{
+                    placeholder: 'add categories',
+                    underlineColorAndroid: 'transparent',
+                    backgroundColor: 'white',
+                    style: {
+                      padding: 12,
+                      borderWidth: 1,
+                      borderColor: '#ccc',
+                      borderRadius: 5,
+                    },
+                  }}
+                  listProps={{
+                    nestedScrollEnabled: true,
+                  }}
+                />
+                </View>
                 <View style={styles.errorText}>
-                  <Text style={{ color: 'red', fontWeight: 'bold' }}>{imageError}</Text>
+                  <Text style={{ color: 'red', fontWeight: 'bold' }}>{directionError}</Text>
                 </View>
-                <View style={styles.inputView} >
-                  <FlatList
-                    keyExtractor = {item => item.id}
-                    data={exampleState}
-                    renderItem = {item => (<Text>{item.item.text}</Text>)} />
-
+                <View style={styles.inputDirections}>
+                  <TextInput
+                    multiline ={true}
+                    numberOfLines = {20}
+                    style={styles.inputText}
+                    placeholder="Directions"
+                    onBlur={() => directionValidator()}
+                    placeholderTextColor="lightgrey"
+                    onChangeText={(text) => { setDirection(text) }}
+                  />
                 </View>
-                <View style={styles.inputView} >
-                <Button
-                  title="Add element"
-                  onPress={addElement} />
-                </View>
-
                 <TouchableOpacity style={styles.loginBtn}
                   onPress={() => onSubmit()}>
                   <Text style={styles.loginText}>
                     Submit</Text>
                 </TouchableOpacity>
-
               </View>
             </ScrollView>
+            
+            <View style={styles.centeredView}>
+      <Modal
+        animationType="none"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={styles.modalView}>
+          <View style={{flexDirection: 'row'}}>
+            <Text style={styles.modalText}>Weight (US Customary):</Text>
+            <TextInput
+                  style={styles.input}
+                    placeholder="weight"
+                    placeholderTextColor="lightgrey"
+                    onChangeText={(text) => { setUsCustomaryWeight(text) }}
+                  />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={styles.modalText}>Unit Type (Us Customary):</Text>
+            <TextInput
+            style={styles.input}
+            placeholder="cups, tbsp, tsp"
+                    placeholderTextColor="lightgrey"
+                    onChangeText={(text) => { setUsCustomaryUnit(text) }}
+                  />
+            </View>
+            <View style={{flexDirection: 'row'}}>
+            <Text style={styles.modalText}>Weight (Metric):</Text>
+              <TextInput
+              style={styles.input}
+                    placeholder="weight"
+                    placeholderTextColor="lightgrey"
+                    onChangeText={(text) => { setMetricWeight(text) }}
+                  />
+              </View>
+              <View style={{flexDirection: 'row'}}>
+              <Text style={styles.modalText}>Unit Type (Metric):</Text>
+              <TextInput
+              style={styles.input}
+                    placeholder="g, kg, mL, L"
+                    placeholderTextColor="lightgrey"
+                    onChangeText={(text) => { setMetricUnit(text) }}
+                  />
+              </View>
+            <Pressable
+              style={[styles.button, styles.buttonClose]}
+              onPress={() => addIngredient()}
+            >
+              <Text style={styles.textStyle}>Add Ingredient</Text>
+            </Pressable>
+          </View>
+        </View>
+      </Modal>
+    </View>
           </View>
         </View>
       </ImageBackground>

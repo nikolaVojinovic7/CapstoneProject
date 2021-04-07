@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from "../styles/DashboardStyles.js"
 import recipeService from '../services/RecipeService.js';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import Ionicon from 'react-native-vector-icons/Ionicons';
 import {
   ScrollView,
   View,
@@ -128,6 +129,9 @@ const DashboardScreen = ({ navigation }) => {
             <ImageBackground source={require("../assets/images/background/dark-wood.jpg")} style={styles.image}>
               <View style={styles.searchHeader}>
                 <Text style={styles.searchText}>Discover</Text>
+                <TouchableOpacity style={styles.plusBtn} onPress={() => { navigation.navigate('UploadRecipe')}}>
+          <Ionicon name="add" size={50} color="lightgreen" />
+        </TouchableOpacity>
                 <View style={styles.inputView} >
                   <TextInput
                     style={styles.inputText}
@@ -136,7 +140,7 @@ const DashboardScreen = ({ navigation }) => {
                     returnKeyType="search"
                     onChangeText={(text) => { setObj(text) }}
                     onSubmitEditing={() => {
-                      navigation.navigate('SearchParameters', { obj });
+                      navigation.navigate('SearchParameters', { obj, user });
                     }}
                   />
                 </View>

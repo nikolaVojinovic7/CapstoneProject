@@ -12,6 +12,10 @@ class FavoriteService {
       return axios.put(RECIPE_API_BASE_URL + '/' + "addFavorite" + "/" + email + "&" + id);
     }
 
+    removeFavorite(email, id){
+        return axios.delete(RECIPE_API_BASE_URL + '/' + "removeFavorite" + "/" + email + "&" + id);
+    }
+
 }
 
 export default new FavoriteService()
