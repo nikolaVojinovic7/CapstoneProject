@@ -10,7 +10,7 @@ import javax.persistence.*;
 
 public class RecipeToIngredient {
 
-    @ManyToOne(cascade = {CascadeType.ALL})
+    @ManyToOne
     private Ingredient ingredient;
 
 
