@@ -8,6 +8,8 @@ import MyPantryScreen from '../screens/MyPantry.js';
 import FavoritesScreen from '../screens/Favorites.js';
 import AdminScreen from '../screens/AdminDashboard';
 
+import userService from '../services/UserService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Tab = createBottomTabNavigator();
 

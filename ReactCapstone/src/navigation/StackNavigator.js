@@ -12,6 +12,7 @@ import EditPasswordScreen from '../screens/EditPassword.js';
 import ForgotPasswordScreen from '../screens/ForgotPassword.js';
 import RegisterScreen from '../screens/Register.js';
 import AdminDashboardScreen from "../screens/AdminDashboard.js";
+import AdminStartRecipeScreen from '../screens/AdminStartRecipe.js';
 import AdminManageUploadsScreen from "../screens/AdminManageUploads.js";
 import AdminManageUserScreen from "../screens/AdminManageUser.js";
 import AppTab from '../navigation/TabNavigator.js';
@@ -39,6 +40,18 @@ const AppStack = () => {
            <Stack.Screen
              name="Register"
              component={RegisterScreen}
+             options={{
+                 title: '',
+                 headerStyle: {
+                   elevation: 0,
+                   shadowOpacity: 0
+                 },
+                 headerTransparent: true,
+               }}
+           />
+           <Stack.Screen
+             name="AdminStartRecipe"
+             component={AdminStartRecipeScreen}
              options={{
                  title: '',
                  headerStyle: {

@@ -179,5 +179,10 @@ export default StyleSheet.create({
       color: "blue"
     },
 
+    approveButton: {
+      margin: 25,
+      flexDirection: 'row',
+      justifyContent: 'space-between',
+    }
     
 });

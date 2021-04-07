@@ -1,25 +1,30 @@
 import React, {useState, useEffect} from 'react';
 import styles from '../styles/StartRecipesStyles.js';
 import IdleTimerManager from 'react-native-idle-timer';
-import {Alert, Modal, Pressable} from 'react-native';
+import {Alert, Button, Modal, Pressable} from 'react-native';
 import {Table, Row} from 'react-native-table-component';
 import CountDown from 'react-native-countdown-component';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Ionicon from 'react-native-vector-icons/Ionicons';
-import favoriteService from '../services/FavoriteService.js';
+import uplaodedRecipeService from '../services/UploadedRecipeService';
+import recipeService from "../services/RecipeService";
+import ingredientService from '../services/IngredientService.js';
+import categoryService from '../services/CategoryService.js';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 import {
   ScrollView,
   View,
   Text,
   TextInput,
-  TouchableOpacity,
+  Image,
   ImageBackground,
+  FlatList,
+  TouchableOpacity,
 } from 'react-native';
 import { min } from 'react-native-reanimated';
 
 
-const StartRecipeScreen = ({route, navigation}) => {
-  const [user, setUser] = useState(route.params.user);
+const AdminStartRecipeScreen = ({route, navigation}) => {
   let [recipeItem, setRecipeItem] = useState(route.params.item);
   let [ingredients, setIngredients] = useState(recipeItem.recipeToIngredients);
   let [displayIngredients, setDisplayIngredients] = useState(
@@ -33,13 +38,31 @@ const StartRecipeScreen = ({route, navigation}) => {
   const [cooktime, setCooktime] = useState(0)
   const [running, setRunning] = useState(false);
   const [unitType, setUnitType] = useState('usCustomary');
-  const [fav, setFav] = useState(false);
-  const [favIcon, setFavIcon] = useState('heart-outline')
   let details = [
     'PREP TIME: \n' + recipeItem.prepTime,
     'COOK TIME: \n' + recipeItem.cookTime,
     'TOTAL TIME: \n' + recipeItem.totalTime,
   ];
+
+  let uploadRecipe = () => {
+      recipeService.createRecipe(recipeItem).then((res) => {
+
+      console.log(res);
+    })
+    .catch(err => Alert.alert(
+      'Error',
+      'Cant Upload Recipe! '+err,
+      [
+        {
+          text: 'Ok',
+        },
+      ],
+      { cancelable: false },
+      console.log(err)
+    ))
+  }
+
+
 
   //convert cooktime to seconds (for use by timer)
   const cooktimeToSeconds = () =>{
@@ -66,18 +89,6 @@ const StartRecipeScreen = ({route, navigation}) => {
 
   useEffect(() => {
     cooktimeToSeconds();
-  })
-
-  useEffect(() => {
-    favoriteService.getFavorites(user.email).then((res) => {
-      res.data.forEach((recipe) =>{
-        if(recipeItem.id == recipe.id){
-          setFav(true);
-          setFavIcon('heart');
-        }
-      })
-    })
-    .catch(err => console.log(err.response.data));
   })
 
   // check to see if number is a decimal
@@ -161,53 +172,35 @@ const StartRecipeScreen = ({route, navigation}) => {
     setUnitType('metric')
   }
 
-  //add recipe to favourites
-  const favoriteRecipe = (id) => {
-    favoriteService.addToFavorites(user.email, id).then((res) => {
-      console.log(res.data);
-    })
-    .catch(err => Alert.alert(
-      'Error',
-      'Not able to add to favourites!',
-      [
-        {
-          text: 'Ok',
-        },
-      ],
-      { cancelable: false }
-    ))
+  let delete_recipe = (id) => {
+    uplaodedRecipeService.deleteRecipe(id)
+    .then(response => console.log(response))
+    .catch(err => console.log(err));
   }
 
-  //remove recipe from favorites
-  const removeFavorite = (id) => {
-    favoriteService.removeFavorite(user.email, id).then((res) => {
-      console.log(res.data);
-    })
-    .catch(err => Alert.alert(
-      'Error',
-      'Not able to remove from favourites!',
-      [
-        {
-          text: 'Ok',
-        },
-      ],
-      { cancelable: false },
-      console.log(err.response.data)
-    ))
+  //deletes Recipe and navigats back to uploads
+  const deleteRecipe = (id) =>{
+    delete_recipe(id);
+    navigation.navigate('AdminManageUploads');
+    console.log('Recpie Deleteed')
+    
   }
 
-  //favourite functionality
-  const favorite = (id) => {
-    if (fav == false) {
-      favoriteRecipe(id);
-      setFav(true);
-      setFavIcon('heart');
-    } else {
-      removeFavorite(id);
-      setFav(false);
-      setFavIcon('heart-outline');
-    }
+  //alert before the recipe is deleted
+  const deleteUploadedRecipe = () =>{
+    Alert.alert('Delete Recipe', 'Are you sure you wish to DELETE this Recipe.',[
+      {text: 'OK', onPress: () => deleteRecipe(recipeItem.id)},
+      {text: 'Cancel', onPress: () => console.log('alert closed',recipeItem.id)} 
+    ]);
   }
+
+  //alert before the recipe is approved
+  const approveRecipe = () =>{
+    Alert.alert('Approve Recipe', 'Are you sure you wish to approve this Recipe.',[
+      {text: 'OK', onPress: () => uploadRecipe()},
+      {text: 'Cancel', onPress: () => console.warn('alert closed')} 
+    ]);
+  }   
 
   return (
     <View style={styles.backgroundContainer}>
@@ -222,8 +215,8 @@ const StartRecipeScreen = ({route, navigation}) => {
         <View style={styles.RectangleShapeView}>
           {<Text style={styles.recipeTitleText}>{recipeItem.name}</Text>}
         </View>
-        <TouchableOpacity style={styles.favBtn} onPress={() => { favorite(recipeItem.id) }}>
-          <Ionicon name={favIcon} size={45} color="red" />
+        <TouchableOpacity style={styles.favBtn}>
+          <Icon name="heart" size={40} color="red" />
         </TouchableOpacity>
       </View>
       <View style={styles.lockBtn}>
@@ -281,6 +274,7 @@ const StartRecipeScreen = ({route, navigation}) => {
           </TouchableOpacity>
         </View>
         <Text style={styles.h2Text}>Ingredients:</Text>
+        {/* This part here is causing  an error dont know way yet */}
         <Text style={{flexDirection: 'column'}}>
           {displayIngredients.map((item) => {
             if(unitType == 'usCustomary'){
@@ -301,12 +295,15 @@ const StartRecipeScreen = ({route, navigation}) => {
             }
           })}
         </Text>
-        <View style={styles.directionsStyle}>
         <Text style={styles.h2Text}>Directions:</Text>
         <Text style={styles.infoText}>
           {recipeItem.directions.replace(/([^:]\/)\/+/g, '$1')}
         </Text>
+        <View style={styles.approveButton}>
+            <Button title="Approve" onPress = {approveRecipe} color="#7C9262"/>
+            <Button title="Delete" onPress = {deleteUploadedRecipe} color="#8B0000"/>
         </View>
+
       </ScrollView>
       <View>
         <Modal
@@ -360,4 +357,4 @@ const StartRecipeScreen = ({route, navigation}) => {
   );
 };
 
-export default StartRecipeScreen;
+export default AdminStartRecipeScreen;

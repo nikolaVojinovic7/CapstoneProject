@@ -1,8 +1,8 @@
 import axios from 'axios';
 
-const RECIPE_API_BASE_URL = "http://10.0.2.2:8087/api/recipe";
+const RECIPE_API_BASE_URL = "http://10.0.2.2:8087/api/uploadedRecipes";
 
-class RecipeService {
+class UploadedRecipeService {
 
     getRecipes(){
         return axios.get(RECIPE_API_BASE_URL + '/' + "allRecipes");
@@ -23,19 +23,6 @@ class RecipeService {
     deleteRecipe(recipeId){
         return axios.delete(RECIPE_API_BASE_URL + '/' + 'deleteRecipe' + '/' + recipeId);
     }
-
-    searchRecipesBasedOnIngredient(email){
-        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipesBasedOnIngredient' + '/' + email);
-    }
-
-    searchThreeIngredients(email){
-      return axios.get(RECIPE_API_BASE_URL + '/' + 'searchThreeIngredients' + '/' + email);
-    }
-  
-    getRecipesByPantry(email){
-        return axios.get(RECIPE_API_BASE_URL + '/' + 'searchRecipeByPantry' + '/' + email)
-    }
-
 }
 
-export default new RecipeService()
+export default new UploadedRecipeService()

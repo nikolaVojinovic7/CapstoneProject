@@ -68,7 +68,6 @@ export default StyleSheet.create({
         width: 165,
         padding: 5
       },
-
       recipeName:{
         textAlign: "center",
         backgroundColor: 'rgba(52, 52, 52, 0.7)',
