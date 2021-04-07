@@ -34,7 +34,7 @@ const AppStack = () => {
                 },
                 headerTransparent: true,
               }}
-  
+
            />
            <Stack.Screen
              name="Register"
@@ -90,7 +90,7 @@ const AppStack = () => {
             options={{
               headerShown: false, // change this to `false`
             }}/>
-  
+
             <Stack.Screen
              name="SearchParameters"
              component={SearchParametersScreen}
@@ -179,5 +179,5 @@ const AppStack = () => {
       </NavigationContainer>
     );
   };
-  
+
   export {AppStack};

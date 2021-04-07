@@ -16,14 +16,10 @@ public class Ingredient {
     @Column(nullable = false, name="category")
     private String category;
 
-    @ManyToMany
-    private Set<Recipe> linkedRecipes;
-
-    public Ingredient(long id, String name, String category, Set<Recipe> linkedRecipes) {
+    public Ingredient(long id, String name, String category) {
         this.id = id;
         this.name = name;
         this.category = category;
-        this.linkedRecipes = linkedRecipes;
     }
 
     public Ingredient() {
@@ -54,11 +50,4 @@ public class Ingredient {
         this.category = category;
     }
 
-    public Set<Recipe> getLinkedRecipes() {
-        return linkedRecipes;
-    }
-
-    public void setLinkedRecipes(Set<Recipe> linkedRecipes) {
-        this.linkedRecipes = linkedRecipes;
-    }
 }

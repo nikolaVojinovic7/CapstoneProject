@@ -35,7 +35,6 @@ const AppTab = ({navigation}) => {
         screenOptions={({route}) => ({
           tabBarIcon: ({focused, color, size}) => {
             let iconName;
-
             /* https://oblador.github.io/react-native-vector-icons/ */
             if (route.name === 'Dashboard') {
               iconName = focused ? 'search' : 'search-outline';

@@ -94,7 +94,6 @@ export default StyleSheet.create({
         width: 175,
         padding: 5
       },
-
       inputDirections: {
         width: "80%",
         height: 400,

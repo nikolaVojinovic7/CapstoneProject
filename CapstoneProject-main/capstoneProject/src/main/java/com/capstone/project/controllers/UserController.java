@@ -25,7 +25,7 @@ public class UserController {
     }
 
     // get user by email rest api
-    @GetMapping("/users/{email}")
+    @GetMapping("/users/email/{email}")
     public User getUserByEmail(@PathVariable String email) {
         User user = userService.findByEmail(email);
         if(user == null){
@@ -35,7 +35,7 @@ public class UserController {
     }
 
     // get user by id rest api
-    @GetMapping("/users/{username}")
+    @GetMapping("/users/username/{username}")
     public User getUserByUsername(@PathVariable String username) {
         User user = userService.findByUsername(username);
         if(user == null){
@@ -45,7 +45,7 @@ public class UserController {
     }
 
     // get user by id rest api
-    @PostMapping("/login/{email}&{password}")
+    @GetMapping("/login/{email}&{password}")
     public Boolean userLogin(@PathVariable String email, @PathVariable String password) {
         Boolean verifyLogin = userService.verifyLogin(email, password);
         return verifyLogin;
@@ -67,6 +67,7 @@ public class UserController {
         }
         user.setUsername(userDetails.getUsername());
         user.setPassword(userDetails.getPassword());
+        user.setEmail(userDetails.getEmail());
         return userService.save(user);
     }
 

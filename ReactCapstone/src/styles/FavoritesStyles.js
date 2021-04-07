@@ -15,12 +15,12 @@ export default StyleSheet.create({
         justifyContent: "center"
       },
       searchContainer: {
-        width:"100%",
+        width: "100%",
         flex: 1,
       },
       searchHeader: {
-        width:"100%",
-        justifyContent:"center",
+        width: "100%",
+        justifyContent: "center",
         alignItems: 'center',
         flex: 1,
       },
@@ -28,52 +28,56 @@ export default StyleSheet.create({
         fontFamily: 'PatrickHand-Regular',
         textAlign: 'center',
         marginBottom: 20,
-        fontSize: 27,
+        fontSize: 18,
+        fontWeight: 'bold',
         color: 'white',
       },
       scrollContainer: {
         flex: 3,
       },
       scroll: {
-        width:"100%",
-        marginBottom:20,
-        justifyContent:"center",
-        padding:20
+        width: "100%",
+        marginBottom: 20,
+        justifyContent: "center",
+        padding: 20
       },
-      inputView:{
-        width:"80%",
-        backgroundColor:"white",
-        height:50,
-        marginBottom:20,
-        justifyContent:"center",
-        padding:20
+      inputView: {
+        width: "80%",
+        backgroundColor: "white",
+        height: 50,
+        marginBottom: 20,
+        justifyContent: "center",
+        padding: 20
       },
-      inputText:{
-        height:50,
-        color:"black"
+      inputText: {
+        height: 50,
+        color: "black"
       },
       headerText: {
-        height:20,
+        height: 20,
         fontWeight: 'bold',
       },
-      Btn:{
-        width:"80%",
-        backgroundColor:"#7C9262",
-        height:50,
-        alignItems:"center",
-        justifyContent:"center",
-        marginBottom:10,
-        marginTop:10
-      },
       item: {
-         flex: 1,
-         flexDirection: 'row',
-         padding: 10,
-         marginVertical: 8,
-       },
-       recipeImage: {
-         height: 175,
-         width: 175,
-         padding: 5
-       }
+        flex: 1,
+        flexDirection: 'row',
+        marginRight: 15,
+        marginTop: 12,
+      },
+      recipeImage: {
+        height: 165,
+        width: 165,
+        padding: 5
+      },
+      recipeName:{
+        textAlign: "center",
+        backgroundColor: 'rgba(52, 52, 52, 0.7)',
+        width: 165,
+        justifyContent: "center",
+        color: "white",
+        fontSize: 14,
+        position: "absolute",
+        bottom: 0,
+        paddingBottom: 2,
+        paddingTop: 2
+      },
 });

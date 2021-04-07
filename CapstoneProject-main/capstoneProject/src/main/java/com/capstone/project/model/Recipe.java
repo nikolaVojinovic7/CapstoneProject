@@ -1,7 +1,5 @@
 package com.capstone.project.model;
-
 import org.hibernate.annotations.Type;
-
 import javax.persistence.*;
 import java.util.Set;
 
@@ -32,7 +30,7 @@ public class Recipe {
     private String servings;
 
     @Type(type = "text")
-    @Column(nullable = false, name="directions", length=1000)
+    @Column(nullable = false, name="directions", length=5000)
     private String directions;
 
     @Column(nullable = false, name="image_url")
@@ -41,12 +39,12 @@ public class Recipe {
     @ManyToMany
     private Set<Category> linkedCategories;
 
-    @ManyToMany
-    private Set<Ingredient> linkedIngredients;
+    @OneToMany(cascade = {CascadeType.ALL})
+    private Set<RecipeToIngredient> recipeToIngredients;
 
     public Recipe(long id, String name, String cookTime, String prepTime, String totalTime,
                   String level, String servings, String directions, String imageUrl,
-                  Set<Category> linkedCategories, Set<Ingredient> linkedIngredients) {
+                  Set<Category> linkedCategories, Set<RecipeToIngredient> recipeToIngredients) {
         this.id = id;
         this.name = name;
         this.cookTime = cookTime;
@@ -57,7 +55,7 @@ public class Recipe {
         this.directions = directions;
         this.imageUrl = imageUrl;
         this.linkedCategories = linkedCategories;
-        this.linkedIngredients = linkedIngredients;
+        this.recipeToIngredients = recipeToIngredients;
     }
 
     public Recipe() {
@@ -144,16 +142,16 @@ public class Recipe {
         this.linkedCategories = linkedCategories;
     }
 
-    public Set<Ingredient> getLinkedIngredients() {
-        return linkedIngredients;
+    public Set<RecipeToIngredient> getRecipeToIngredients() {
+        return recipeToIngredients;
     }
 
-    public void setLinkedIngredients(Set<Ingredient> linkedIngredients) {
-        this.linkedIngredients = linkedIngredients;
+    public void setRecipeToIngredients(Set<RecipeToIngredient> recipeToIngredients) {
+        this.recipeToIngredients = recipeToIngredients;
     }
 
-    public void addIngredientItem(Ingredient item){
-        linkedIngredients.add(item);
+    public void addIngredientItem(RecipeToIngredient item){
+        this.recipeToIngredients.add(item);
     }
 
     public void addCategoryItem(Category item){

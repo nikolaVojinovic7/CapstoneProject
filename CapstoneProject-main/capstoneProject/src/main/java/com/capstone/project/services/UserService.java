@@ -1,5 +1,6 @@
 package com.capstone.project.services;
 
+import com.capstone.project.model.Pantry;
 import com.capstone.project.model.User;
 import com.capstone.project.repositories.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,8 @@ public class UserService implements UserServiceAbs{
 
     @Override
     public User save(User user) {
+        user.setStatus("active");
+        user.setRole("user");
         return userRepository.save(user);
     }
 
@@ -37,7 +40,7 @@ public class UserService implements UserServiceAbs{
     @Override
     public Boolean verifyLogin(String email, String password) {
         User user = userRepository.findByEmail(email);
-        return user.getPassword().equals(password);
+        return user.getPassword().equals(password) && user.getStatus().equals("active");
     }
 
     @Override
@@ -60,4 +63,5 @@ public class UserService implements UserServiceAbs{
     public void deleteById(Long aLong) {
         userRepository.deleteById(aLong);
     }
+
 }

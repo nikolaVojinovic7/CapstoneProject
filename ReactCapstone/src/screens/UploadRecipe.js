@@ -36,6 +36,7 @@ const UploadRecipeScreen = ({ navigation }) => {
   let [level, setLevel] = useState('');
   let [imageError, setImageError] = useState('');
   let [image, setImage] = useState('');
+
   let [ingredientData, setIngredientData] = useState({});
   let [recipeIngredients,setRecipeIngredients] = useState([]);
   let [categoriesData, setCategoriesData] = useState({});
@@ -193,7 +194,6 @@ const UploadRecipeScreen = ({ navigation }) => {
     console.log("PARAMS                    ", params);
 
     uploadService.createRecipes(params).then((res) => {
-
       console.log(res);
     })
     .catch(err => Alert.alert(
