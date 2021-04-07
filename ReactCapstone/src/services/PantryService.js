@@ -13,11 +13,11 @@ class PantryService {
     }
 
     deletePantryItem(id, email){
-        return axios.get(PANTRY_API_BASE_URL + 'deletePantry' + '/' + id + '&' + email)
+        return axios.delete(PANTRY_API_BASE_URL + 'deletePantry' + '/' + id + '&' + email)
     }
 
     updatePantryItem(email, id, expiry){
-        return axios.put(PANTRY_API_BASE_URL + 'updatePantry' + '/' + email + '&' + id + '&' + expiry)
+        return axios.get(PANTRY_API_BASE_URL + 'updatePantry' + '/' + email + '&' + id + '&' + expiry)
     }
 }
 
