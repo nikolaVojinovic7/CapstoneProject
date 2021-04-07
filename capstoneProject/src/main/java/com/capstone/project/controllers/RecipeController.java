@@ -198,4 +198,45 @@ public class RecipeController {
         return response;
     }
 
+
+    @GetMapping("searchThreeIngredients/{email}")
+    public String[] searchThreeIngredients(@PathVariable String email){
+        User user = userService.findByEmail(email);
+        Set<Pantry> pantrySet = user.getPantryIngredients();
+
+        String[] ing = new String[3];
+
+        int num = 0;
+        for(Pantry pantry:pantrySet){
+            if(num == 3){
+                break;
+            } else{
+                ing[num] = pantry.getIngredient().getName();
+            }
+            num++;
+        }        return ing;    }
+
+    //get all pantry ingredients by email api
+    @GetMapping("searchRecipesBasedOnIngredient/{email}&{pantryIng}")
+    public Set<Recipe> searchRecipesBasedOnIngredient(@PathVariable String email, @PathVariable String pantryIng){
+        Set<Recipe> recipeSet = recipeService.findAll();
+        User user = userService.findByEmail(email);
+        Set<Pantry> pantrySet = user.getPantryIngredients();
+        Set<Recipe> finalRecipeSet = new HashSet<>();
+
+        for (Recipe recipe:recipeSet) {
+            Set<RecipeToIngredient> recipeToIngredients = recipe.getRecipeToIngredients();
+
+        for (RecipeToIngredient recipeIngredient : recipeToIngredients) {
+            String ingredientName = recipeIngredient.getIngredient().getName();
+            if(pantryIng.equals(ingredientName)){
+                finalRecipeSet.add(recipe);
+                break;
+            }
+        }
+        }
+
+        return finalRecipeSet;    }
+
+
 }
